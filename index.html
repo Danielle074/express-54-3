@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard ONECI</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <!-- Bootstrap Icons -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+    rel="stylesheet"
+  >
+
+  <style>
+    body {
+      background-color: #f7f7f7;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px;
+      background: #f89b00;
+      min-height: 100vh;
+      position: fixed;
+      color: white;
+    }
+
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+    }
+
+    .sidebar a.active,
+    .sidebar a:hover {
+      background: white;
+      color: #f89b00;
+      border-radius: 8px;
+      margin: 5px 10px;
+    }
+
+    /* MAIN CONTENT */
+    .content {
+      margin-left: 260px;
+      padding: 30px;
+    }
+
+    /* HEADER */
+    .header-box {
+      background-image: url("images/Banniereoneci.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 25px;
+      height: 220px;
+      padding: 30px;
+    }
+
+    .btn-orange {
+      background: #f89b00;
+      color: white;
+      border-radius: 30px;
+      padding: 10px 25px;
+      border: none;
+    }
+
+    .btn-orange:hover {
+      background: #e08a00;
+    }
+
+    /* LOGO */
+    .logo-box {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+
+    /* APPLICATIONS CARD */
+    .applications-box {
+      background: white;
+      border: 1px solid #ced4da;
+      border-radius: 30px;
+      padding: 30px;
+      margin-top: 15px;
+    }
+
+    /* TABLE STYLES */
+    .applications-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .applications-table thead th {
+      background: #f8f9fa;
+      padding: 15px 12px;
+      font-weight: 600;
+      color: #555;
+      border-bottom: 2px solid #e9ecef;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 0.9rem;
+    }
+
+    .applications-table tbody td {
+      padding: 15px 12px;
+      border-bottom: 1px solid #e9ecef;
+      vertical-align: middle;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .applications-table tbody tr:hover {
+      background: #f8f9fa;
+    }
+
+    /* ICON STYLES */
+    .action-btn {
+      background: none;
+      border: none;
+      color: #f89b00;
+      font-size: 1.3rem;
+      padding: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .action-btn:hover {
+      color: #e08a00;
+      transform: scale(1.1);
+    }
+
+    .receipt-icon {
+      color: #28a745;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* STATUS BADGES */
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .status-en-cours {
+      background: rgba(248, 155, 0, 0.1);
+      color: #f89b00;
+    }
+
+    .status-soumis {
+      background: rgba(0, 123, 255, 0.1);
+      color: #007bff;
+    }
+
+    .status-valide {
+      background: rgba(40, 167, 69, 0.1);
+      color: #28a745;
+    }
+
+    .status-attente {
+      background: rgba(255, 193, 7, 0.1);
+      color: #ffc107;
+    }
+
+    /* COLUMN WIDTHS */
+    .col-action {
+      width: 70px;
+      min-width: 70px;
+    }
+
+    .col-status-supervisor {
+      width: 120px;
+      min-width: 120px;
+      line-height: 1.2;
+    }
+
+    .col-uidn {
+      width: 180px;
+      min-width: 180px;
+      font-family: monospace;
+      font-size: 0.85rem;
+    }
+
+    /* SCROLLBAR */
+    .table-responsive::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    .table-responsive::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .table-responsive::-webkit-scrollbar-thumb {
+      background: transparent;
+      border-radius: 10px;
+    }
+
+    .table-responsive {
+      scrollbar-width: thin;
+      scrollbar-color: transparent transparent;
+    }
+
+    /* BOUTON AU-DESSUS DU TABLEAU */
+    .button-top {
+      margin-bottom: 15px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1200px) {
+      .content {
+        margin-left: 0;
+        padding: 20px;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<!-- SIDEBAR -->
+<div class="sidebar d-flex flex-column justify-content-between">
+  <div>
+    <div class="p-4 text-center">
+      <div class="logo-box">
+        <img src="images/Express by ONECI 2 (1).png" alt="Logo" class="img-fluid">
+      </div>
+    </div>
+
+    <a href="#" class="active"><i class="bi bi-house"></i> Accueil</a>
+    <a href="#"><i class="bi bi-grid"></i> Applications</a>
+    <a href="#"><i class="bi bi-person"></i> Mon Profil</a>
+    <a href="#"><i class="bi bi-gear"></i> Paramètres</a>
+  </div>
+
+  <!-- 🔽 NOUVEL ESPACE EN BAS -->
+  <div class="p-3">
+    <div style="border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px; margin-bottom: 10px;">
+      <a href="op%C3%A9rateur.html">
+        <i class="bi bi-headset"></i> Opérateur
+      </a>
+      <a href="superviseur.html">
+        <i class="bi bi-person-badge"></i> Superviseur
+      </a>
+    </div>
+
+    <a href="#">
+      <i class="bi bi-box-arrow-left"></i> Déconnexion
+    </a>
+  </div>
+</div>
+
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- HEADER -->
+  <div class="header-box mb-4"></div>
+
+  <!-- FILTERS -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <select class="form-select rounded-pill p-3">
+        <option>Pays</option>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <select class="form-select rounded-pill p-3">
+        <option>Ambassade</option>
+      </select>
+    </div>
+    <div class="col-md-4 d-grid">
+      <button class="btn btn-orange">Mettre à jour</button>
+    </div>
+  </div>
+
+  <!-- TITRE CENTRÉ -->
+  <h4 class="fw-bold text-center my-4">Applications</h4>
+
+  <!-- BOUTON AU-DESSUS DU TABLEAU -->
+  <div class="d-flex justify-content-end button-top">
+    <button class="btn btn-orange">
+      <i class="bi bi-play-circle"></i> Démarrer une nouvelle application
+    </button>
+  </div>
+
+  <!-- APPLICATIONS TABLE -->
+  <div class="applications-box mb-3">
+    <div class="table-responsive">
+      <table class="applications-table">
+        <thead>
+          <tr>
+            <th>N°</th>
+            <th>Nom</th>
+            <th>Service</th>
+            <th>Sous-service</th>
+            <th class="col-action">Action</th>
+            <th>Statut</th>
+            <th class="col-status-supervisor">Statut<br>Superviseur</th>
+            <th>Receipt</th>
+            <th class="col-uidn">UIDN</th>
+            <th>Numéro de suivi</th>
+            <th>Pickup date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>Kouamé Jean</strong></td>
+            <td>Identification</td>
+            <td>CNI</td>
+            <td class="col-action">
+              <button class="action-btn" title="Voir les détails">
+                <i class="bi bi-eye"></i>
+              </button>
+            </td>
+            <td>
+              <span class="status-badge status-en-cours">En cours</span>
+            </td>
+            <td class="col-status-supervisor">
+              <span class="status-badge status-valide">Validé</span>
+            </td>
+            <td>
+              <div class="receipt-icon" title="Reçu">
+                <i class="bi bi-file-text"></i>
+              </div>
+            </td>
+            <td class="col-uidn">UIDN001-1234-5678-90AB</td>
+            <td>0700000001</td>
+            <td>12/01/2026</td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td><strong>Achi Danielle</strong></td>
+            <td>Identification</td>
+            <td>Extrait</td>
+            <td class="col-action">
+              <button class="action-btn" title="Voir les détails">
+                <i class="bi bi-eye"></i>
+              </button>
+            </td>
+            <td>
+              <span class="status-badge status-soumis">Soumis</span>
+            </td>
+            <td class="col-status-supervisor">
+              <span class="status-badge status-attente">En attente</span>
+            </td>
+            <td>
+              <div class="receipt-icon" title="Reçu">
+                <i class="bi bi-file-text"></i>
+              </div>
+            </td>
+            <td class="col-uidn">UIDN002-5678-ABCD-EF12</td>
+            <td>0700000002</td>
+            <td>14/01/2026</td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td><strong>Diallo Mamadou</strong></td>
+            <td>Passeport</td>
+            <td>Nouveau</td>
+            <td class="col-action">
+              <button class="action-btn" title="Voir les détails">
+                <i class="bi bi-eye"></i>
+              </button>
+            </td>
+            <td>
+              <span class="status-badge status-en-cours">En cours</span>
+            </td>
+            <td class="col-status-supervisor">
+              <span class="status-badge status-valide">Validé</span>
+            </td>
+            <td>
+              <div class="receipt-icon" title="Reçu">
+                <i class="bi bi-file-text"></i>
+              </div>
+            </td>
+            <td class="col-uidn">UIDN003-ABCD-1234-5678</td>
+            <td>0700000003</td>
+            <td>18/01/2026</td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td><strong>Traoré Fatou</strong></td>
+            <td>Carte Consulaire</td>
+            <td>Renouvellement</td>
+            <td class="col-action">
+              <button class="action-btn" title="Voir les détails">
+                <i class="bi bi-eye"></i>
+              </button>
+            </td>
+            <td>
+              <span class="status-badge status-soumis">Soumis</span>
+            </td>
+            <td class="col-status-supervisor">
+              <span class="status-badge status-attente">En attente</span>
+            </td>
+            <td>
+              <div class="receipt-icon" title="Reçu">
+                <i class="bi bi-file-text"></i>
+              </div>
+            </td>
+            <td class="col-uidn">UIDN004-EF12-3456-789A</td>
+            <td>0700000004</td>
+            <td>20/01/2026</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // Animation pour les boutons d'action
+  document.querySelectorAll('.action-btn').forEach(btn => {
+    btn.addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.1)';
+    });
+    
+    btn.addEventListener('mouseleave', function() {
+      this.style.transform = 'scale(1)';
+    });
+    
+    btn.addEventListener('click', function() {
+      alert('Voir les détails de cette application');
+    });
+  });
+</script>
+
+</body>
+</html>
