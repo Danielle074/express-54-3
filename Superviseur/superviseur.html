@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard ONECI</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <!-- Bootstrap Icons -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+    rel="stylesheet"
+  >
+
+  <style>
+    body {
+      background-color: #f7f7f7;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px;
+      background: #f89b00;
+      min-height: 100vh;
+      position: fixed;
+      color: white;
+      top: 0;
+      left: 0;
+    }
+
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .sidebar a.active,
+    .sidebar a:hover {
+      background: white;
+      color: #f89b00;
+      border-radius: 8px;
+      margin: 5px 10px;
+    }
+
+    /* Dropdown dans la sidebar */
+    .sidebar-dropdown {
+      padding: 0;
+      margin: 0 10px;
+    }
+
+    .sidebar-dropdown-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 12px 15px;
+      color: white;
+      background: none;
+      border: none;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .sidebar-dropdown-toggle:hover {
+      background: white;
+      color: #f89b00;
+      border-radius: 8px;
+    }
+
+    .sidebar-dropdown-menu {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      margin: 5px 0;
+      padding: 5px 0;
+      display: none;
+    }
+
+    .sidebar-dropdown.active .sidebar-dropdown-menu {
+      display: block;
+    }
+
+    .sidebar-dropdown-item {
+      padding: 8px 15px 8px 40px;
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+
+    .sidebar-dropdown-item:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border-radius: 5px;
+    }
+
+    .sidebar-archive {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      margin: 5px 10px;
+    }
+
+    .sidebar-archive:hover {
+      background: white;
+      color: #f89b00;
+    }
+
+    /* MAIN CONTENT */
+    .content {
+      margin-left: 260px;
+      padding: 30px;
+    }
+
+    /* HEADER BANNIERE */
+    .header-banner {
+      background-image: url("Banniereoneci.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 25px;
+      height: 220px;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    /* NAVIGATION SOUS LE HEADER */
+    .nav-container {
+      background: white;
+      border-radius: 20px;
+      padding: 20px 30px;
+      margin-top: -20px;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border-left: 5px solid #f89b00;
+    }
+
+    .main-nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: #f0f0f0;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 30px;
+      font-weight: 600;
+      color: #555;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-btn:hover {
+      background: #e0e0e0;
+      color: #333;
+    }
+
+    .nav-btn.active {
+      background: #f89b00;
+      color: white;
+      box-shadow: 0 4px 15px rgba(248, 155, 0, 0.3);
+    }
+
+    /* SECTION CONTENT */
+    .content-section {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* BEAUTIFUL CARDS STYLES */
+    .service-card {
+      background: white;
+      border-radius: 20px;
+      padding: 35px 25px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      height: 100%;
+      transition: all 0.3s ease;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #f89b00, #ffad33);
+      border-radius: 20px 20px 0 0;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .service-card .card-icon {
+      font-size: 3.5rem;
+      color: #f89b00;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 80px;
+      width: 80px;
+      background: rgba(248, 155, 0, 0.1);
+      border-radius: 50%;
+      padding: 15px;
+    }
+
+    .service-card .card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: #333;
+      text-align: center;
+    }
+
+    .service-card .card-desc {
+      font-size: 0.95rem;
+      color: #666;
+      margin-top: 10px;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* BUREAU CARDS */
+    .bureau-card {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      height: 100%;
+      transition: all 0.3s ease;
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bureau-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #f89b00, #ffad33);
+      border-radius: 20px 20px 0 0;
+    }
+
+    .bureau-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .bureau-card .card-icon {
+      font-size: 2.5rem;
+      color: #f89b00;
+      margin-bottom: 15px;
+    }
+
+    .bureau-card .card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .bureau-card .card-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #f89b00;
+      margin-bottom: 5px;
+    }
+
+    .bureau-card .card-desc {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    /* STATS CARDS */
+    .stat-card {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      height: 100%;
+      transition: all 0.3s ease;
+      border: none;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #f89b00, #ffad33);
+      border-radius: 20px 20px 0 0;
+    }
+
+    .stat-card .card-icon {
+      font-size: 2.5rem;
+      color: #f89b00;
+      margin-bottom: 15px;
+    }
+
+    .stat-card .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    .stat-card .card-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #f89b00;
+      margin-bottom: 5px;
+    }
+
+    .stat-card .card-desc {
+      font-size: 0.9rem;
+      color: #777;
+      margin-top: 5px;
+    }
+
+    /* TABLEAU UTILISATEURS */
+    .users-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 20px;
+    }
+
+    .users-table thead th {
+      background: #f8f9fa;
+      padding: 15px;
+      font-weight: 600;
+      color: #555;
+      border-bottom: 2px solid #e9ecef;
+      text-align: left;
+    }
+
+    .users-table tbody td {
+      padding: 15px;
+      border-bottom: 1px solid #e9ecef;
+      vertical-align: middle;
+    }
+
+    .users-table tbody tr:hover {
+      background: #f8f9fa;
+    }
+
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .status-active {
+      background: rgba(40, 167, 69, 0.1);
+      color: #28a745;
+    }
+
+    .status-inactive {
+      background: rgba(220, 53, 69, 0.1);
+      color: #dc3545;
+    }
+
+    /* MAIN GRID */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+      margin-top: 40px; /* PLUS D'ESPACE AU-DESSUS DES CARTES */
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 1200px) {
+      .services-grid,
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .services-grid,
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .content {
+        margin-left: 0;
+        padding: 20px;
+      }
+      .sidebar {
+        display: none;
+      }
+      .main-nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .nav-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* LOGO */
+    .logo-box {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+
+    /* Graphiques CSS simples */
+    .css-bar-graph {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 20px 0;
+    }
+
+    .bar-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .bar-label {
+      width: 40px;
+      font-weight: 600;
+      color: #555;
+    }
+
+    .bar-container {
+      flex: 1;
+      height: 25px;
+      background: #f0f0f0;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 12px;
+      transition: width 1s ease;
+    }
+
+    .bar-value {
+      width: 60px;
+      text-align: right;
+      font-weight: 700;
+      color: #f89b00;
+    }
+
+    /* Camembert CSS */
+    .css-pie-chart {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      position: relative;
+      background: conic-gradient(
+        #f89b00 0% 45%,
+        #ffad33 45% 70%,
+        #ffc966 70% 85%,
+        #ffe0b3 85% 95%,
+        #fff5e6 95% 100%
+      );
+    }
+
+    .pie-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .legend-item span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar d-flex flex-column justify-content-between">
+  <div>
+    <div class="p-4 text-center">
+      <div class="logo-box">
+        <img src="Express by ONECI 2 (1).png" alt="Logo" class="img-fluid">
+      </div>
+    </div>
+
+    <a href="#" class="active"><i class="bi bi-house"></i> Accueil</a>
+    <a href="#"><i class="bi bi-grid"></i> Applications</a>
+    
+    <!-- Dropdown Pickup -->
+    <div class="sidebar-dropdown">
+      <button class="sidebar-dropdown-toggle" type="button" onclick="toggleDropdown(this)">
+        <span style="display: flex; align-items: center; gap: 10px;">
+          <i class="bi bi-box-arrow-in-down"></i> Pickup
+        </span>
+        <i class="bi bi-chevron-down"></i>
+      </button>
+      <ul class="sidebar-dropdown-menu">
+        <li><a class="sidebar-dropdown-item" href="#"><i class="bi bi-pencil"></i> Modifier</a></li>
+        <li><a class="sidebar-dropdown-item" href="#"><i class="bi bi-trash"></i> Supprimer</a></li>
+      </ul>
+    </div>
+
+    <!-- Dropdown Langue -->
+    <div class="sidebar-dropdown">
+      <button class="sidebar-dropdown-toggle" type="button" onclick="toggleDropdown(this)">
+        <span style="display: flex; align-items: center; gap: 10px;">
+          <i class="bi bi-translate"></i> Langue
+        </span>
+        <i class="bi bi-chevron-down"></i>
+      </button>
+      <ul class="sidebar-dropdown-menu">
+        <li><a class="sidebar-dropdown-item" href="#">Français</a></li>
+        <li><a class="sidebar-dropdown-item" href="#">English</a></li>
+      </ul>
+    </div>
+
+    <!-- Dropdown Profil -->
+    <div class="sidebar-dropdown">
+      <button class="sidebar-dropdown-toggle" type="button" onclick="toggleDropdown(this)">
+        <span style="display: flex; align-items: center; gap: 10px;">
+          <i class="bi bi-person"></i> Mon Profil
+        </span>
+        <i class="bi bi-chevron-down"></i>
+      </button>
+      <ul class="sidebar-dropdown-menu">
+        <li><a class="sidebar-dropdown-item" href="#"><i class="bi bi-pencil"></i> Modifier</a></li>
+        <li><a class="sidebar-dropdown-item" href="#"><i class="bi bi-trash"></i> Supprimer</a></li>
+      </ul>
+    </div>
+
+    <a href="#"><i class="bi bi-gear"></i> Paramètres</a>
+  </div>
+  <!-- 🔽 NOUVEL ESPACE EN BAS -->
+  <div class="p-3">
+    <div style="border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px; margin-bottom: 10px;">
+      <a href="index.html">
+        <i class="bi bi-headset"></i> utilisateur
+      </a>
+      <a href="Operateur/opérateur.html">
+        <i class="bi bi-person-badge"></i>operateur
+      </a>
+    </div>
+
+    <a href="#">
+      <i class="bi bi-box-arrow-left"></i> Déconnexion
+    </a>
+  </div>
+  <!-- ARCHIVES + DECONNECT -->
+  <div class="p-3 d-flex flex-column gap-2">
+    <a href="#" class="sidebar-archive"><i class="bi bi-archive"></i> Derniers Archives</a>
+    <a href="#"><i class="bi bi-box-arrow-left"></i> Se déconnecter</a>
+  </div>
+</div>
+
+
+<!-- CONTENT PRINCIPAL -->
+<div class="content">
+
+  <!-- HEADER BANNIERE -->
+  <div class="header-banner"></div>
+
+  <!-- NAVIGATION SOUS LE HEADER -->
+  <div class="nav-container">
+    <div class="main-nav">
+      <button class="nav-btn active" data-section="overview">
+        <i class="bi bi-speedometer2"></i> Vue d'ensemble
+      </button>
+      <button class="nav-btn" data-section="bureau">
+        <i class="bi bi-building"></i> Bureau
+      </button>
+      <button class="nav-btn" data-section="tendances">
+        <i class="bi bi-graph-up"></i> Tendances
+      </button>
+      <button class="nav-btn" data-section="cartes">
+        <i class="bi bi-credit-card"></i> Cartes
+      </button>
+    </div>
+  </div>
+
+  <!-- SECTION 1: VUE D'ENSEMBLE (7 cartes) -->
+  <div class="content-section active" id="overview-section">
+    <!-- 7 CARTES -->
+    <div class="services-grid">
+      <!-- Carte 1 -->
+      <div class="service-card">
+        <div class="card-icon">
+          <i class="bi bi-passport"></i>
+        </div>
+        <div class="card-title">Visa Service</div>
+        <div class="card-desc">1,248 demandes ce mois</div>
+      </div>
+      
+      <!-- Carte 2 -->
+      <div class="service-card">
+        <div class="card-icon">
+          <i class="bi bi-passport-fill"></i>
+        </div>
+        <div class="card-title">Passeport Service</div>
+        <div class="card-desc">856 nouveaux passeports</div>
+      </div>
+      
+      <!-- Carte 3 -->
+      <div class="service-card">
+        <div class="card-icon">
+          <i class="bi bi-credit-card"></i>
+        </div>
+        <div class="card-title">Consulate Card</div>
+        <div class="card-desc">432 cartes émises</div>
+      </div>
+      
+      <!-- Carte 4 -->
+      <div class="service-card">
+        <div class="card-icon">
+          <i class="bi bi-truck"></i>
+        </div>
+        <div class="card-title">Delivery Express</div>
+        <div class="card-desc">189 livraisons en cours</div>
+      </div>
+      
+      <!-- Carte 5 -->
+      <div class="service-card">
+        <div class="card-icon">
+          <i class="bi bi-file-text"></i>
+        </div>
+        <div class="card-title">Other Documents</div>
+        <div class="card-desc">567 documents divers</div>
+      </div>
+      
+      <!-- Carte 6 -->
+      <div class="service-card">
+        <div class="card-icon">
+          <i class="bi bi-file-earmark-person"></i>
+        </div>
+        <div class="card-title">Civils Documents</div>
+        <div class="card-desc">324 actes d'état civil</div>
+      </div>
+      
+      <!-- Carte 7 -->
+      <div class="service-card">
+        <div class="card-icon">
+          <i class="bi bi-people"></i>
+        </div>
+        <div class="card-title">Utilisateurs actifs</div>
+        <div class="card-desc">48 en ligne maintenant</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: BUREAU -->
+  <div class="content-section" id="bureau-section">
+    <!-- ESPACE POUR DESCENDRE LES CARTES -->
+    <div style="height: 20px;"></div>
+    
+    <!-- 3 CARTES BUREAU -->
+    <div class="stats-grid">
+      <!-- Carte 1 -->
+      <div class="bureau-card">
+        <div class="card-icon">
+          <i class="bi bi-building"></i>
+        </div>
+        <div class="card-title">Bureau Actif</div>
+        <div class="card-value">24</div>
+        <div class="card-desc">Agents disponibles</div>
+      </div>
+      
+      <!-- Carte 2 -->
+      <div class="bureau-card">
+        <div class="card-icon">
+          <i class="bi bi-graph-up"></i>
+        </div>
+        <div class="card-title">Taux d'approbation</div>
+        <div class="card-value">88%</div>
+        <div class="card-desc">+2.5% vs mois dernier</div>
+      </div>
+      
+      <!-- Carte 3 -->
+      <div class="bureau-card">
+        <div class="card-icon">
+          <i class="bi bi-trophy"></i>
+        </div>
+        <div class="card-title">Meilleur Bureau</div>
+        <div class="card-value">Paris</div>
+        <div class="card-desc">96.7% satisfaction</div>
+      </div>
+    </div>
+
+    <!-- ESPACE AVANT LE TABLEAU -->
+    <div style="height: 30px;"></div>
+
+    <!-- LISTE UTILISATEURS -->
+    <div class="bureau-card">
+      <h4 class="fw-bold mb-4">Liste des Utilisateurs</h4>
+      <div class="table-responsive">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Nom & Prénom</th>
+              <th>Bureau</th>
+              <th>Rôle</th>
+              <th>Dossiers traités</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Kouamé Jean</strong><br><small class="text-muted">jean.kouame@oneci.ci</small></td>
+              <td>Paris Centre</td>
+              <td>Superviseur</td>
+              <td>156</td>
+              <td><span class="status-badge status-active">Actif</span></td>
+            </tr>
+            <tr>
+              <td><strong>Achi Danielle</strong><br><small class="text-muted">danielle.achi@oneci.ci</small></td>
+              <td>Washington</td>
+              <td>Agent</td>
+              <td>89</td>
+              <td><span class="status-badge status-active">Actif</span></td>
+            </tr>
+            <tr>
+              <td><strong>Diallo Mamadou</strong><br><small class="text-muted">mamadou.diallo@oneci.ci</small></td>
+              <td>Bruxelles</td>
+              <td>Administrateur</td>
+              <td>234</td>
+              <td><span class="status-badge status-inactive">Inactif</span></td>
+            </tr>
+            <tr>
+              <td><strong>Traoré Fatou</strong><br><small class="text-muted">fatou.traore@oneci.ci</small></td>
+              <td>Paris Centre</td>
+              <td>Agent</td>
+              <td>112</td>
+              <td><span class="status-badge status-active">Actif</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: TENDANCES -->
+  <div class="content-section" id="tendances-section">
+    <!-- ESPACE POUR DESCENDRE LES CARTES -->
+    <div style="height: 20px;"></div>
+    
+    <!-- 3 CARTES STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="card-icon"><i class="bi bi-check-circle"></i></div>
+        <div class="card-title">Total Approuvé</div>
+        <div class="card-value">1,245</div>
+        <div class="card-desc">Ce mois</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="card-icon"><i class="bi bi-x-circle"></i></div>
+        <div class="card-title">Total Rejeté</div>
+        <div class="card-value">78</div>
+        <div class="card-desc">Ce mois</div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="card-icon"><i class="bi bi-clock-history"></i></div>
+        <div class="card-title">Temps Moyen</div>
+        <div class="card-value">3.2j</div>
+        <div class="card-desc">De traitement</div>
+      </div>
+    </div>
+
+    <!-- ESPACE AVANT LES GRAPHIQUES -->
+    <div style="height: 30px;"></div>
+
+    <!-- Graphiques CSS seulement -->
+    <div class="row">
+      <!-- Graphique barres CSS -->
+      <div class="col-md-6 mb-4">
+        <div class="bureau-card">
+          <h4 class="fw-bold mb-4">Demandes par mois</h4>
+          <div class="css-bar-graph">
+            <div class="bar-item">
+              <span class="bar-label">Jan</span>
+              <div class="bar-container">
+                <div class="bar-fill" style="width: 60%; background: #f89b00;"></div>
+              </div>
+              <span class="bar-value">850</span>
+            </div>
+            <div class="bar-item">
+              <span class="bar-label">Fév</span>
+              <div class="bar-container">
+                <div class="bar-fill" style="width: 65%; background: #f89b00;"></div>
+              </div>
+              <span class="bar-value">920</span>
+            </div>
+            <div class="bar-item">
+              <span class="bar-label">Mar</span>
+              <div class="bar-container">
+                <div class="bar-fill" style="width: 78%; background: #f89b00;"></div>
+              </div>
+              <span class="bar-value">1100</span>
+            </div>
+            <div class="bar-item">
+              <span class="bar-label">Avr</span>
+              <div class="bar-container">
+                <div class="bar-fill" style="width: 88%; background: #f89b00;"></div>
+              </div>
+              <span class="bar-value">1245</span>
+            </div>
+            <div class="bar-item">
+              <span class="bar-label">Mai</span>
+              <div class="bar-container">
+                <div class="bar-fill" style="width: 95%; background: #f89b00;"></div>
+              </div>
+              <span class="bar-value">1350</span>
+            </div>
+            <div class="bar-item">
+              <span class="bar-label">Juin</span>
+              <div class="bar-container">
+                <div class="bar-fill" style="width: 100%; background: #f89b00;"></div>
+              </div>
+              <span class="bar-value">1420</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Graphique camembert CSS -->
+      <div class="col-md-6 mb-4">
+        <div class="bureau-card">
+          <h4 class="fw-bold mb-4">Répartition par type</h4>
+          <div class="d-flex align-items-center justify-content-center" style="height: 250px;">
+            <div class="css-pie-chart"></div>
+            <div class="pie-legend ms-4">
+              <div class="legend-item"><span style="background:#f89b00"></span> Visa 45%</div>
+              <div class="legend-item"><span style="background:#ffad33"></span> Passeport 25%</div>
+              <div class="legend-item"><span style="background:#ffc966"></span> Carte 15%</div>
+              <div class="legend-item"><span style="background:#ffe0b3"></span> Documents 10%</div>
+              <div class="legend-item"><span style="background:#fff5e6"></span> Autres 5%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: CARTES -->
+  <div class="content-section" id="cartes-section">
+    <!-- ESPACE POUR DESCENDRE LES CARTES -->
+    <div style="height: 20px;"></div>
+    
+    <!-- 7 CARTES DE SERVICE -->
+    <div class="services-grid">
+      <!-- Carte 1 -->
+      <div class="service-card">
+        <div class="card-icon">
+          <i class="bi bi-passport"></i>
+        </div>
+        <div class="card-title">Visa Service</div>
+        <div class="card-desc">156 demandes en cours</div>
+      </div>
+      
+      <!-- Carte 2 -->
+      <div class="service-card">
+        <div class="card-icon">
+          <i class="bi bi-passport-fill"></i>
+        </div>
+        <div class="card-title">Passeport Service</div>
+        <div class="card-desc">89 nouveaux passeports</div>
+      </div>
+      
+      <!-- Carte 3 -->
+      <div class="service-card">
+        <div class="card-icon">
+          <i class="bi bi-credit-card"></i>
+        </div>
+        <div class="card-title">Consulate Card</div>
+        <div class="card-desc">342 cartes émises</div>
+      </div>
+      
+      <!-- Carte 4 -->
+      <div class="service-card">
+        <div class="card-icon">
+          <i class="bi bi-truck"></i>
+        </div>
+        <div class="card-title">Delivery Express</div>
+        <div class="card-desc">45 livraisons en cours</div>
+      </div>
+      
+      <!-- Carte 5 -->
+      <div class="service-card">
+        <div class="card-icon">
+          <i class="bi bi-file-text"></i>
+        </div>
+        <div class="card-title">Other Documents</div>
+        <div class="card-desc">128 documents divers</div>
+      </div>
+      
+      <!-- Carte 6 -->
+      <div class="service-card">
+        <div class="card-icon">
+          <i class="bi bi-file-earmark-person"></i>
+        </div>
+        <div class="card-title">Civils Documents</div>
+        <div class="card-desc">76 actes d'état civil</div>
+      </div>
+      
+      <!-- Carte 7 -->
+      <div class="service-card">
+        <div class="card-icon">
+          <i class="bi bi-people"></i>
+        </div>
+        <div class="card-title">Utilisateurs actifs</div>
+        <div class="card-desc">48 en ligne maintenant</div>
+      </div>
+    </div>
+
+    <!-- ESPACE AVANT LE TABLEAU -->
+    <div style="height: 30px;"></div>
+
+    <!-- TABLEAU DES CARTES -->
+    <div class="bureau-card mt-4">
+      <h4 class="fw-bold mb-4">Suivi des Cartes en Circulation</h4>
+      <div class="table-responsive">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Type de Carte</th>
+              <th>Numéro</th>
+              <th>Titulaire</th>
+              <th>Date d'émission</th>
+              <th>Date d'expiration</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Consulaire</strong></td>
+              <td>CC-2024-001</td>
+              <td>Kouamé Jean</td>
+              <td>15/01/2024</td>
+              <td>15/01/2029</td>
+              <td><span class="status-badge status-active">Active</span></td>
+            </tr>
+            <tr>
+              <td><strong>Diplomatique</strong></td>
+              <td>CD-2024-045</td>
+              <td>Achi Danielle</td>
+              <td>20/02/2024</td>
+              <td>20/02/2029</td>
+              <td><span class="status-badge status-active">Active</span></td>
+            </tr>
+            <tr>
+              <td><strong>Service</strong></td>
+              <td>CS-2024-089</td>
+              <td>Diallo Mamadou</td>
+              <td>05/03/2024</td>
+              <td>05/03/2029</td>
+              <td><span class="status-badge status-inactive">Expirée</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // Navigation entre sections
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      // Retirer active de tous les boutons
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      
+      // Ajouter active au bouton cliqué
+      this.classList.add('active');
+      
+      // Cacher toutes les sections
+      document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Afficher la section correspondante
+      const sectionId = this.getAttribute('data-section') + '-section';
+      document.getElementById(sectionId).classList.add('active');
+      
+      // Scroll vers le haut de la section
+      document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Fonction pour les dropdowns de la sidebar
+  function toggleDropdown(button) {
+    const dropdown = button.closest('.sidebar-dropdown');
+    dropdown.classList.toggle('active');
+  }
+
+  // Fermer les dropdowns quand on clique ailleurs
+  document.addEventListener('click', function(event) {
+    if (!event.target.closest('.sidebar-dropdown')) {
+      document.querySelectorAll('.sidebar-dropdown').forEach(dropdown => {
+        dropdown.classList.remove('active');
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

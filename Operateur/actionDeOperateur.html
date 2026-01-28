@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de Transcription de Mariage</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 1600px;
+        }
+        
+        .header-section {
+            background: linear-gradient(135deg, #fff3e0, #ffecb3);
+            color: #e65100;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #ff9800;
+        }
+        
+        .section-title {
+            color: #ff9800;
+            border-bottom: 2px solid #ffecb3;
+            padding-bottom: 10px;
+            margin: 25px 0 15px 0;
+            font-weight: 600;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        
+        .verify-btn {
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+            margin-top: 20px;
+        }
+        
+        .verify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+        }
+        
+        .spouse-section {
+            background-color: #fff3e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #ffcc80;
+        }
+        
+        .verification-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 2px solid #e9ecef;
+            display: none; /* Caché par défaut */
+        }
+        
+        .loading-section {
+            background-color: #fff3e0;
+            border-radius: 10px;
+            padding: 40px 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 2px dashed #ff9800;
+        }
+        
+        .result-section {
+            background-color: #e8f4fd;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .result-item {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .result-label {
+            font-weight: 600;
+            color: #2c3e50;
+            display: inline-block;
+            width: 250px;
+        }
+        
+        .result-value {
+            color: #34495e;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #dc3545;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn-approve {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.2);
+        }
+        
+        .btn-refuse {
+            background: linear-gradient(135deg, #f44336, #c62828);
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.2);
+        }
+        
+        .btn-approve:hover, .btn-refuse:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        .verification-icon {
+            font-size: 4rem;
+            color: #ff9800;
+            margin-bottom: 20px;
+        }
+        
+        .btn-back {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            font-weight: 500;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-back:hover {
+            background: linear-gradient(135deg, #f57c00, #e65100);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .api-data-field {
+            background-color: #fff3e0;
+            border: 1px solid #ffcc80;
+            border-radius: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            min-height: 38px;
+            display: flex;
+            align-items: center;
+            color: #5d4037;
+            font-weight: 500;
+        }
+        
+        .verification-header {
+            background: linear-gradient(135deg, #fff3e0, #ffecb3);
+            color: #e65100;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid #ffb74d;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #ffcc80;
+            border-top: 5px solid #ff9800;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 15px;
+                margin: 10px;
+            }
+            
+            .result-label {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="form-container">
+            <!-- Bouton de retour -->
+            <div class="mb-4">
+                <a href="listeciviloperateur.html"> <button class="btn btn-back">
+                    <i class="bi bi-arrow-left me-2"></i>Retour
+                </button>
+                </a>
+               
+            </div>
+            
+            <!-- Header Section -->
+            <div class="header-section text-center">
+                <h1 class="mb-3"><i class="bi bi-clipboard-data me-2"></i>Formulaire de Transcription de Mariage</h1>
+                <p class="mb-0">Remplissez le formulaire à gauche et cliquez sur "Vérifier" pour charger les données API</p>
+            </div>
+            
+            <div class="row">
+                <!-- ============================================= -->
+                <!-- PARTIE GAUCHE : FORMULAIRE UTILISATEUR -->
+                <!-- ============================================= -->
+                <div class="col-lg-6">
+                    <div class="verification-header">
+                        <h4><i class="bi bi-pencil-square me-2"></i>Formulaire à Remplir</h4>
+                        <p class="mb-0">Saisissez les informations demandées</p>
+                    </div>
+                    
+                    <!-- Service Information -->
+                    <h3 class="section-title"><i class="bi bi-gear me-2"></i>Informations du Service</h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label required">Prestations de service :</label>
+                            <select class="form-select" id="serviceType">
+                                <option value="">Sélectionnez...</option>
+                                <option value="Civil Documents">Civil Documents</option>
+                                <option value="Legal Documents">Legal Documents</option>
+                                <option value="Administrative Documents">Administrative Documents</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label required">Plus de services :</label>
+                            <select class="form-select" id="additionalService">
+                                <option value="">Sélectionnez...</option>
+                                <option value="Marriage Transcript">Marriage Transcript</option>
+                                <option value="Birth Certificate">Birth Certificate</option>
+                                <option value="Death Certificate">Death Certificate</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label required">Régime Matrimonial :</label>
+                            <select class="form-select" id="maritalRegime">
+                                <option value="">Sélectionnez...</option>
+                                <option value="Joint Goods">Joint Goods</option>
+                                <option value="Separate Goods">Separate Goods</option>
+                                <option value="Community Property">Community Property</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Rapidité :</label>
+                            <select class="form-select" id="expeditionSpeed">
+                                <option value="Normal">Normal</option>
+                                <option value="Expedite" selected>Expedite</option>
+                                <option value="Urgent">Urgent</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Livraison :</label>
+                            <select class="form-select" id="deliveryType">
+                                <option value="Pickup">Pickup</option>
+                                <option value="Delivery" selected>Delivery</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Époux(se) 1 -->
+                    <div class="spouse-section">
+                        <h4 class="section-title" style="color: #f57c00;"><i class="bi bi-person me-2"></i>Époux(se) 1</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required">Prénom(s) :</label>
+                                <input type="text" class="form-control" id="spouse1FirstName" placeholder="Ex: Abraham">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required">Nom :</label>
+                                <input type="text" class="form-control" id="spouse1LastName" placeholder="Ex: Diabi">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required">Date de Naissance :</label>
+                                <input type="date" class="form-control" id="spouse1BirthDate">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required">Pays de Naissance :</label>
+                                <select class="form-select" id="spouse1BirthCountry">
+                                    <option value="">Sélectionnez...</option>
+                                    <option value="CI">Côte d'Ivoire (CI)</option>
+                                    <option value="FR">France (FR)</option>
+                                    <option value="US">États-Unis (US)</option>
+                                    <option value="MR">Mauritanie (MR)</option>
+                                    <option value="SN">Sénégal (SN)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required">État/Région :</label>
+                                <input type="text" class="form-control" id="spouse1State" placeholder="Ex: AB">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required">Profession :</label>
+                                <input type="text" class="form-control" id="spouse1Profession" placeholder="Ex: Business owner">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required">Adresse :</label>
+                                <input type="text" class="form-control" id="spouse1Address" placeholder="Ex: 01 BP v 240">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required">Ville :</label>
+                                <input type="text" class="form-control" id="spouse1City" placeholder="Ex: Abidjan">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required">Code Postal :</label>
+                                <input type="text" class="form-control" id="spouse1ZipCode" placeholder="Ex: 01">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required">Téléphone :</label>
+                                <input type="tel" class="form-control" id="spouse1Phone" placeholder="Ex: 469-494-9389">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label required">E-mail :</label>
+                                <input type="email" class="form-control" id="spouse1Email" placeholder="Ex: abrah25@hotmail.com">
+                            </div>
+                        </div>
+                        
+                        <!-- Filiation Époux 1 -->
+                        <h5 class="mt-4 mb-3" style="color: #666;"><i class="bi bi-people me-2"></i>Filiation</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required">Nom du Père :</label>
+                                <input type="text" class="form-control" id="spouse1FatherName" placeholder="Ex: Karamokoba Diabi">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required">Nom de la Mère :</label>
+                                <input type="text" class="form-control" id="spouse1MotherName" placeholder="Ex: Binta Soumouny">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Époux(se) 2 -->
+                    <div class="spouse-section">
+                        <h4 class="section-title" style="color: #f57c00;"><i class="bi bi-person me-2"></i>Époux(se) 2</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required">Prénom(s) :</label>
+                                <input type="text" class="form-control" id="spouse2FirstName" placeholder="Ex: Maimouna">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required">Nom :</label>
+                                <input type="text" class="form-control" id="spouse2LastName" placeholder="Ex: Sow">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required">Date de Naissance :</label>
+                                <input type="date" class="form-control" id="spouse2BirthDate">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required">Pays de Naissance :</label>
+                                <select class="form-select" id="spouse2BirthCountry">
+                                    <option value="">Sélectionnez...</option>
+                                    <option value="CI">Côte d'Ivoire (CI)</option>
+                                    <option value="FR">France (FR)</option>
+                                    <option value="US">États-Unis (US)</option>
+                                    <option value="MR">Mauritanie (MR)</option>
+                                    <option value="SN">Sénégal (SN)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required">État/Région :</label>
+                                <input type="text" class="form-control" id="spouse2State" placeholder="Ex: 06">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required">Profession :</label>
+                                <input type="text" class="form-control" id="spouse2Profession" placeholder="Ex: Nurse">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required">Adresse :</label>
+                                <input type="text" class="form-control" id="spouse2Address" placeholder="Ex: 424">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required">Ville :</label>
+                                <input type="text" class="form-control" id="spouse2City" placeholder="Ex: Rosso">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required">Code Postal :</label>
+                                <input type="text" class="form-control" id="spouse2ZipCode" placeholder="Ex: 320">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label required">Téléphone :</label>
+                                <input type="tel" class="form-control" id="spouse2Phone" placeholder="Ex: 4695546744">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label required">E-mail :</label>
+                                <input type="email" class="form-control" id="spouse2Email" placeholder="Ex: mamaisow@yahoo.com">
+                            </div>
+                        </div>
+                        
+                        <!-- Filiation Époux 2 -->
+                        <h5 class="mt-4 mb-3" style="color: #666;"><i class="bi bi-people me-2"></i>Filiation</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required">Nom du Père :</label>
+                                <input type="text" class="form-control" id="spouse2FatherName" placeholder="Ex: Moustapha Sow">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label required">Nom de la Mère :</label>
+                                <input type="text" class="form-control" id="spouse2MotherName" placeholder="Ex: Thille Sy">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Lieu de Mariage -->
+                    <h3 class="section-title"><i class="bi bi-geo-alt me-2"></i>Lieu de Mariage</h3>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label class="form-label required">Adresse :</label>
+                            <input type="text" class="form-control" id="marriageAddress" placeholder="Ex: 841 west Irving Boulevard">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label required">Ville :</label>
+                            <input type="text" class="form-control" id="marriageCity" placeholder="Ex: Irving">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label required">Pays :</label>
+                            <select class="form-select" id="marriageCountry">
+                                <option value="">Sélectionnez...</option>
+                                <option value="US">États-Unis (US)</option>
+                                <option value="FR">France (FR)</option>
+                                <option value="CI">Côte d'Ivoire (CI)</option>
+                                <option value="CA">Canada (CA)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label required">État :</label>
+                            <input type="text" class="form-control" id="marriageState" placeholder="Ex: TX">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label required">Code Postal :</label>
+                            <input type="text" class="form-control" id="marriageZipCode" placeholder="Ex: 75060">
+                        </div>
+                    </div>
+                    
+                    <!-- Adresse de Livraison -->
+                    <h3 class="section-title"><i class="bi bi-truck me-2"></i>Adresse de Livraison</h3>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <label class="form-label required">Adresse (rue) :</label>
+                            <input type="text" class="form-control" id="deliveryAddress" placeholder="Ex: 4202 28th st#1">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label required">Ville :</label>
+                            <input type="text" class="form-control" id="deliveryCity" placeholder="Ex: Mount Rainier">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label required">Pays :</label>
+                            <select class="form-select" id="deliveryCountry">
+                                <option value="">Sélectionnez...</option>
+                                <option value="US">États-Unis (US)</option>
+                                <option value="FR">France (FR)</option>
+                                <option value="CI">Côte d'Ivoire (CI)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label required">État :</label>
+                            <input type="text" class="form-control" id="deliveryState" placeholder="Ex: MD">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label required">Code Postal :</label>
+                                <input type="text" class="form-control" id="deliveryZipCode" placeholder="Ex: 20712">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label required">E-mail de livraison :</label>
+                            <input type="email" class="form-control" id="deliveryEmail" placeholder="Ex: diabifamily360@gmail.com">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label required">Téléphone de livraison :</label>
+                            <input type="tel" class="form-control" id="deliveryPhone" placeholder="Ex: 469-554-6744">
+                        </div>
+                    </div>
+                    
+                    <!-- Documents Section -->
+                    <h3 class="section-title"><i class="bi bi-folder me-2"></i>Documents</h3>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="certificateCopy">
+                                <label class="form-check-label">
+                                    Photocopie du Certificat de Mariage américain + traduction française certifiée
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="transcriptCopy">
+                                <label class="form-check-label">
+                                    Copie de la demande de Transcription du Certificat de Mariage
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="nationalityProof">
+                                <label class="form-check-label">
+                                    Preuve de nationalité d'un conjoint (CNI ou Certificat de Nationalité)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="idCopies">
+                                <label class="form-check-label">
+                                    Copie des Pièces d'identité des conjoints (CNI, Passeport ou attestation)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="consularCard">
+                                <label class="form-check-label">
+                                    Carte consulaire pour les résidents (si applicable)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Téléchargement du reçu :</label>
+                            <input type="file" class="form-control" id="receiptUpload" accept=".pdf,.jpg,.png">
+                            <small class="text-muted">Formats acceptés : PDF, JPG, PNG</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ============================================= -->
+                <!-- PARTIE DROITE : VÉRIFICATION DONNÉES API -->
+                <!-- ============================================= -->
+                <div class="col-lg-6">
+                    <div class="verification-header">
+                        <h4><i class="bi bi-database-check me-2"></i>Vérification des Données</h4>
+                        <p class="mb-0">Cliquez sur le bouton pour charger et comparer avec l'API</p>
+                    </div>
+                    
+                    <!-- Section de chargement (affichée par défaut) -->
+                    <div id="loadingSection" class="loading-section">
+                        <div class="verification-icon">
+                            <i class="bi bi-database"></i>
+                        </div>
+                        <h4 class="mb-3" style="color: #ff9800;">Données API non chargées</h4>
+                        <p class="text-muted mb-4">Cliquez sur le bouton ci-dessous pour charger les données depuis l'API et comparer avec le formulaire</p>
+                        
+                        <!-- Bouton de vérification DÉPLACÉ ICI -->
+                        <button class="btn verify-btn" onclick="loadAndVerifyApiData()">
+                            <i class="bi bi-cloud-download me-2"></i> Charger et Vérifier les Données API
+                        </button>
+                    </div>
+                    
+                    <!-- Service Information API (caché par défaut) -->
+                    <div id="apiServiceInfo" class="verification-section">
+                        <h3 class="section-title"><i class="bi bi-gear me-2"></i>Informations du Service (API)</h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Prestations de service :</label>
+                                <div class="api-data-field" id="apiServiceType"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Plus de services :</label>
+                                <div class="api-data-field" id="apiAdditionalService"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Régime Matrimonial :</label>
+                                <div class="api-data-field" id="apiMaritalRegime"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Rapidité :</label>
+                                <div class="api-data-field" id="apiExpeditionSpeed"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Livraison :</label>
+                                <div class="api-data-field" id="apiDeliveryType"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Époux(se) 1 API (caché par défaut) -->
+                    <div id="apiSpouse1Info" class="verification-section">
+                        <h4 class="section-title" style="color: #f57c00;"><i class="bi bi-person me-2"></i>Époux(se) 1 (API)</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Prénom(s) :</label>
+                                <div class="api-data-field" id="apiSpouse1FirstName"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nom :</label>
+                                <div class="api-data-field" id="apiSpouse1LastName"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Date de Naissance :</label>
+                                <div class="api-data-field" id="apiSpouse1BirthDate"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Pays de Naissance :</label>
+                                <div class="api-data-field" id="apiSpouse1BirthCountry"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">État/Région :</label>
+                                <div class="api-data-field" id="apiSpouse1State"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Profession :</label>
+                                <div class="api-data-field" id="apiSpouse1Profession"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Adresse :</label>
+                                <div class="api-data-field" id="apiSpouse1Address"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Ville :</label>
+                                <div class="api-data-field" id="apiSpouse1City"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Code Postal :</label>
+                                <div class="api-data-field" id="apiSpouse1ZipCode"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Téléphone :</label>
+                                <div class="api-data-field" id="apiSpouse1Phone"></div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">E-mail :</label>
+                                <div class="api-data-field" id="apiSpouse1Email"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Filiation Époux 1 API -->
+                        <h5 class="mt-4 mb-3" style="color: #666;"><i class="bi bi-people me-2"></i>Filiation (API)</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nom du Père :</label>
+                                <div class="api-data-field" id="apiSpouse1FatherName"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nom de la Mère :</label>
+                                <div class="api-data-field" id="apiSpouse1MotherName"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Époux(se) 2 API (caché par défaut) -->
+                    <div id="apiSpouse2Info" class="verification-section">
+                        <h4 class="section-title" style="color: #f57c00;"><i class="bi bi-person me-2"></i>Époux(se) 2 (API)</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Prénom(s) :</label>
+                                <div class="api-data-field" id="apiSpouse2FirstName"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nom :</label>
+                                <div class="api-data-field" id="apiSpouse2LastName"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Date de Naissance :</label>
+                                <div class="api-data-field" id="apiSpouse2BirthDate"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Pays de Naissance :</label>
+                                <div class="api-data-field" id="apiSpouse2BirthCountry"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">État/Région :</label>
+                                <div class="api-data-field" id="apiSpouse2State"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Profession :</label>
+                                <div class="api-data-field" id="apiSpouse2Profession"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Adresse :</label>
+                                <div class="api-data-field" id="apiSpouse2Address"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Ville :</label>
+                                <div class="api-data-field" id="apiSpouse2City"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Code Postal :</label>
+                                <div class="api-data-field" id="apiSpouse2ZipCode"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Téléphone :</label>
+                                <div class="api-data-field" id="apiSpouse2Phone"></div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">E-mail :</label>
+                                <div class="api-data-field" id="apiSpouse2Email"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Filiation Époux 2 API -->
+                        <h5 class="mt-4 mb-3" style="color: #666;"><i class="bi bi-people me-2"></i>Filiation (API)</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nom du Père :</label>
+                                <div class="api-data-field" id="apiSpouse2FatherName"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nom de la Mère :</label>
+                                <div class="api-data-field" id="apiSpouse2MotherName"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Lieu de Mariage API (caché par défaut) -->
+                    <div id="apiMarriageInfo" class="verification-section">
+                        <h3 class="section-title"><i class="bi bi-geo-alt me-2"></i>Lieu de Mariage (API)</h3>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Adresse :</label>
+                                <div class="api-data-field" id="apiMarriageAddress"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Ville :</label>
+                                <div class="api-data-field" id="apiMarriageCity"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Pays :</label>
+                                <div class="api-data-field" id="apiMarriageCountry"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">État :</label>
+                                <div class="api-data-field" id="apiMarriageState"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Code Postal :</label>
+                                <div class="api-data-field" id="apiMarriageZipCode"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Adresse de Livraison API (caché par défaut) -->
+                    <div id="apiDeliveryInfo" class="verification-section">
+                        <h3 class="section-title"><i class="bi bi-truck me-2"></i>Adresse de Livraison (API)</h3>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Adresse (rue) :</label>
+                                <div class="api-data-field" id="apiDeliveryAddress"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Ville :</label>
+                                <div class="api-data-field" id="apiDeliveryCity"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Pays :</label>
+                                <div class="api-data-field" id="apiDeliveryCountry"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">État :</label>
+                                <div class="api-data-field" id="apiDeliveryState"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Code Postal :</label>
+                                <div class="api-data-field" id="apiDeliveryZipCode"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">E-mail de livraison :</label>
+                                <div class="api-data-field" id="apiDeliveryEmail"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Téléphone de livraison :</label>
+                                <div class="api-data-field" id="apiDeliveryPhone"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Documents API (caché par défaut) -->
+                    <div id="apiDocumentsInfo" class="verification-section">
+                        <h3 class="section-title"><i class="bi bi-folder me-2"></i>Documents (API)</h3>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Documents fournis :</label>
+                                <div class="api-data-field" id="apiDocuments"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Boutons d'action opérateur (cachés par défaut) -->
+                    <div id="actionButtons" class="action-buttons mt-4" style="display: none;">
+                        <button class="btn btn-success btn-approve flex-fill" onclick="approveForm()">
+                            <i class="bi bi-check-circle me-2"></i>Approuver
+                        </button>
+                        <button class="btn btn-danger btn-refuse flex-fill" onclick="refuseForm()">
+                            <i class="bi bi-x-circle me-2"></i>Refuser
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Initialiser les champs avec des valeurs par défaut (optionnel)
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('serviceType').value = 'Civil Documents';
+            document.getElementById('additionalService').value = 'Marriage Transcript';
+            document.getElementById('maritalRegime').value = 'Joint Goods';
+        });
+        
+        // Fonction pour charger et vérifier les données API
+        function loadAndVerifyApiData() {
+            // Vérifier d'abord les champs obligatoires
+            const requiredFields = document.querySelectorAll('[required]');
+            const missingFields = [];
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#dc3545';
+                    field.style.backgroundColor = '#fff5f5';
+                    
+                    const label = document.querySelector(`label[for="${field.id}"]`);
+                    if (label) {
+                        missingFields.push(label.textContent.replace(' *', '').trim());
+                    }
+                } else {
+                    field.style.borderColor = '#ced4da';
+                    field.style.backgroundColor = '';
+                }
+            });
+            
+            if (missingFields.length > 0) {
+                alert(`⚠️ Veuillez remplir tous les champs obligatoires avant de vérifier :\n\n• ${missingFields.join('\n• ')}`);
+                return;
+            }
+            
+            // Afficher l'animation de chargement
+            const loadingSection = document.getElementById('loadingSection');
+            loadingSection.innerHTML = `
+                <div class="loading-spinner"></div>
+                <h4 class="mb-3" style="color: #ff9800;">Chargement des données API...</h4>
+                <p class="text-muted">Veuillez patienter pendant que nous récupérons les données depuis le serveur</p>
+            `;
+            
+            // Simuler un délai de chargement API (2 secondes)
+            setTimeout(() => {
+                // Cacher la section de chargement
+                loadingSection.style.display = 'none';
+                
+                // Charger les données API simulées
+                loadApiData();
+                
+                // Afficher toutes les sections API
+                showAllApiSections();
+                
+                // Comparer les données
+                compareDataWithApi();
+                
+                // Afficher les boutons d'action
+                document.getElementById('actionButtons').style.display = 'flex';
+                
+                // Afficher un message de succès
+                alert('✅ Données API chargées avec succès !\n\nLes informations ont été comparées avec le formulaire.');
+                
+            }, 2000);
+        }
+        
+        // Fonction pour afficher toutes les sections API
+        function showAllApiSections() {
+            const apiSections = [
+                'apiServiceInfo',
+                'apiSpouse1Info',
+                'apiSpouse2Info',
+                'apiMarriageInfo',
+                'apiDeliveryInfo',
+                'apiDocumentsInfo'
+            ];
+            
+            apiSections.forEach(sectionId => {
+                document.getElementById(sectionId).style.display = 'block';
+            });
+        }
+        
+        // Fonction pour charger les données API (simulées pour l'exemple)
+        function loadApiData() {
+            // Données simulées de l'API
+            const apiData = {
+                serviceType: 'Civil Documents',
+                additionalService: 'Marriage Transcript',
+                maritalRegime: 'Joint Goods',
+                expeditionSpeed: 'Expedite',
+                deliveryType: 'Delivery',
+                
+                // Époux 1
+                spouse1FirstName: 'Abraham',
+                spouse1LastName: 'Diabi',
+                spouse1BirthDate: '1985-03-15',
+                spouse1BirthCountry: 'CI',
+                spouse1State: 'AB',
+                spouse1Profession: 'Business owner',
+                spouse1Address: '01 BP v 240',
+                spouse1City: 'Abidjan',
+                spouse1ZipCode: '01',
+                spouse1Phone: '469-494-9389',
+                spouse1Email: 'abrah25@hotmail.com',
+                spouse1FatherName: 'Karamokoba Diabi',
+                spouse1MotherName: 'Binta Soumouny',
+                
+                // Époux 2
+                spouse2FirstName: 'Maimouna',
+                spouse2LastName: 'Sow',
+                spouse2BirthDate: '1988-07-22',
+                spouse2BirthCountry: 'MR',
+                spouse2State: '06',
+                spouse2Profession: 'Nurse',
+                spouse2Address: '424',
+                spouse2City: 'Rosso',
+                spouse2ZipCode: '320',
+                spouse2Phone: '4695546744',
+                spouse2Email: 'mamaisow@yahoo.com',
+                spouse2FatherName: 'Moustapha Sow',
+                spouse2MotherName: 'Thille Sy',
+                
+                // Lieu de mariage
+                marriageAddress: '841 west Irving Boulevard',
+                marriageCity: 'Irving',
+                marriageCountry: 'US',
+                marriageState: 'TX',
+                marriageZipCode: '75060',
+                
+                // Adresse de livraison
+                deliveryAddress: '4202 28th st#1',
+                deliveryCity: 'Mount Rainier',
+                deliveryCountry: 'US',
+                deliveryState: 'MD',
+                deliveryZipCode: '20712',
+                deliveryEmail: 'diabifamily360@gmail.com',
+                deliveryPhone: '469-554-6744',
+                
+                // Documents
+                documents: 'Certificat mariage, Transcription, Preuve nationalité, Pièces identité'
+            };
+            
+            // Mettre à jour les champs API
+            document.getElementById('apiServiceType').textContent = apiData.serviceType;
+            document.getElementById('apiAdditionalService').textContent = apiData.additionalService;
+            document.getElementById('apiMaritalRegime').textContent = apiData.maritalRegime;
+            document.getElementById('apiExpeditionSpeed').textContent = apiData.expeditionSpeed;
+            document.getElementById('apiDeliveryType').textContent = apiData.deliveryType;
+            
+            // Époux 1
+            document.getElementById('apiSpouse1FirstName').textContent = apiData.spouse1FirstName;
+            document.getElementById('apiSpouse1LastName').textContent = apiData.spouse1LastName;
+            document.getElementById('apiSpouse1BirthDate').textContent = apiData.spouse1BirthDate;
+            document.getElementById('apiSpouse1BirthCountry').textContent = apiData.spouse1BirthCountry;
+            document.getElementById('apiSpouse1State').textContent = apiData.spouse1State;
+            document.getElementById('apiSpouse1Profession').textContent = apiData.spouse1Profession;
+            document.getElementById('apiSpouse1Address').textContent = apiData.spouse1Address;
+            document.getElementById('apiSpouse1City').textContent = apiData.spouse1City;
+            document.getElementById('apiSpouse1ZipCode').textContent = apiData.spouse1ZipCode;
+            document.getElementById('apiSpouse1Phone').textContent = apiData.spouse1Phone;
+            document.getElementById('apiSpouse1Email').textContent = apiData.spouse1Email;
+            document.getElementById('apiSpouse1FatherName').textContent = apiData.spouse1FatherName;
+            document.getElementById('apiSpouse1MotherName').textContent = apiData.spouse1MotherName;
+            
+            // Époux 2
+            document.getElementById('apiSpouse2FirstName').textContent = apiData.spouse2FirstName;
+            document.getElementById('apiSpouse2LastName').textContent = apiData.spouse2LastName;
+            document.getElementById('apiSpouse2BirthDate').textContent = apiData.spouse2BirthDate;
+            document.getElementById('apiSpouse2BirthCountry').textContent = apiData.spouse2BirthCountry;
+            document.getElementById('apiSpouse2State').textContent = apiData.spouse2State;
+            document.getElementById('apiSpouse2Profession').textContent = apiData.spouse2Profession;
+            document.getElementById('apiSpouse2Address').textContent = apiData.spouse2Address;
+            document.getElementById('apiSpouse2City').textContent = apiData.spouse2City;
+            document.getElementById('apiSpouse2ZipCode').textContent = apiData.spouse2ZipCode;
+            document.getElementById('apiSpouse2Phone').textContent = apiData.spouse2Phone;
+            document.getElementById('apiSpouse2Email').textContent = apiData.spouse2Email;
+            document.getElementById('apiSpouse2FatherName').textContent = apiData.spouse2FatherName;
+            document.getElementById('apiSpouse2MotherName').textContent = apiData.spouse2MotherName;
+            
+            // Lieu de mariage
+            document.getElementById('apiMarriageAddress').textContent = apiData.marriageAddress;
+            document.getElementById('apiMarriageCity').textContent = apiData.marriageCity;
+            document.getElementById('apiMarriageCountry').textContent = apiData.marriageCountry;
+            document.getElementById('apiMarriageState').textContent = apiData.marriageState;
+            document.getElementById('apiMarriageZipCode').textContent = apiData.marriageZipCode;
+            
+            // Adresse de livraison
+            document.getElementById('apiDeliveryAddress').textContent = apiData.deliveryAddress;
+            document.getElementById('apiDeliveryCity').textContent = apiData.deliveryCity;
+            document.getElementById('apiDeliveryCountry').textContent = apiData.deliveryCountry;
+            document.getElementById('apiDeliveryState').textContent = apiData.deliveryState;
+            document.getElementById('apiDeliveryZipCode').textContent = apiData.deliveryZipCode;
+            document.getElementById('apiDeliveryEmail').textContent = apiData.deliveryEmail;
+            document.getElementById('apiDeliveryPhone').textContent = apiData.deliveryPhone;
+            
+            // Documents
+            document.getElementById('apiDocuments').textContent = apiData.documents;
+        }
+        
+        // Comparer les données utilisateur avec les données API
+        function compareDataWithApi() {
+            const differences = [];
+            const matches = [];
+            
+            // Liste des champs à comparer
+            const fieldsToCompare = [
+                { user: 'serviceType', api: 'apiServiceType', label: 'Prestations de service' },
+                { user: 'additionalService', api: 'apiAdditionalService', label: 'Plus de services' },
+                { user: 'maritalRegime', api: 'apiMaritalRegime', label: 'Régime Matrimonial' },
+                { user: 'spouse1FirstName', api: 'apiSpouse1FirstName', label: 'Prénom Époux(se) 1' },
+                { user: 'spouse1LastName', api: 'apiSpouse1LastName', label: 'Nom Époux(se) 1' },
+                { user: 'spouse2FirstName', api: 'apiSpouse2FirstName', label: 'Prénom Époux(se) 2' },
+                { user: 'spouse2LastName', api: 'apiSpouse2LastName', label: 'Nom Époux(se) 2' }
+            ];
+            
+            fieldsToCompare.forEach(field => {
+                const userValue = document.getElementById(field.user).value;
+                const apiValue = document.getElementById(field.api).textContent;
+                
+                if (userValue === apiValue) {
+                    matches.push(field.label);
+                    // Style vert pour correspondance
+                    document.getElementById(field.user).style.borderColor = '#4caf50';
+                    document.getElementById(field.user).style.backgroundColor = '#d4edda';
+                    document.getElementById(field.api).style.borderColor = '#4caf50';
+                    document.getElementById(field.api).style.backgroundColor = '#d4edda';
+                } else {
+                    differences.push(`${field.label}: "${userValue}" vs "${apiValue}"`);
+                    // Style orange pour différence
+                    document.getElementById(field.user).style.borderColor = '#ff9800';
+                    document.getElementById(field.user).style.backgroundColor = '#fff3cd';
+                    document.getElementById(field.api).style.borderColor = '#ff9800';
+                    document.getElementById(field.api).style.backgroundColor = '#fff3cd';
+                }
+            });
+            
+            // Afficher un résumé
+            console.log('Correspondances:', matches);
+            console.log('Différences:', differences);
+            
+            if (differences.length > 0) {
+                alert(`⚠️ ${differences.length} différence(s) détectée(s) avec l'API.\n\nVeuillez vérifier les champs surlignés en orange.`);
+            } else {
+                alert(`✅ Toutes les données correspondent parfaitement avec l'API !`);
+            }
+        }
+        
+        // Fonction pour approuver le formulaire
+        function approveForm() {
+            if (confirm('Êtes-vous sûr de vouloir approuver ce formulaire ?')) {
+                // Simulation d'approbation
+                alert('✅ Formulaire approuvé avec succès !\n\nLe dossier a été validé et transmis au traitement.');
+                
+                // Optionnel: Envoyer les données au serveur
+                // submitToServer();
+            }
+        }
+        
+        // Fonction pour refuser le formulaire
+        function refuseForm() {
+            const reason = prompt('Veuillez indiquer la raison du refus :');
+            
+            if (reason) {
+                if (confirm(`Refuser ce formulaire avec la raison : "${reason}" ?`)) {
+                    // Simulation de refus
+                    alert('❌ Formulaire refusé.\n\nRaison : ' + reason + '\n\nLe demandeur sera notifié.');
+                }
+            }
+        }
+        
+        // Fonction pour le bouton retour
+        function goBack() {
+            if (confirm('Voulez-vous vraiment quitter cette page ? Les modifications non enregistrées seront perdues.')) {
+                // Simuler un retour en arrière
+                window.location.href = 'javascript:history.back()';
+            }
+        }
+    </script>
+</body>
+</html>

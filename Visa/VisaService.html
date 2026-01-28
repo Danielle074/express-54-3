@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard ONECI - Visa Service</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <!-- Bootstrap Icons -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+    rel="stylesheet"
+  >
+
+  <style>
+    body {
+      background-color: #f7f7f7;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px;
+      background: #f89b00;
+      min-height: 100vh;
+      position: fixed;
+      color: white;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sidebar a,
+    .sidebar button.sidebar-dropdown-toggle {
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+      border: none;
+      background: none;
+      width: calc(100% - 20px);
+      text-align: left;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .sidebar a.active,
+    .sidebar a:hover,
+    .sidebar button.sidebar-dropdown-toggle:hover {
+      background: white;
+      color: #f89b00;
+    }
+
+    /* Dropdown dans la sidebar */
+    .sidebar-dropdown {
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar-dropdown-menu {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      margin: 0;
+      padding: 5px 0;
+      display: none; /* caché par défaut */
+    }
+
+    .sidebar-dropdown-menu.show {
+      display: block;
+    }
+
+    .sidebar-dropdown-item {
+      padding: 8px 15px 8px 40px;
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      border-radius: 5px;
+    }
+
+    .sidebar-dropdown-item:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    /* MAIN CONTENT */
+    .content {
+      margin-left: 260px;
+      padding: 30px;
+    }
+
+    /* HEADER */
+    .header-box {
+      background-image: url("images/Banniereoneci.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 25px;
+      height: 220px;
+      padding: 30px;
+      margin-bottom: 40px;
+    }
+
+    /* LOGO */
+    .logo-box {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+
+    /* SECTION PRINCIPALE DES SERVICES */
+    .services-main-section {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* EN-TÊTE AVEC RETOUR ET TITRE */
+.services-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 15px;
+  position: relative;
+}
+
+.back-link {
+  color: #f89b00;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  position: absolute;
+  left: 0;
+  z-index: 1;
+}
+
+.back-link:hover {
+  color: #e68c00;
+  transform: translateX(-3px);
+  text-decoration: none;
+}
+
+.back-link i {
+  font-size: 1.4rem;
+  margin-right: 8px;
+}
+
+.services-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .services-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .back-link {
+    position: static;
+    align-self: flex-start;
+  }
+  
+  .services-title {
+    text-align: center;
+    width: 100%;
+  }
+}
+    /* CARDS */
+    .service-card {
+      background: white;
+      border-radius: 20px;
+      padding: 35px 25px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      height: 100%;
+      transition: all 0.3s ease;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #f89b00, #ffad33);
+      border-radius: 20px 20px 0 0;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+      text-decoration: none;
+    }
+
+    .service-card .card-icon {
+      font-size: 3.5rem;
+      color: #f89b00;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 80px;
+      width: 80px;
+      background: rgba(248, 155, 0, 0.1);
+      border-radius: 50%;
+      padding: 15px;
+    }
+
+    .service-card .card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: #333;
+      text-align: center;
+    }
+
+    .service-card .card-desc {
+      font-size: 0.95rem;
+      color: #666;
+      margin-top: 10px;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* MAIN SERVICE GRID */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+    }
+
+    @media (max-width: 768px) {
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .services-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      
+      .back-link {
+        align-self: flex-start;
+      }
+    }
+
+    /* ARCHIVES LINK IN SIDEBAR */
+    .sidebar-archive {
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .sidebar-archive:hover {
+      background: white;
+      color: #f89b00;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar d-flex flex-column justify-content-between">
+  <div>
+    <div class="p-4 text-center">
+      <div class="logo-box">
+        <img src="images/Express by ONECI 2 (1).png" alt="Logo" class="img-fluid">
+      </div>
+    </div>
+
+    <a href="#" class="active"><i class="bi bi-house"></i> Accueil</a>
+    <a href="#"><i class="bi bi-grid"></i> Applications</a>
+    <a href="#"><i class="bi bi-person"></i> Mon Profil</a>
+    <a href="#"><i class="bi bi-gear"></i> Paramètres</a>
+  </div>
+
+  <div class="p-3">
+    <div style="border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px; margin-bottom: 10px;">
+      <a href="op%C3%A9rateur.html">
+        <i class="bi bi-headset"></i> Opérateur
+      </a>
+      <a href="superviseur.html">
+        <i class="bi bi-person-badge"></i> Superviseur
+      </a>
+    </div>
+
+    <a href="#">
+      <i class="bi bi-box-arrow-left"></i> Déconnexion
+    </a>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- HEADER -->
+  <div class="header-box"></div>
+
+  <!-- SECTION PRINCIPALE DES SERVICES -->
+  <div class="services-main-section">
+    
+    <!-- EN-TÊTE AVEC RETOUR ET TITRE -->
+    <div class="services-header">
+      <a href="service.html" class="back-link">
+        <i class="bi bi-arrow-left"></i>
+      </a>
+      <h1 class="services-title">Les sous-services de visa</h1>
+    </div>
+
+    <!-- SERVICES CARDS - 2 CARTES SEULEMENT -->
+    <div class="services-grid mb-5">
+      <!-- Carte Visa Ordinaire -->
+      <a href="FormulaireVisaOrdinaire.html" class="service-card">
+        <div class="card-icon"><i class="bi bi-passport"></i></div>
+        <div class="card-title">Visa Ordinaire</div>
+        <div class="card-desc">Demandes de visa touristique, familial ou d'affaires</div>
+      </a>
+      
+      <!-- Carte Visa Officiel -->
+      <a href="visa-officiel.html" class="service-card">
+        <div class="card-icon"><i class="bi bi-award"></i></div>
+        <div class="card-title">Visa Officiel</div>
+        <div class="card-desc">Visas diplomatiques, de service et officiels</div>
+      </a>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  function toggleDropdown(button) {
+    const menu = button.nextElementSibling;
+    menu.classList.toggle('show');
+  }
+  
+  // Ajout d'une alerte pour montrer que les cartes sont cliquables
+  document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.service-card');
+    cards.forEach(card => {
+      card.addEventListener('click', function(e) {
+        console.log('Navigation vers:', this.getAttribute('href'));
+        // La navigation se fera automatiquement via le lien
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

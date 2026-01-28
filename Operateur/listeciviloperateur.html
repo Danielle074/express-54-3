@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard ONECI</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  
+  <!-- Boxicons -->
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* PAGINATION STYLES */
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .pagination {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .pagination-button {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 6px;
+      padding: 8px 15px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .pagination-button:hover:not(:disabled) {
+      background: #f89b00;
+      color: white;
+      border-color: #f89b00;
+    }
+
+    .pagination-button.active {
+      background: #f89b00;
+      color: white;
+      border-color: #f89b00;
+    }
+
+    .pagination-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .pagination-info {
+      margin: 0 15px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px;
+      background: #f89b00;
+      min-height: 100vh;
+      position: fixed;
+      color: white;
+    }
+
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+    }
+
+    .sidebar a.active,
+    .sidebar a:hover {
+      background: white;
+      color: #f89b00;
+      border-radius: 8px;
+      margin: 5px 10px;
+    }
+
+    /* MAIN CONTENT */
+    .content {
+      margin-left: 260px;
+      padding: 30px;
+    }
+
+    /* HEADER */
+    .header-box {
+      background-image: url("Banniereoneci.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 25px;
+      height: 220px;
+      padding: 30px;
+    }
+
+    .btn-orange {
+      background: #f89b00;
+      color: white;
+      border-radius: 30px;
+      padding: 10px 25px;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s;
+    }
+
+    .btn-orange:hover {
+      background: #e08a00;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(248, 155, 0, 0.2);
+    }
+
+    /* LOGO */
+    .logo-box {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+
+    /* APPLICATIONS CARD */
+    .applications-box {
+      background: white;
+      border: 1px solid #ced4da;
+      border-radius: 30px;
+      padding: 30px;
+      margin-top: 15px;
+    }
+
+    /* TABLE STYLES */
+    .applications-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .applications-table thead th {
+      background: #f8f9fa;
+      padding: 15px 12px;
+      font-weight: 600;
+      color: #555;
+      border-bottom: 2px solid #e9ecef;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 0.9rem;
+    }
+
+    .applications-table tbody td {
+      padding: 15px 12px;
+      border-bottom: 1px solid #e9ecef;
+      vertical-align: middle;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .applications-table tbody tr:hover {
+      background: #f8f9fa;
+    }
+
+    /* ICON STYLES */
+    .action-btn {
+      background: none;
+      border: none;
+      color: #f89b00;
+      font-size: 1.3rem;
+      padding: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .action-btn:hover {
+      color: #e08a00;
+      transform: scale(1.1);
+    }
+
+    .receipt-icon {
+      color: #28a745;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* STATUS BADGES */
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .status-en-cours {
+      background: rgba(248, 155, 0, 0.1);
+      color: #f89b00;
+    }
+
+    .status-soumis {
+      background: rgba(0, 123, 255, 0.1);
+      color: #007bff;
+    }
+
+    .status-valide {
+      background: rgba(40, 167, 69, 0.1);
+      color: #28a745;
+    }
+
+    .status-attente {
+      background: rgba(255, 193, 7, 0.1);
+      color: #ffc107;
+    }
+
+    /* COLUMN WIDTHS */
+    .col-action {
+      width: 70px;
+      min-width: 70px;
+    }
+
+    .col-status-supervisor {
+      width: 120px;
+      min-width: 120px;
+      line-height: 1.2;
+    }
+
+    .col-uidn {
+      width: 180px;
+      min-width: 180px;
+      font-family: monospace;
+      font-size: 0.85rem;
+    }
+
+    .col-label {
+      width: 120px;
+      min-width: 120px;
+    }
+
+    /* SCROLLBAR */
+    .table-responsive::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    .table-responsive::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .table-responsive::-webkit-scrollbar-thumb {
+      background: transparent;
+      border-radius: 10px;
+    }
+
+    .table-responsive {
+      scrollbar-width: thin;
+      scrollbar-color: transparent transparent;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1200px) {
+      .content {
+        margin-left: 0;
+        padding: 20px;
+      }
+      .sidebar {
+        display: none;
+      }
+    }
+
+    /* PAGE HEADER STYLES */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #333;
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    /* BUTTONS STYLES */
+    .btn-retour {
+      background: transparent;
+      color: #f89b00;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    
+    .btn-retour:hover {
+      color: #e68c00;
+      transform: translateX(-3px);
+      text-decoration: none;
+    }
+
+    .btn-archives {
+      background: #6c757d;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    
+    .btn-archives:hover {
+      background: #5a6268;
+      color: white;
+      text-decoration: none;
+    }
+
+    /* TABLE TITLE STYLES */
+    .table-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+      background: linear-gradient(90deg, #f89b00, #ffcc80);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      padding: 10px 0;
+      border-bottom: 2px solid #f89b00;
+    }
+  </style>
+</head>
+
+<body>
+<!-- SIDEBAR -->
+<div class="sidebar d-flex flex-column justify-content-between">
+  <div>
+    <div class="p-4 text-center">
+      <div class="logo-box">
+        <img src="Express by ONECI 2 (1).png" alt="Logo" class="img-fluid">
+      </div>
+    </div>
+
+    <a href="#" class="active"><i class="bi bi-house"></i> Accueil</a>
+    <a href="index.html"><i class="bi bi-grid"></i> Applications</a>
+    <a href="#"><i class="bi bi-person"></i> Mon Profil</a>
+    <a href="#"><i class="bi bi-gear"></i> Paramètres</a>
+  </div>
+
+  <div class="p-3">
+    <div style="border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px; margin-bottom: 10px;">
+      <a href="index.html">
+        <i class="bi bi-headset"></i> Utilisateur
+      </a>
+      <a href="superviseur.html">
+        <i class="bi bi-person-badge"></i> Superviseur
+      </a>
+    </div>
+
+    <!-- DERNIERS ARCHIVES AJOUTÉ ICI -->
+    <a href="#" class="sidebar-archive">
+      <i class="bi bi-archive"></i> Derniers Archives
+    </a>
+
+    <a href="#">
+      <i class="bi bi-box-arrow-left"></i> Déconnexion
+    </a>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+  <!-- HEADER -->
+  <div class="header-box mb-4"></div>
+
+  <!-- PAGE HEADER WITH BUTTONS -->
+  <div class="page-header">
+    <!-- Bouton retour à gauche -->
+    <a href="opérateur.html" class="btn-retour">
+      <i class="bi bi-arrow-left"></i> Retour
+    </a>
+    
+  
+    
+    <!-- Bouton demandes archivées à droite -->
+    <a href="#" class="btn-archives">
+      <i class="bi bi-archive"></i> Demandes archivées
+    </a>
+  </div>
+
+  <!-- PREMIER TABLEAU - AVEC TITRE AJOUTÉ -->
+  <div class="applications-box mb-5">
+    <!-- TITRE AJOUTÉ ICI -->
+    <div class="table-title">Accélérer la demande</div>
+    <div class="table-responsive">
+      <table class="applications-table">
+        <thead>
+          <tr>
+            <th>N°</th>
+            <th>Nom</th>
+            <th>Service</th>
+            <th>Sous-service</th>
+            <th class="col-action">Action</th>
+            <th>Statut</th>
+            <th class="col-status-supervisor">Statut<br>Superviseur</th>
+            <th>Receipt</th>
+            <th class="col-label">Label</th>
+            <th class="col-uidn">UIDN</th>
+          </tr>
+        </thead>
+
+        <tbody id="tableBodyAccelerate">
+          <!-- Rempli dynamiquement par JavaScript -->
+        </tbody>
+      </table>
+    </div>
+    <!-- PAGINATION POUR LE PREMIER TABLEAU -->
+    <div class="pagination-container">
+      <div class="pagination">
+        <button class="pagination-button" id="prevBtn1" disabled>
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <span class="pagination-info" id="pageInfo1">Page 1 sur 1</span>
+        <button class="pagination-button" id="nextBtn1" disabled>
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TITRE POUR LE DEUXIÈME TABLEAU - AJOUTÉ ICI -->
+  <div class="table-title" style="margin-top: 40px;">Application normale</div>
+  
+  <!-- DEUXIEME TABLEAU -->
+  <div class="applications-box">
+    <div class="table-responsive">
+      <table class="applications-table">
+        <thead>
+          <tr>
+            <th>Nom et Prénoms</th>
+            <th>Numéro de téléphone</th>
+            <th>Prestations</th>
+            <th class="col-action">Action</th>
+            <th>Statut</th>
+            <th class="col-status-supervisor">Statut de superviseur</th>
+            <th>Receipt</th>
+            <th>Document</th>
+            <th class="col-label">Label</th>
+            <th class="col-uidn">UIDN</th>
+          </tr>
+        </thead>
+
+        <tbody id="tableBodyNormal">
+          <!-- Rempli dynamiquement par JavaScript -->
+        </tbody>
+      </table>
+    </div>
+    <!-- PAGINATION POUR LE DEUXIEME TABLEAU -->
+    <div class="pagination-container">
+      <div class="pagination">
+        <button class="pagination-button" id="prevBtn2" disabled>
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <span class="pagination-info" id="pageInfo2">Page 1 sur 1</span>
+        <button class="pagination-button" id="nextBtn2" disabled>
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // Données d'exemple pour les applications ACCÉLÉRER
+  const accelerateApps = [
+    {
+      id: 1,
+      name: "Kouamé Jean",
+      service: "Identification",
+      subservice: "CNI",
+      status: "En cours",
+      supervisorStatus: "Validé",
+      label: "CNI-2024-001",
+      uidn: "UIDN001-1234-5678-90AB"
+    },
+    {
+      id: 2,
+      name: "Achi Danielle",
+      service: "Identification",
+      subservice: "Extrait",
+      status: "Soumis",
+      supervisorStatus: "En attente",
+      label: "EXT-2024-002",
+      uidn: "UIDN002-5678-ABCD-EF12"
+    },
+    {
+      id: 3,
+      name: "Diallo Mamadou",
+      service: "Passeport",
+      subservice: "Nouveau",
+      status: "En cours",
+      supervisorStatus: "Validé",
+      label: "PAS-2024-003",
+      uidn: "UIDN003-ABCD-1234-5678"
+    },
+    {
+      id: 4,
+      name: "Traoré Fatou",
+      service: "Carte Consulaire",
+      subservice: "Renouvellement",
+      status: "Soumis",
+      supervisorStatus: "En attente",
+      label: "CAR-2024-004",
+      uidn: "UIDN004-EF12-3456-789A"
+    },
+    {
+      id: 5,
+      name: "Konan Paul",
+      service: "Identification",
+      subservice: "CNI",
+      status: "En cours",
+      supervisorStatus: "Validé",
+      label: "CNI-2024-005",
+      uidn: "UIDN005-1234-5678-90AB"
+    },
+    {
+      id: 6,
+      name: "Yao Martine",
+      service: "Passeport",
+      subservice: "Renouvellement",
+      status: "Soumis",
+      supervisorStatus: "En attente",
+      label: "PAS-2024-006",
+      uidn: "UIDN006-5678-ABCD-EF12"
+    }
+  ];
+
+  // Données d'exemple pour les applications NORMALES
+  const normalApps = [
+    {
+      id: 1,
+      name: "Kouamé Jean",
+      phone: "+225 07 00 00 00 01",
+      prestation: "CNI - Renouvellement",
+      status: "En cours",
+      supervisorStatus: "Validé",
+      label: "CNI-2024-001",
+      uidn: "UIDN001-1234-5678-90AB"
+    },
+    {
+      id: 2,
+      name: "Achi Danielle",
+      phone: "+225 07 00 00 00 02",
+      prestation: "Extrait - Naissance",
+      status: "Soumis",
+      supervisorStatus: "En attente",
+      label: "EXT-2024-002",
+      uidn: "UIDN002-5678-ABCD-EF12"
+    },
+    {
+      id: 3,
+      name: "Diallo Mamadou",
+      phone: "+225 07 00 00 00 03",
+      prestation: "Passeport - Première",
+      status: "En cours",
+      supervisorStatus: "Validé",
+      label: "PAS-2024-003",
+      uidn: "UIDN003-ABCD-1234-5678"
+    },
+    {
+      id: 4,
+      name: "Traoré Fatou",
+      phone: "+225 07 00 00 00 04",
+      prestation: "Carte Consulaire - Renouvellement",
+      status: "Soumis",
+      supervisorStatus: "En attente",
+      label: "CAR-2024-004",
+      uidn: "UIDN004-EF12-3456-789A"
+    },
+    {
+      id: 5,
+      name: "Konan Paul",
+      phone: "+225 07 00 00 00 05",
+      prestation: "CNI - Première",
+      status: "En cours",
+      supervisorStatus: "Validé",
+      label: "CNI-2024-005",
+      uidn: "UIDN005-1234-5678-90AB"
+    },
+    {
+      id: 6,
+      name: "Yao Martine",
+      phone: "+225 07 00 00 00 06",
+      prestation: "Passeport - Renouvellement",
+      status: "Soumis",
+      supervisorStatus: "En attente",
+      label: "PAS-2024-006",
+      uidn: "UIDN006-5678-ABCD-EF12"
+    }
+  ];
+
+  // Configuration de la pagination
+  const itemsPerPage = 4;
+  let currentPageAccelerate = 1;
+  let currentPageNormal = 1;
+
+  // Fonction pour mettre à jour la pagination d'un tableau
+  function updatePagination(tableId, currentPage, totalPages) {
+    const prevBtn = document.getElementById(`prevBtn${tableId}`);
+    const nextBtn = document.getElementById(`nextBtn${tableId}`);
+    const pageInfo = document.getElementById(`pageInfo${tableId}`);
+    
+    // Désactiver/activer les boutons précédent/suivant
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === totalPages;
+    
+    // Mettre à jour l'info de pagination
+    pageInfo.textContent = `Page ${currentPage} sur ${totalPages}`;
+  }
+
+  // Fonction pour mettre à jour le tableau "Accélérer la demande"
+  function updateAccelerateTable(filteredApps = accelerateApps) {
+    const tableBody = document.getElementById('tableBodyAccelerate');
+    const totalPages = Math.ceil(filteredApps.length / itemsPerPage);
+    
+    // Calculer les indices de début et fin
+    const startIndex = (currentPageAccelerate - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const pageApps = filteredApps.slice(startIndex, endIndex);
+    
+    // Vider le tableau
+    tableBody.innerHTML = '';
+    
+    // Remplir avec les données de la page actuelle
+    pageApps.forEach((app, index) => {
+      const actualIndex = startIndex + index + 1;
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${actualIndex}</td>
+        <td><strong>${app.name}</strong></td>
+        <td>${app.service}</td>
+        <td>${app.subservice}</td>
+        <td class="col-action">
+          <button class="action-btn" title="Voir les détails">
+
+            <a href="actionDeOperateur.html">
+              <i class="bi bi-eye"></i>
+              </a>
+          </button>
+        </td>
+        <td>
+          <span class="status-badge status-${app.status.toLowerCase().replace(' ', '-')}">
+            ${app.status}
+          </span>
+        </td>
+        <td class="col-status-supervisor">
+          <span class="status-badge status-${app.supervisorStatus.toLowerCase().replace(' ', '-')}">
+            ${app.supervisorStatus}
+          </span>
+        </td>
+        <td>
+          <div class="receipt-icon" title="Reçu">
+            <i class="bi bi-file-text"></i>
+          </div>
+        </td>
+        <td class="col-label">${app.label}</td>
+        <td class="col-uidn">${app.uidn}</td>
+      `;
+      tableBody.appendChild(row);
+    });
+    
+    // Mettre à jour la pagination
+    updatePagination(1, currentPageAccelerate, totalPages);
+  }
+
+  // Fonction pour mettre à jour le tableau "Application normale"
+  function updateNormalTable(filteredApps = normalApps) {
+    const tableBody = document.getElementById('tableBodyNormal');
+    const totalPages = Math.ceil(filteredApps.length / itemsPerPage);
+    
+    // Calculer les indices de début et fin
+    const startIndex = (currentPageNormal - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const pageApps = filteredApps.slice(startIndex, endIndex);
+    
+    // Vider le tableau
+    tableBody.innerHTML = '';
+    
+    // Remplir avec les données de la page actuelle
+    pageApps.forEach((app, index) => {
+      const actualIndex = startIndex + index + 1;
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td><strong>${app.name}</strong></td>
+        <td>${app.phone}</td>
+        <td>${app.prestation}</td>
+        <td class="col-action">
+          <button class="action-btn" title="Voir les détails">
+           <a href="actionDeOperateur.html">
+              <i class="bi bi-eye"></i>
+              </a>
+          </button>
+        </td>
+        <td>
+          <span class="status-badge status-${app.status.toLowerCase().replace(' ', '-')}">
+            ${app.status}
+          </span>
+        </td>
+        <td class="col-status-supervisor">
+          <span class="status-badge status-${app.supervisorStatus.toLowerCase().replace(' ', '-')}">
+            ${app.supervisorStatus}
+          </span>
+        </td>
+        <td>
+          <div class="receipt-icon" title="Reçu">
+            <i class="bi bi-receipt"></i>
+          </div>
+        </td>
+        <td>
+          <div class="receipt-icon" title="Document">
+            <i class="bi bi-file-earmark-text"></i>
+          </div>
+        </td>
+        <td class="col-label">${app.label}</td>
+        <td class="col-uidn">${app.uidn}</td>
+      `;
+      tableBody.appendChild(row);
+    });
+    
+    // Mettre à jour la pagination
+    updatePagination(2, currentPageNormal, totalPages);
+  }
+
+  // Fonction pour attacher les événements aux boutons d'action
+  function attachActionEvents() {
+    document.querySelectorAll('.action-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.1)';
+      });
+      
+      btn.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
+      });
+      
+      btn.addEventListener('click', function() {
+        alert('Voir les détails de cette application');
+      });
+    });
+  }
+
+  // Initialisation
+  document.addEventListener('DOMContentLoaded', function() {
+    // Pagination events pour le premier tableau
+    document.getElementById('prevBtn1').addEventListener('click', function() {
+      if (currentPageAccelerate > 1) {
+        currentPageAccelerate--;
+        updateAccelerateTable();
+      }
+    });
+
+    document.getElementById('nextBtn1').addEventListener('click', function() {
+      const totalPages = Math.ceil(accelerateApps.length / itemsPerPage);
+      if (currentPageAccelerate < totalPages) {
+        currentPageAccelerate++;
+        updateAccelerateTable();
+      }
+    });
+
+    // Pagination events pour le deuxième tableau
+    document.getElementById('prevBtn2').addEventListener('click', function() {
+      if (currentPageNormal > 1) {
+        currentPageNormal--;
+        updateNormalTable();
+      }
+    });
+
+    document.getElementById('nextBtn2').addEventListener('click', function() {
+      const totalPages = Math.ceil(normalApps.length / itemsPerPage);
+      if (currentPageNormal < totalPages) {
+        currentPageNormal++;
+        updateNormalTable();
+      }
+    });
+
+    // Initialiser les tableaux
+    updateAccelerateTable();
+    updateNormalTable();
+    attachActionEvents();
+  });
+</script>
+
+</body>
+</html>
