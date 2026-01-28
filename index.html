@@ -3,22 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <title>Dashboard ONECI</title>
-
+  
   <!-- Bootstrap CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  >
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
   <!-- Bootstrap Icons -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
-    rel="stylesheet"
-  >
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  
+  <!-- Boxicons -->
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
   <style>
     body {
       background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* PAGINATION STYLES */
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .pagination {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .pagination-button {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 6px;
+      padding: 8px 15px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .pagination-button:hover:not(:disabled) {
+      background: #f89b00;
+      color: white;
+      border-color: #f89b00;
+    }
+
+    .pagination-button.active {
+      background: #f89b00;
+      color: white;
+      border-color: #f89b00;
+    }
+
+    .pagination-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .pagination-info {
+      margin: 0 15px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    /* SEARCH BAR STYLES */
+    .search-container {
+      background: white;
+      border-radius: 30px;
+      padding: 8px 15px;
+      margin: 20px 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .search-input {
+      border: none;
+      outline: none;
+      flex: 1;
+      padding: 5px 0;
+      font-size: 0.9rem;
     }
 
     /* SIDEBAR */
@@ -56,7 +123,7 @@
 
     /* HEADER */
     .header-box {
-      background-image: url("images/Banniereoneci.png");
+      background-image: url("Banniereoneci.png");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -71,10 +138,16 @@
       border-radius: 30px;
       padding: 10px 25px;
       border: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s;
     }
 
     .btn-orange:hover {
       background: #e08a00;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(248, 155, 0, 0.2);
     }
 
     /* LOGO */
@@ -218,11 +291,6 @@
       scrollbar-color: transparent transparent;
     }
 
-    /* BOUTON AU-DESSUS DU TABLEAU */
-    .button-top {
-      margin-bottom: 15px;
-    }
-
     /* RESPONSIVE */
     @media (max-width: 1200px) {
       .content {
@@ -233,6 +301,24 @@
         display: none;
       }
     }
+
+    /* MISE À JOUR BUTTON STYLE */
+    .btn-update {
+      background: #f89b00;
+      color: white;
+      border-radius: 30px;
+      padding: 10px 20px;
+      border: none;
+      font-weight: 500;
+      transition: all 0.3s;
+      width: 100%;
+    }
+
+    .btn-update:hover {
+      background: #e08a00;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(248, 155, 0, 0.2);
+    }
   </style>
 </head>
 
@@ -242,23 +328,22 @@
   <div>
     <div class="p-4 text-center">
       <div class="logo-box">
-        <img src="images/Express by ONECI 2 (1).png" alt="Logo" class="img-fluid">
+        <img src="Express by ONECI 2 (1).png" alt="Logo" class="img-fluid">
       </div>
     </div>
 
     <a href="#" class="active"><i class="bi bi-house"></i> Accueil</a>
-    <a href="#"><i class="bi bi-grid"></i> Applications</a>
+    <a href="index.html"><i class="bi bi-grid"></i> Applications</a>
     <a href="#"><i class="bi bi-person"></i> Mon Profil</a>
     <a href="#"><i class="bi bi-gear"></i> Paramètres</a>
   </div>
 
-  <!-- 🔽 NOUVEL ESPACE EN BAS -->
   <div class="p-3">
     <div style="border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px; margin-bottom: 10px;">
-      <a href="op%C3%A9rateur.html">
+      <a href="Operateur/opérateur.html">
         <i class="bi bi-headset"></i> Opérateur
       </a>
-      <a href="superviseur.html">
+      <a href="Superviseur/superviseur.html">
         <i class="bi bi-person-badge"></i> Superviseur
       </a>
     </div>
@@ -269,10 +354,8 @@
   </div>
 </div>
 
-
 <!-- CONTENT -->
 <div class="content">
-
   <!-- HEADER -->
   <div class="header-box mb-4"></div>
 
@@ -281,26 +364,41 @@
     <div class="col-md-4">
       <select class="form-select rounded-pill p-3">
         <option>Pays</option>
+        <option>Côte d'Ivoire</option>
+        <option>France</option>
+        <option>États-Unis</option>
+        <option>Belgique</option>
       </select>
     </div>
     <div class="col-md-4">
       <select class="form-select rounded-pill p-3">
         <option>Ambassade</option>
+        <option>Ambassade d'Abidjan</option>
+        <option>Ambassade de Paris</option>
+        <option>Consulat de New York</option>
+        <option>Consulat de Bruxelles</option>
       </select>
     </div>
     <div class="col-md-4 d-grid">
-      <button class="btn btn-orange">Mettre à jour</button>
+      <button class="btn btn-update">Mettre à jour</button>
     </div>
   </div>
 
-  <!-- TITRE CENTRÉ -->
-  <h4 class="fw-bold text-center my-4">Applications</h4>
+  <div class="position-relative mb-4">
+  <h4 class="fw-bold mb-0 text-center">Applications</h4>
 
-  <!-- BOUTON AU-DESSUS DU TABLEAU -->
-  <div class="d-flex justify-content-end button-top">
-    <button class="btn btn-orange">
-      <i class="bi bi-play-circle"></i> Démarrer une nouvelle application
-    </button>
+  <a href="Service.html" class="btn btn-orange position-absolute top-0 end-0">
+    <i class="bi bi-plus-circle"></i> Démarrer une nouvelle application
+  </a>
+</div>
+
+
+  <!-- BARRE DE RECHERCHE À DROITE -->
+  <div class="d-flex justify-content-end mb-4">
+    <div class="search-container">
+      <i class="bi bi-search"></i>
+      <input type="text" class="search-input" placeholder="Rechercher...">
+    </div>
   </div>
 
   <!-- APPLICATIONS TABLE -->
@@ -323,7 +421,7 @@
           </tr>
         </thead>
 
-        <tbody>
+        <tbody id="tableBody">
           <tr>
             <td>1</td>
             <td><strong>Kouamé Jean</strong></td>
@@ -432,25 +530,214 @@
     </div>
   </div>
 
+  <!-- PAGINATION -->
+  <div class="pagination-container">
+    <div class="pagination">
+      <button class="pagination-button" id="prevBtn" disabled>
+        <i class="bi bi-chevron-left"></i>
+      </button>
+      <button class="pagination-button active" data-page="1">1</button>
+      <button class="pagination-button" data-page="2">2</button>
+      <button class="pagination-button" data-page="3">3</button>
+      <span class="pagination-info">sur 5 pages</span>
+      <button class="pagination-button" id="nextBtn">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
 </div>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-  // Animation pour les boutons d'action
-  document.querySelectorAll('.action-btn').forEach(btn => {
-    btn.addEventListener('mouseenter', function() {
-      this.style.transform = 'scale(1.1)';
+  // Configuration de la pagination
+  let currentPage = 1;
+  const totalPages = 5;
+
+  // Données d'exemple pour les applications
+  const applications = [
+    {
+      id: 1,
+      name: "Kouamé Jean",
+      service: "Identification",
+      subservice: "CNI",
+      status: "En cours",
+      supervisorStatus: "Validé",
+      uidn: "UIDN001-1234-5678-90AB",
+      tracking: "0700000001",
+      pickup: "12/01/2026"
+    },
+    {
+      id: 2,
+      name: "Achi Danielle",
+      service: "Identification",
+      subservice: "Extrait",
+      status: "Soumis",
+      supervisorStatus: "En attente",
+      uidn: "UIDN002-5678-ABCD-EF12",
+      tracking: "0700000002",
+      pickup: "14/01/2026"
+    },
+    {
+      id: 3,
+      name: "Diallo Mamadou",
+      service: "Passeport",
+      subservice: "Nouveau",
+      status: "En cours",
+      supervisorStatus: "Validé",
+      uidn: "UIDN003-ABCD-1234-5678",
+      tracking: "0700000003",
+      pickup: "18/01/2026"
+    },
+    {
+      id: 4,
+      name: "Traoré Fatou",
+      service: "Carte Consulaire",
+      subservice: "Renouvellement",
+      status: "Soumis",
+      supervisorStatus: "En attente",
+      uidn: "UIDN004-EF12-3456-789A",
+      tracking: "0700000004",
+      pickup: "20/01/2026"
+    }
+  ];
+
+  // Fonction pour mettre à jour la pagination
+  function updatePagination() {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pageButtons = document.querySelectorAll('.pagination-button[data-page]');
+    
+    // Désactiver/activer les boutons précédent/suivant
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === totalPages;
+    
+    // Mettre à jour les boutons de page
+    pageButtons.forEach(btn => {
+      const pageNum = parseInt(btn.getAttribute('data-page'));
+      btn.classList.toggle('active', pageNum === currentPage);
     });
     
-    btn.addEventListener('mouseleave', function() {
-      this.style.transform = 'scale(1)';
+    // Mettre à jour l'info de pagination
+    document.querySelector('.pagination-info').textContent = 
+      `Page ${currentPage} sur ${totalPages} pages`;
+  }
+
+  // Fonction pour rechercher des applications
+  function searchApplications(searchTerm) {
+    searchTerm = searchTerm.toLowerCase();
+    const filteredApps = applications.filter(app => 
+      app.name.toLowerCase().includes(searchTerm) ||
+      app.uidn.toLowerCase().includes(searchTerm) ||
+      app.tracking.includes(searchTerm)
+    );
+    
+    updateTable(filteredApps);
+  }
+
+  // Fonction pour mettre à jour le tableau
+  function updateTable(apps) {
+    const tableBody = document.getElementById('tableBody');
+    tableBody.innerHTML = '';
+    
+    apps.forEach((app, index) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${app.id}</td>
+        <td><strong>${app.name}</strong></td>
+        <td>${app.service}</td>
+        <td>${app.subservice}</td>
+        <td class="col-action">
+          <button class="action-btn" title="Voir les détails">
+            <i class="bi bi-eye"></i>
+          </button>
+        </td>
+        <td>
+          <span class="status-badge status-${app.status.toLowerCase().replace(' ', '-')}">
+            ${app.status}
+          </span>
+        </td>
+        <td class="col-status-supervisor">
+          <span class="status-badge status-${app.supervisorStatus.toLowerCase().replace(' ', '-')}">
+            ${app.supervisorStatus}
+          </span>
+        </td>
+        <td>
+          <div class="receipt-icon" title="Reçu">
+            <i class="bi bi-file-text"></i>
+          </div>
+        </td>
+        <td class="col-uidn">${app.uidn}</td>
+        <td>${app.tracking}</td>
+        <td>${app.pickup}</td>
+      `;
+      tableBody.appendChild(row);
     });
     
-    btn.addEventListener('click', function() {
-      alert('Voir les détails de cette application');
+    // Réattacher les événements aux boutons d'action
+    attachActionEvents();
+  }
+
+  // Fonction pour attacher les événements aux boutons d'action
+  function attachActionEvents() {
+    document.querySelectorAll('.action-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.1)';
+      });
+      
+      btn.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
+      });
+      
+      btn.addEventListener('click', function() {
+        alert('Voir les détails de cette application');
+      });
     });
+  }
+
+  // Initialisation
+  document.addEventListener('DOMContentLoaded', function() {
+    // Pagination events
+    document.getElementById('prevBtn').addEventListener('click', function() {
+      if (currentPage > 1) {
+        currentPage--;
+        updatePagination();
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', function() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        updatePagination();
+      }
+    });
+
+    document.querySelectorAll('.pagination-button[data-page]').forEach(btn => {
+      btn.addEventListener('click', function() {
+        currentPage = parseInt(this.getAttribute('data-page'));
+        updatePagination();
+      });
+    });
+
+    // Search functionality
+    const searchInput = document.querySelector('.search-input');
+
+    // Search on input change (recherche automatique)
+    searchInput.addEventListener('input', function() {
+      searchApplications(this.value);
+    });
+
+    // New application button - simple action
+    const startAppBtn = document.getElementById('startAppBtn');
+    startAppBtn.addEventListener('click', function() {
+      alert('Démarrer une nouvelle application');
+    });
+
+    // Attach initial events
+    attachActionEvents();
+    updatePagination();
   });
 </script>
 
