@@ -145,6 +145,11 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
+
+        .btn-approve, .btn-refuse {
+            font-size: 1.1rem;
+            border-radius: 10px;
+        }
         
         .verification-icon {
             font-size: 4rem;
@@ -216,9 +221,14 @@
                 width: 100%;
                 margin-bottom: 5px;
             }
-            
-            .action-buttons {
+
+            #actionButtons .d-flex {
                 flex-direction: column;
+            }
+
+            .btn-approve, .btn-refuse {
+                width: 100%;
+                min-width: 100% !important;
             }
         }
     </style>
@@ -228,17 +238,15 @@
         <div class="form-container">
             <!-- Bouton de retour -->
             <div class="mb-4">
-                <a href="listeciviloperateur.html"> <button class="btn btn-back">
+                <button class="btn btn-back" onclick="goBackToList()">
                     <i class="bi bi-arrow-left me-2"></i>Retour
                 </button>
-                </a>
-               
             </div>
             
             <!-- Header Section -->
             <div class="header-section text-center">
-                <h1 class="mb-3"><i class="bi bi-clipboard-data me-2"></i>Formulaire de Transcription de Mariage</h1>
-                <p class="mb-0">Remplissez le formulaire à gauche et cliquez sur "Vérifier" pour charger les données API</p>
+                <h1 class="mb-3" id="formTitle"><i class="bi bi-clipboard-data me-2"></i>Formulaire CNI</h1>
+                <p class="mb-0" id="formDescription">Vérification des documents et informations du demandeur</p>
             </div>
             
             <div class="row">
@@ -247,59 +255,122 @@
                 <!-- ============================================= -->
                 <div class="col-lg-6">
                     <div class="verification-header">
-                        <h4><i class="bi bi-pencil-square me-2"></i>Formulaire à Remplir</h4>
-                        <p class="mb-0">Saisissez les informations demandées</p>
+                        <h4><i class="bi bi-person-check me-2"></i>Données Soumises par l'Utilisateur</h4>
+                        <p class="mb-0">Informations fournies par le demandeur</p>
                     </div>
-                    
-                    <!-- Service Information -->
-                    <h3 class="section-title"><i class="bi bi-gear me-2"></i>Informations du Service</h3>
+
+                    <!-- Informations Personnelles CNI -->
+                    <h3 class="section-title"><i class="bi bi-person-fill me-2"></i>Informations Personnelles</h3>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label required">Prestations de service :</label>
-                            <select class="form-select" id="serviceType">
-                                <option value="">Sélectionnez...</option>
-                                <option value="Civil Documents">Civil Documents</option>
-                                <option value="Legal Documents">Legal Documents</option>
-                                <option value="Administrative Documents">Administrative Documents</option>
-                            </select>
+                            <label class="form-label">Prénoms :</label>
+                            <input type="text" class="form-control" id="firstName" value="Jean-Baptiste" readonly>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label required">Plus de services :</label>
-                            <select class="form-select" id="additionalService">
-                                <option value="">Sélectionnez...</option>
-                                <option value="Marriage Transcript">Marriage Transcript</option>
-                                <option value="Birth Certificate">Birth Certificate</option>
-                                <option value="Death Certificate">Death Certificate</option>
-                            </select>
+                            <label class="form-label">Nom de famille :</label>
+                            <input type="text" class="form-control" id="lastName" value="KOUAME" readonly>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Sexe :</label>
+                            <input type="text" class="form-control" id="gender" value="Masculin" readonly>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Date de naissance :</label>
+                            <input type="text" class="form-control" id="birthDate" value="1990-05-15" readonly>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Lieu de naissance :</label>
+                            <input type="text" class="form-control" id="birthPlace" value="Abidjan" readonly>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label required">Régime Matrimonial :</label>
-                            <select class="form-select" id="maritalRegime">
-                                <option value="">Sélectionnez...</option>
-                                <option value="Joint Goods">Joint Goods</option>
-                                <option value="Separate Goods">Separate Goods</option>
-                                <option value="Community Property">Community Property</option>
-                            </select>
+                            <label class="form-label">Nationalité :</label>
+                            <input type="text" class="form-control" id="nationality" value="Ivoirienne" readonly>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Rapidité :</label>
-                            <select class="form-select" id="expeditionSpeed">
-                                <option value="Normal">Normal</option>
-                                <option value="Expedite" selected>Expedite</option>
-                                <option value="Urgent">Urgent</option>
-                            </select>
+                            <label class="form-label">Situation matrimoniale :</label>
+                            <input type="text" class="form-control" id="maritalStatus" value="Célibataire" readonly>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Livraison :</label>
-                            <select class="form-select" id="deliveryType">
-                                <option value="Pickup">Pickup</option>
-                                <option value="Delivery" selected>Delivery</option>
-                            </select>
+                            <label class="form-label">Profession :</label>
+                            <input type="text" class="form-control" id="profession" value="Ingénieur Informatique" readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">N° NNI :</label>
+                            <input type="text" class="form-control" id="nni" value="12345678901" readonly>
+                            <small class="text-muted">11 chiffres</small>
+                        </div>
+                    </div>
+
+                    <!-- Filiation -->
+                    <h5 class="mt-3 mb-3" style="color: #666;"><i class="bi bi-people me-2"></i>Filiation</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nom du père :</label>
+                            <input type="text" class="form-control" id="fatherLastName" value="KOUAME" readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Prénoms du père :</label>
+                            <input type="text" class="form-control" id="fatherFirstName" value="Pierre" readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Nom de jeune fille de la mère :</label>
+                            <input type="text" class="form-control" id="motherMaidenName" value="BAMBA" readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Prénoms de la mère :</label>
+                            <input type="text" class="form-control" id="motherFirstName" value="Marie" readonly>
                         </div>
                     </div>
                     
-                    <!-- Époux(se) 1 -->
-                    <div class="spouse-section">
+                    <!-- Traitement et Livraison -->
+                    <h3 class="section-title mt-4"><i class="bi bi-speedometer2 me-2"></i>Traitement et Livraison</h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Rapidité :</label>
+                            <input type="text" class="form-control" id="processingSpeed" value="Normal (7 jours)" readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Méthode de livraison :</label>
+                            <input type="text" class="form-control" id="deliveryMethod" value="Retrait sur place" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Documents Soumis (Vue uniquement) -->
+                    <h3 class="section-title mt-4"><i class="bi bi-file-earmark-text me-2"></i>Documents Soumis</h3>
+                    <div class="documents-view-only">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>Documents soumis par l'utilisateur
+                        </div>
+                        <div class="list-group mb-4">
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-file-pdf text-danger me-2"></i>Acte de naissance.pdf</span>
+                                <button class="btn btn-sm btn-outline-primary" onclick="showDocumentViewer()">
+                                    <i class="bi bi-eye"></i> Voir
+                                </button>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-file-pdf text-danger me-2"></i>Certificat de nationalité.pdf</span>
+                                <button class="btn btn-sm btn-outline-primary" onclick="showDocumentViewer()">
+                                    <i class="bi bi-eye"></i> Voir
+                                </button>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-file-image text-primary me-2"></i>Photo d'identité.jpg</span>
+                                <button class="btn btn-sm btn-outline-primary" onclick="showDocumentViewer()">
+                                    <i class="bi bi-eye"></i> Voir
+                                </button>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-file-pdf text-danger me-2"></i>Justificatif de profession.pdf</span>
+                                <button class="btn btn-sm btn-outline-primary" onclick="showDocumentViewer()">
+                                    <i class="bi bi-eye"></i> Voir
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OLD SECTION REMOVED -->
+                    <div class="spouse-section" style="display:none;">
                         <h4 class="section-title" style="color: #f57c00;"><i class="bi bi-person me-2"></i>Époux(se) 1</h4>
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -369,8 +440,8 @@
                         </div>
                     </div>
                     
-                    <!-- Époux(se) 2 -->
-                    <div class="spouse-section">
+                    <!-- Époux(se) 2 - HIDDEN FOR CNI -->
+                    <div class="spouse-section" style="display:none;">
                         <h4 class="section-title" style="color: #f57c00;"><i class="bi bi-person me-2"></i>Époux(se) 2</h4>
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -509,8 +580,9 @@
                         </div>
                     </div>
                     
-                    <!-- Documents Section -->
-                    <h3 class="section-title"><i class="bi bi-folder me-2"></i>Documents</h3>
+                    <!-- Documents Section - HIDDEN FOR CNI (using view-only section above) -->
+                    <div style="display:none;">
+                    <h3 class="section-title"><i class="bi bi-folder me-2"></i>Documents OLD</h3>
                     <div class="row">
                         <div class="col-12 mb-3">
                             <div class="form-check">
@@ -558,6 +630,7 @@
                             <small class="text-muted">Formats acceptés : PDF, JPG, PNG</small>
                         </div>
                     </div>
+                    </div>
                 </div>
                 
                 <!-- ============================================= -->
@@ -583,35 +656,87 @@
                         </button>
                     </div>
                     
-                    <!-- Service Information API (caché par défaut) -->
-                    <div id="apiServiceInfo" class="verification-section">
-                        <h3 class="section-title"><i class="bi bi-gear me-2"></i>Informations du Service (API)</h3>
+                    <!-- Informations Personnelles API (caché par défaut) -->
+                    <div id="apiPersonalInfo" class="verification-section">
+                        <h3 class="section-title"><i class="bi bi-person-fill me-2"></i>Informations Personnelles (API)</h3>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Prestations de service :</label>
-                                <div class="api-data-field" id="apiServiceType"></div>
+                                <label class="form-label">Prénoms :</label>
+                                <div class="api-data-field" id="apiFirstName"></div>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Plus de services :</label>
-                                <div class="api-data-field" id="apiAdditionalService"></div>
+                                <label class="form-label">Nom de famille :</label>
+                                <div class="api-data-field" id="apiLastName"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Sexe :</label>
+                                <div class="api-data-field" id="apiGender"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Date de naissance :</label>
+                                <div class="api-data-field" id="apiBirthDate"></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Lieu de naissance :</label>
+                                <div class="api-data-field" id="apiBirthPlace"></div>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Régime Matrimonial :</label>
-                                <div class="api-data-field" id="apiMaritalRegime"></div>
+                                <label class="form-label">Nationalité :</label>
+                                <div class="api-data-field" id="apiNationality"></div>
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Situation matrimoniale :</label>
+                                <div class="api-data-field" id="apiMaritalStatus"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Profession :</label>
+                                <div class="api-data-field" id="apiProfession"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">N° NNI :</label>
+                                <div class="api-data-field" id="apiNNI"></div>
+                            </div>
+                        </div>
+
+                        <!-- Filiation API -->
+                        <h5 class="mt-3 mb-3" style="color: #666;"><i class="bi bi-people me-2"></i>Filiation (API)</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nom du père :</label>
+                                <div class="api-data-field" id="apiFatherLastName"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Prénoms du père :</label>
+                                <div class="api-data-field" id="apiFatherFirstName"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nom de jeune fille de la mère :</label>
+                                <div class="api-data-field" id="apiMotherMaidenName"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Prénoms de la mère :</label>
+                                <div class="api-data-field" id="apiMotherFirstName"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Traitement et Livraison API (caché par défaut) -->
+                    <div id="apiProcessingInfo" class="verification-section">
+                        <h3 class="section-title"><i class="bi bi-speedometer2 me-2"></i>Traitement et Livraison (API)</h3>
+                        <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Rapidité :</label>
-                                <div class="api-data-field" id="apiExpeditionSpeed"></div>
+                                <div class="api-data-field" id="apiProcessingSpeed"></div>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Livraison :</label>
-                                <div class="api-data-field" id="apiDeliveryType"></div>
+                                <label class="form-label">Méthode de livraison :</label>
+                                <div class="api-data-field" id="apiDeliveryMethod"></div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Époux(se) 1 API (caché par défaut) -->
-                    <div id="apiSpouse1Info" class="verification-section">
+                    <!-- Époux(se) 1 API (caché par défaut) - HIDDEN FOR CNI -->
+                    <div id="apiSpouse1Info" class="verification-section" style="display:none;">
                         <h4 class="section-title" style="color: #f57c00;"><i class="bi bi-person me-2"></i>Époux(se) 1 (API)</h4>
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -674,8 +799,8 @@
                         </div>
                     </div>
                     
-                    <!-- Époux(se) 2 API (caché par défaut) -->
-                    <div id="apiSpouse2Info" class="verification-section">
+                    <!-- Époux(se) 2 API (caché par défaut) - HIDDEN FOR CNI -->
+                    <div id="apiSpouse2Info" class="verification-section" style="display:none;">
                         <h4 class="section-title" style="color: #f57c00;"><i class="bi bi-person me-2"></i>Époux(se) 2 (API)</h4>
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -800,8 +925,8 @@
                         </div>
                     </div>
                     
-                    <!-- Documents API (caché par défaut) -->
-                    <div id="apiDocumentsInfo" class="verification-section">
+                    <!-- Documents API (caché par défaut) - HIDDEN FOR CNI (using view-only section in left column) -->
+                    <div id="apiDocumentsInfo" class="verification-section" style="display:none;">
                         <h3 class="section-title"><i class="bi bi-folder me-2"></i>Documents (API)</h3>
                         <div class="row">
                             <div class="col-12 mb-3">
@@ -810,13 +935,17 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Boutons d'action opérateur (cachés par défaut) -->
-                    <div id="actionButtons" class="action-buttons mt-4" style="display: none;">
-                        <button class="btn btn-success btn-approve flex-fill" onclick="approveForm()">
+                </div>
+            </div>
+
+            <!-- Boutons d'action opérateur - Centrés en bas -->
+            <div id="actionButtons" class="row mt-5">
+                <div class="col-12">
+                    <div class="d-flex justify-content-center gap-3">
+                        <button class="btn btn-success btn-approve" onclick="approveForm()" style="min-width: 200px;">
                             <i class="bi bi-check-circle me-2"></i>Approuver
                         </button>
-                        <button class="btn btn-danger btn-refuse flex-fill" onclick="refuseForm()">
+                        <button class="btn btn-danger btn-refuse" onclick="refuseForm()" style="min-width: 200px;">
                             <i class="bi bi-x-circle me-2"></i>Refuser
                         </button>
                     </div>
@@ -825,43 +954,457 @@
         </div>
     </div>
 
+    <!-- Modal - Document Viewer -->
+    <div class="modal fade" id="documentViewerModal" tabindex="-1" aria-labelledby="documentViewerLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="documentViewerLabel">
+                        <i class="bi bi-file-earmark-text me-2"></i> Visualisation de document
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="bi bi-file-earmark-pdf text-primary" style="font-size: 4rem;"></i>
+                    <p class="mt-3 mb-0">Fonctionnalité de visualisation de document en cours de développement.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        <i class="bi bi-check-lg"></i> Fermer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal - API Data Loaded -->
+    <div class="modal fade" id="apiDataLoadedModal" tabindex="-1" aria-labelledby="apiDataLoadedLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%); color: white;">
+                    <h5 class="modal-title" id="apiDataLoadedLabel">
+                        <i class="bi bi-check-circle me-2"></i> Données chargées
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+                    <h4 class="mt-3 mb-3">Données API chargées avec succès !</h4>
+                    <p class="mb-0">Les informations ont été comparées avec le formulaire.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                        <i class="bi bi-check-lg"></i> Continuer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal - Differences Detected -->
+    <div class="modal fade" id="differencesDetectedModal" tabindex="-1" aria-labelledby="differencesDetectedLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title" id="differencesDetectedLabel">
+                        <i class="bi bi-exclamation-triangle me-2"></i> Différences détectées
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="bi bi-exclamation-triangle text-warning" style="font-size: 4rem;"></i>
+                    <h4 class="mt-3 mb-3"><span id="differencesCount">0</span> différence(s) détectée(s) avec l'API</h4>
+                    <p class="mb-0">Veuillez vérifier les champs surlignés en orange.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">
+                        <i class="bi bi-check-lg"></i> Compris
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal - Perfect Match -->
+    <div class="modal fade" id="perfectMatchModal" tabindex="-1" aria-labelledby="perfectMatchLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%); color: white;">
+                    <h5 class="modal-title" id="perfectMatchLabel">
+                        <i class="bi bi-check-circle me-2"></i> Correspondance parfaite
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+                    <h4 class="mt-3 mb-3">Toutes les données correspondent parfaitement avec l'API !</h4>
+                    <p class="mb-0">Aucune différence détectée.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                        <i class="bi bi-check-lg"></i> Continuer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal - Approval Success -->
+    <div class="modal fade" id="approvalSuccessModal" tabindex="-1" aria-labelledby="approvalSuccessLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%); color: white;">
+                    <h5 class="modal-title" id="approvalSuccessLabel">
+                        <i class="bi bi-check-circle me-2"></i> Formulaire approuvé
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+                    <h4 class="mt-3 mb-3">Formulaire approuvé avec succès !</h4>
+                    <p class="mb-0">Le dossier a été validé et transmis au traitement.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="approvalSuccessBtn">
+                        <i class="bi bi-check-lg"></i> Continuer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal - Refusal Confirmation -->
+    <div class="modal fade" id="refusalConfirmationModal" tabindex="-1" aria-labelledby="refusalConfirmationLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="refusalConfirmationLabel">
+                        <i class="bi bi-x-circle me-2"></i> Formulaire refusé
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="bi bi-x-circle-fill text-danger" style="font-size: 5rem;"></i>
+                    <h4 class="mt-3 mb-3">Formulaire refusé</h4>
+                    <p class="mb-2"><strong>Raison :</strong></p>
+                    <p class="mb-0" id="refusalReasonText"></p>
+                    <p class="mt-3 mb-0">Le demandeur sera notifié.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="refusalConfirmationBtn">
+                        <i class="bi bi-check-lg"></i> Continuer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Document Requirements Script -->
+    <script src="documentRequirements.js"></script>
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script>
+        // Read URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const applicationType = urlParams.get('type'); // e.g., 'nouvelle-demande'
+        const applicationId = urlParams.get('id');
+
+        // Sub-service titles
+        const subserviceTitles = {
+            'nouvelle-demande': 'Nouvelle Demande CNI',
+            'renouvellement': 'Renouvellement CNI',
+            'modifications': 'Modifications CNI',
+            'duplicata': 'Duplicata CNI',
+            'demande-nni': 'Demande de NNI'
+        };
+
+        // Update page title based on application type
+        if (applicationType && subserviceTitles[applicationType]) {
+            document.getElementById('formTitle').innerHTML =
+                `<i class="bi bi-clipboard-data me-2"></i>${subserviceTitles[applicationType]}`;
+        }
+
+        // Initialize modals
+        const documentViewerModal = new bootstrap.Modal(document.getElementById('documentViewerModal'));
+        const apiDataLoadedModal = new bootstrap.Modal(document.getElementById('apiDataLoadedModal'));
+        const differencesDetectedModal = new bootstrap.Modal(document.getElementById('differencesDetectedModal'));
+        const perfectMatchModal = new bootstrap.Modal(document.getElementById('perfectMatchModal'));
+        const approvalSuccessModal = new bootstrap.Modal(document.getElementById('approvalSuccessModal'));
+        const refusalConfirmationModal = new bootstrap.Modal(document.getElementById('refusalConfirmationModal'));
+
+        // Function to show document viewer modal
+        function showDocumentViewer() {
+            documentViewerModal.show();
+        }
+
         // Initialiser les champs avec des valeurs par défaut (optionnel)
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('serviceType').value = 'Civil Documents';
-            document.getElementById('additionalService').value = 'Marriage Transcript';
-            document.getElementById('maritalRegime').value = 'Joint Goods';
+            // Load dynamic form based on application type
+            if (applicationType) {
+                loadDynamicForm(applicationType, applicationId);
+            } else {
+                // Default to marriage transcript form if no type specified
+                document.getElementById('serviceType').value = 'Civil Documents';
+                document.getElementById('additionalService').value = 'Marriage Transcript';
+                document.getElementById('maritalRegime').value = 'Joint Goods';
+            }
         });
-        
+
+        // Function to go back to filtered list
+        function goBackToList() {
+            if (applicationType) {
+                window.location.href = `listeciviloperateur.html?subservice=${applicationType}`;
+            } else {
+                window.location.href = 'listeciviloperateur.html';
+            }
+        }
+
+        // Function to load dynamic form based on application type
+        function loadDynamicForm(type, id) {
+            console.log('Loading form for type:', type, 'id:', id);
+
+            // Check if type requires case selection (nouvelle-demande)
+            if (type === 'nouvelle-demande') {
+                loadNouvelleDemandeCNI(id);
+            } else if (type === 'renouvellement') {
+                loadRenouvellementCNI(id);
+            } else if (type === 'modifications') {
+                loadModificationsCNI(id);
+            } else if (type === 'duplicata') {
+                loadDuplicataCNI(id);
+            } else if (type === 'demande-nni') {
+                loadDemandeNNI(id);
+            }
+        }
+
+        // Load Nouvelle Demande CNI form
+        function loadNouvelleDemandeCNI(id) {
+            const leftColumn = document.querySelector('.col-lg-6:first-child');
+
+            leftColumn.innerHTML = `
+                <div class="verification-header">
+                    <h4><i class="bi bi-file-earmark-plus me-2"></i>Nouvelle Demande CNI</h4>
+                    <p class="mb-0">ID: ${id}</p>
+                </div>
+
+                <!-- Case Type Selector -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Type de demande:</label>
+                    <select class="form-select" id="caseTypeSelector" onchange="handleCaseTypeChange()">
+                        <option value="">Sélectionnez le cas...</option>
+                        <option value="case-a">Cas A - Né(e) en Côte d'Ivoire</option>
+                        <option value="case-b">Cas B - Né(e) hors Côte d'Ivoire</option>
+                        <option value="case-c">Cas C - Naturalisation</option>
+                        <option value="case-d">Cas D - Acquisition par mariage</option>
+                    </select>
+                </div>
+
+                <!-- Applicant Information -->
+                <h3 class="section-title"><i class="bi bi-person me-2"></i>Informations du demandeur</h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nom:</label>
+                        <input type="text" class="form-control" value="Kouamé" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Prénom:</label>
+                        <input type="text" class="form-control" value="Jean" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Date de naissance:</label>
+                        <input type="date" class="form-control" value="1990-05-15" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Lieu de naissance:</label>
+                        <input type="text" class="form-control" value="Abidjan, Côte d'Ivoire" readonly>
+                    </div>
+                </div>
+
+                <!-- Documents Checklist Container -->
+                <div id="documentsContainer" class="mt-4"></div>
+            `;
+
+            // Trigger case type change to load default documents
+            document.getElementById('caseTypeSelector').value = 'case-a';
+            handleCaseTypeChange();
+        }
+
+        // Load Renouvellement CNI form
+        function loadRenouvellementCNI(id) {
+            const leftColumn = document.querySelector('.col-lg-6:first-child');
+
+            leftColumn.innerHTML = `
+                <div class="verification-header">
+                    <h4><i class="bi bi-arrow-clockwise me-2"></i>Renouvellement CNI</h4>
+                    <p class="mb-0">ID: ${id}</p>
+                </div>
+
+                <!-- Applicant Information -->
+                <h3 class="section-title"><i class="bi bi-person me-2"></i>Informations du demandeur</h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nom:</label>
+                        <input type="text" class="form-control" value="Achi" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Prénom:</label>
+                        <input type="text" class="form-control" value="Danielle" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Numéro CNI actuel:</label>
+                        <input type="text" class="form-control" value="CNI-2019-123456" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Date d'expiration:</label>
+                        <input type="date" class="form-control" value="2024-01-15" readonly>
+                    </div>
+                </div>
+
+                <!-- Documents Checklist -->
+                <h3 class="section-title"><i class="bi bi-folder2-open me-2"></i>Documents requis</h3>
+                <div id="documentsContainer"></div>
+            `;
+
+            // Load renouvellement documents
+            const documentsHtml = renderDocumentChecklist('cni', 'renouvellement');
+            document.getElementById('documentsContainer').innerHTML = documentsHtml;
+        }
+
+        // Load Modifications CNI form
+        function loadModificationsCNI(id) {
+            const leftColumn = document.querySelector('.col-lg-6:first-child');
+
+            leftColumn.innerHTML = `
+                <div class="verification-header">
+                    <h4><i class="bi bi-pencil-square me-2"></i>Modifications CNI</h4>
+                    <p class="mb-0">ID: ${id}</p>
+                </div>
+
+                <!-- Applicant Information -->
+                <h3 class="section-title"><i class="bi bi-person me-2"></i>Informations du demandeur</h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nom actuel:</label>
+                        <input type="text" class="form-control" value="Diallo" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Prénom:</label>
+                        <input type="text" class="form-control" value="Mamadou" readonly>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label class="form-label">Type de modification demandée:</label>
+                        <input type="text" class="form-control" value="Correction d'orthographe du nom" readonly>
+                    </div>
+                </div>
+
+                <!-- Image Reference for Modifications -->
+                <div class="alert alert-info">
+                    <h5><i class="bi bi-images me-2"></i>Documents requis</h5>
+                    <p>Référez-vous aux images dans le dossier: <code>../assets/cni-modification/</code></p>
+                    <p class="mb-0">Les documents requis varient selon le type de modification demandée.</p>
+                </div>
+            `;
+        }
+
+        // Load Duplicata CNI form
+        function loadDuplicataCNI(id) {
+            const leftColumn = document.querySelector('.col-lg-6:first-child');
+
+            leftColumn.innerHTML = `
+                <div class="verification-header">
+                    <h4><i class="bi bi-files me-2"></i>Duplicata CNI</h4>
+                    <p class="mb-0">ID: ${id}</p>
+                </div>
+
+                <!-- Applicant Information -->
+                <h3 class="section-title"><i class="bi bi-person me-2"></i>Informations du demandeur</h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nom:</label>
+                        <input type="text" class="form-control" value="Traoré" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Prénom:</label>
+                        <input type="text" class="form-control" value="Fatou" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Numéro CNI perdue:</label>
+                        <input type="text" class="form-control" value="CNI-2021-789012" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Date de perte:</label>
+                        <input type="date" class="form-control" value="2025-12-01" readonly>
+                    </div>
+                </div>
+
+                <!-- Documents Checklist -->
+                <h3 class="section-title"><i class="bi bi-folder2-open me-2"></i>Documents requis</h3>
+                <div id="documentsContainer"></div>
+            `;
+
+            // Load duplicata documents
+            const documentsHtml = renderDocumentChecklist('cni', 'duplicata');
+            document.getElementById('documentsContainer').innerHTML = documentsHtml;
+        }
+
+        // Load Demande NNI form
+        function loadDemandeNNI(id) {
+            const leftColumn = document.querySelector('.col-lg-6:first-child');
+
+            leftColumn.innerHTML = `
+                <div class="verification-header">
+                    <h4><i class="bi bi-person-vcard me-2"></i>Demande de NNI</h4>
+                    <p class="mb-0">ID: ${id}</p>
+                </div>
+
+                <!-- Applicant Information -->
+                <h3 class="section-title"><i class="bi bi-person me-2"></i>Informations du demandeur</h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nom:</label>
+                        <input type="text" class="form-control" value="Konan" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Prénom:</label>
+                        <input type="text" class="form-control" value="Paul" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Date de naissance:</label>
+                        <input type="date" class="form-control" value="1995-08-20" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Lieu de naissance:</label>
+                        <input type="text" class="form-control" value="Yamoussoukro" readonly>
+                    </div>
+                </div>
+
+                <!-- Image Reference for NNI -->
+                <div class="alert alert-info">
+                    <h5><i class="bi bi-images me-2"></i>Documents requis</h5>
+                    <p>Référez-vous aux images dans le dossier: <code>../assets/cni-demande-de-nni/</code></p>
+                    <p class="mb-0">Les documents requis sont détaillés dans les images de référence.</p>
+                </div>
+            `;
+        }
+
+        // Handle case type change for nouvelle-demande
+        function handleCaseTypeChange() {
+            const caseType = document.getElementById('caseTypeSelector')?.value;
+            const documentsContainer = document.getElementById('documentsContainer');
+
+            if (!caseType || !documentsContainer) return;
+
+            // Load documents for selected case type
+            documentsContainer.innerHTML = `
+                <h3 class="section-title"><i class="bi bi-folder2-open me-2"></i>Documents requis</h3>
+                ${renderDocumentChecklist('cni', 'nouvelle-demande', caseType)}
+            `;
+        }
+
         // Fonction pour charger et vérifier les données API
         function loadAndVerifyApiData() {
-            // Vérifier d'abord les champs obligatoires
-            const requiredFields = document.querySelectorAll('[required]');
-            const missingFields = [];
-            
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
-                    field.style.borderColor = '#dc3545';
-                    field.style.backgroundColor = '#fff5f5';
-                    
-                    const label = document.querySelector(`label[for="${field.id}"]`);
-                    if (label) {
-                        missingFields.push(label.textContent.replace(' *', '').trim());
-                    }
-                } else {
-                    field.style.borderColor = '#ced4da';
-                    field.style.backgroundColor = '';
-                }
-            });
-            
-            if (missingFields.length > 0) {
-                alert(`⚠️ Veuillez remplir tous les champs obligatoires avant de vérifier :\n\n• ${missingFields.join('\n• ')}`);
-                return;
-            }
-            
             // Afficher l'animation de chargement
             const loadingSection = document.getElementById('loadingSection');
             loadingSection.innerHTML = `
@@ -888,7 +1431,7 @@
                 document.getElementById('actionButtons').style.display = 'flex';
                 
                 // Afficher un message de succès
-                alert('✅ Données API chargées avec succès !\n\nLes informations ont été comparées avec le formulaire.');
+                apiDataLoadedModal.show();
                 
             }, 2000);
         }
@@ -896,150 +1439,79 @@
         // Fonction pour afficher toutes les sections API
         function showAllApiSections() {
             const apiSections = [
-                'apiServiceInfo',
-                'apiSpouse1Info',
-                'apiSpouse2Info',
-                'apiMarriageInfo',
-                'apiDeliveryInfo',
-                'apiDocumentsInfo'
+                'apiPersonalInfo',
+                'apiProcessingInfo'
             ];
-            
+
             apiSections.forEach(sectionId => {
-                document.getElementById(sectionId).style.display = 'block';
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.style.display = 'block';
+                }
             });
         }
         
         // Fonction pour charger les données API (simulées pour l'exemple)
         function loadApiData() {
-            // Données simulées de l'API
+            // Données simulées de l'API - CNI
             const apiData = {
-                serviceType: 'Civil Documents',
-                additionalService: 'Marriage Transcript',
-                maritalRegime: 'Joint Goods',
-                expeditionSpeed: 'Expedite',
-                deliveryType: 'Delivery',
-                
-                // Époux 1
-                spouse1FirstName: 'Abraham',
-                spouse1LastName: 'Diabi',
-                spouse1BirthDate: '1985-03-15',
-                spouse1BirthCountry: 'CI',
-                spouse1State: 'AB',
-                spouse1Profession: 'Business owner',
-                spouse1Address: '01 BP v 240',
-                spouse1City: 'Abidjan',
-                spouse1ZipCode: '01',
-                spouse1Phone: '469-494-9389',
-                spouse1Email: 'abrah25@hotmail.com',
-                spouse1FatherName: 'Karamokoba Diabi',
-                spouse1MotherName: 'Binta Soumouny',
-                
-                // Époux 2
-                spouse2FirstName: 'Maimouna',
-                spouse2LastName: 'Sow',
-                spouse2BirthDate: '1988-07-22',
-                spouse2BirthCountry: 'MR',
-                spouse2State: '06',
-                spouse2Profession: 'Nurse',
-                spouse2Address: '424',
-                spouse2City: 'Rosso',
-                spouse2ZipCode: '320',
-                spouse2Phone: '4695546744',
-                spouse2Email: 'mamaisow@yahoo.com',
-                spouse2FatherName: 'Moustapha Sow',
-                spouse2MotherName: 'Thille Sy',
-                
-                // Lieu de mariage
-                marriageAddress: '841 west Irving Boulevard',
-                marriageCity: 'Irving',
-                marriageCountry: 'US',
-                marriageState: 'TX',
-                marriageZipCode: '75060',
-                
-                // Adresse de livraison
-                deliveryAddress: '4202 28th st#1',
-                deliveryCity: 'Mount Rainier',
-                deliveryCountry: 'US',
-                deliveryState: 'MD',
-                deliveryZipCode: '20712',
-                deliveryEmail: 'diabifamily360@gmail.com',
-                deliveryPhone: '469-554-6744',
-                
-                // Documents
-                documents: 'Certificat mariage, Transcription, Preuve nationalité, Pièces identité'
+                // Informations personnelles
+                firstName: 'Jean-Baptiste',
+                lastName: 'KOUAME',
+                gender: 'M',
+                birthDate: '1990-05-15',
+                birthPlace: 'Abidjan',
+                nationality: 'Ivoirienne',
+                maritalStatus: 'Célibataire',
+                profession: 'Ingénieur Informatique',
+                nni: '12345678901',
+
+                // Filiation
+                fatherLastName: 'KOUAME',
+                fatherFirstName: 'Pierre',
+                motherMaidenName: 'BAMBA',
+                motherFirstName: 'Marie',
+
+                // Traitement et livraison
+                processingSpeed: 'Normal (7 jours)',
+                deliveryMethod: 'Retrait sur place'
             };
             
-            // Mettre à jour les champs API
-            document.getElementById('apiServiceType').textContent = apiData.serviceType;
-            document.getElementById('apiAdditionalService').textContent = apiData.additionalService;
-            document.getElementById('apiMaritalRegime').textContent = apiData.maritalRegime;
-            document.getElementById('apiExpeditionSpeed').textContent = apiData.expeditionSpeed;
-            document.getElementById('apiDeliveryType').textContent = apiData.deliveryType;
-            
-            // Époux 1
-            document.getElementById('apiSpouse1FirstName').textContent = apiData.spouse1FirstName;
-            document.getElementById('apiSpouse1LastName').textContent = apiData.spouse1LastName;
-            document.getElementById('apiSpouse1BirthDate').textContent = apiData.spouse1BirthDate;
-            document.getElementById('apiSpouse1BirthCountry').textContent = apiData.spouse1BirthCountry;
-            document.getElementById('apiSpouse1State').textContent = apiData.spouse1State;
-            document.getElementById('apiSpouse1Profession').textContent = apiData.spouse1Profession;
-            document.getElementById('apiSpouse1Address').textContent = apiData.spouse1Address;
-            document.getElementById('apiSpouse1City').textContent = apiData.spouse1City;
-            document.getElementById('apiSpouse1ZipCode').textContent = apiData.spouse1ZipCode;
-            document.getElementById('apiSpouse1Phone').textContent = apiData.spouse1Phone;
-            document.getElementById('apiSpouse1Email').textContent = apiData.spouse1Email;
-            document.getElementById('apiSpouse1FatherName').textContent = apiData.spouse1FatherName;
-            document.getElementById('apiSpouse1MotherName').textContent = apiData.spouse1MotherName;
-            
-            // Époux 2
-            document.getElementById('apiSpouse2FirstName').textContent = apiData.spouse2FirstName;
-            document.getElementById('apiSpouse2LastName').textContent = apiData.spouse2LastName;
-            document.getElementById('apiSpouse2BirthDate').textContent = apiData.spouse2BirthDate;
-            document.getElementById('apiSpouse2BirthCountry').textContent = apiData.spouse2BirthCountry;
-            document.getElementById('apiSpouse2State').textContent = apiData.spouse2State;
-            document.getElementById('apiSpouse2Profession').textContent = apiData.spouse2Profession;
-            document.getElementById('apiSpouse2Address').textContent = apiData.spouse2Address;
-            document.getElementById('apiSpouse2City').textContent = apiData.spouse2City;
-            document.getElementById('apiSpouse2ZipCode').textContent = apiData.spouse2ZipCode;
-            document.getElementById('apiSpouse2Phone').textContent = apiData.spouse2Phone;
-            document.getElementById('apiSpouse2Email').textContent = apiData.spouse2Email;
-            document.getElementById('apiSpouse2FatherName').textContent = apiData.spouse2FatherName;
-            document.getElementById('apiSpouse2MotherName').textContent = apiData.spouse2MotherName;
-            
-            // Lieu de mariage
-            document.getElementById('apiMarriageAddress').textContent = apiData.marriageAddress;
-            document.getElementById('apiMarriageCity').textContent = apiData.marriageCity;
-            document.getElementById('apiMarriageCountry').textContent = apiData.marriageCountry;
-            document.getElementById('apiMarriageState').textContent = apiData.marriageState;
-            document.getElementById('apiMarriageZipCode').textContent = apiData.marriageZipCode;
-            
-            // Adresse de livraison
-            document.getElementById('apiDeliveryAddress').textContent = apiData.deliveryAddress;
-            document.getElementById('apiDeliveryCity').textContent = apiData.deliveryCity;
-            document.getElementById('apiDeliveryCountry').textContent = apiData.deliveryCountry;
-            document.getElementById('apiDeliveryState').textContent = apiData.deliveryState;
-            document.getElementById('apiDeliveryZipCode').textContent = apiData.deliveryZipCode;
-            document.getElementById('apiDeliveryEmail').textContent = apiData.deliveryEmail;
-            document.getElementById('apiDeliveryPhone').textContent = apiData.deliveryPhone;
-            
-            // Documents
-            document.getElementById('apiDocuments').textContent = apiData.documents;
+            // Mettre à jour les champs API - CNI
+            document.getElementById('apiFirstName').textContent = apiData.firstName;
+            document.getElementById('apiLastName').textContent = apiData.lastName;
+            document.getElementById('apiGender').textContent = apiData.gender === 'M' ? 'Masculin' : 'Féminin';
+            document.getElementById('apiBirthDate').textContent = apiData.birthDate;
+            document.getElementById('apiBirthPlace').textContent = apiData.birthPlace;
+            document.getElementById('apiNationality').textContent = apiData.nationality;
+            document.getElementById('apiMaritalStatus').textContent = apiData.maritalStatus;
+            document.getElementById('apiProfession').textContent = apiData.profession;
+            document.getElementById('apiNNI').textContent = apiData.nni;
+
+            // Filiation
+            document.getElementById('apiFatherLastName').textContent = apiData.fatherLastName;
+            document.getElementById('apiFatherFirstName').textContent = apiData.fatherFirstName;
+            document.getElementById('apiMotherMaidenName').textContent = apiData.motherMaidenName;
+            document.getElementById('apiMotherFirstName').textContent = apiData.motherFirstName;
+
+            // Traitement et livraison
+            document.getElementById('apiProcessingSpeed').textContent = apiData.processingSpeed;
+            document.getElementById('apiDeliveryMethod').textContent = apiData.deliveryMethod;
         }
         
         // Comparer les données utilisateur avec les données API
         function compareDataWithApi() {
             const differences = [];
             const matches = [];
-            
-            // Liste des champs à comparer
+
+            // Liste des champs à comparer - CNI
             const fieldsToCompare = [
-                { user: 'serviceType', api: 'apiServiceType', label: 'Prestations de service' },
-                { user: 'additionalService', api: 'apiAdditionalService', label: 'Plus de services' },
-                { user: 'maritalRegime', api: 'apiMaritalRegime', label: 'Régime Matrimonial' },
-                { user: 'spouse1FirstName', api: 'apiSpouse1FirstName', label: 'Prénom Époux(se) 1' },
-                { user: 'spouse1LastName', api: 'apiSpouse1LastName', label: 'Nom Époux(se) 1' },
-                { user: 'spouse2FirstName', api: 'apiSpouse2FirstName', label: 'Prénom Époux(se) 2' },
-                { user: 'spouse2LastName', api: 'apiSpouse2LastName', label: 'Nom Époux(se) 2' }
+                { user: 'firstName', api: 'apiFirstName', label: 'Prénoms' },
+                { user: 'lastName', api: 'apiLastName', label: 'Nom' },
+                { user: 'birthDate', api: 'apiBirthDate', label: 'Date de naissance' },
+                { user: 'birthPlace', api: 'apiBirthPlace', label: 'Lieu de naissance' },
+                { user: 'profession', api: 'apiProfession', label: 'Profession' },
+                { user: 'nni', api: 'apiNNI', label: 'NNI' }
             ];
             
             fieldsToCompare.forEach(field => {
@@ -1068,9 +1540,10 @@
             console.log('Différences:', differences);
             
             if (differences.length > 0) {
-                alert(`⚠️ ${differences.length} différence(s) détectée(s) avec l'API.\n\nVeuillez vérifier les champs surlignés en orange.`);
+                document.getElementById('differencesCount').textContent = differences.length;
+                differencesDetectedModal.show();
             } else {
-                alert(`✅ Toutes les données correspondent parfaitement avec l'API !`);
+                perfectMatchModal.show();
             }
         }
         
@@ -1078,21 +1551,37 @@
         function approveForm() {
             if (confirm('Êtes-vous sûr de vouloir approuver ce formulaire ?')) {
                 // Simulation d'approbation
-                alert('✅ Formulaire approuvé avec succès !\n\nLe dossier a été validé et transmis au traitement.');
-                
-                // Optionnel: Envoyer les données au serveur
-                // submitToServer();
+                approvalSuccessModal.show();
+
+                // Redirect to filtered datatable after modal is dismissed
+                document.getElementById('approvalSuccessBtn').addEventListener('click', function() {
+                    if (applicationType) {
+                        window.location.href = `listeciviloperateur.html?subservice=${applicationType}`;
+                    } else {
+                        window.location.href = 'listeciviloperateur.html';
+                    }
+                }, { once: true });
             }
         }
-        
+
         // Fonction pour refuser le formulaire
         function refuseForm() {
             const reason = prompt('Veuillez indiquer la raison du refus :');
-            
+
             if (reason) {
                 if (confirm(`Refuser ce formulaire avec la raison : "${reason}" ?`)) {
                     // Simulation de refus
-                    alert('❌ Formulaire refusé.\n\nRaison : ' + reason + '\n\nLe demandeur sera notifié.');
+                    document.getElementById('refusalReasonText').textContent = reason;
+                    refusalConfirmationModal.show();
+
+                    // Redirect to filtered datatable after modal is dismissed
+                    document.getElementById('refusalConfirmationBtn').addEventListener('click', function() {
+                        if (applicationType) {
+                            window.location.href = `listeciviloperateur.html?subservice=${applicationType}`;
+                        } else {
+                            window.location.href = 'listeciviloperateur.html';
+                        }
+                    }, { once: true });
                 }
             }
         }

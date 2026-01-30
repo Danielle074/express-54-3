@@ -104,19 +104,22 @@
       background: transparent;
       color: #f89b00;
       border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
+      padding: 0;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
       gap: 8px;
       transition: all 0.3s ease;
       font-weight: 500;
+      position: absolute;
+      left: 290px;
+      top: 280px;
+      z-index: 10;
     }
-    
+
     .btn-retour:hover {
       color: #e68c00;
-      transform: translateX(-3px);
+      transform: translateX(-5px);
       text-decoration: none;
     }
 
@@ -129,7 +132,6 @@
       border-radius: 25px;
       height: 220px;
       padding: 30px;
-      margin-bottom: 30px;
     }
 
     /* LOGO */
@@ -210,8 +212,9 @@
     /* MAIN SERVICE GRID */
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 25px;
+      margin-top: 30px;
     }
 
     @media (max-width: 1200px) {
@@ -232,7 +235,7 @@
       font-size: 2rem;
       font-weight: 700;
       color: #333;
-      margin: 0 0 25px 0;
+      margin: 30px 0 25px 0;
     }
 
     /* ARCHIVES LINK IN SIDEBAR */
@@ -251,19 +254,6 @@
     .sidebar-archive:hover {
       background: white;
       color: #f89b00;
-    }
-
-    /* HEADER WITH BUTTON */
-    .page-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 25px;
-    }
-
-    .title-container {
-      flex-grow: 1;
-      text-align: center;
     }
 
   </style>
@@ -288,13 +278,17 @@
 
   <div class="p-3">
     <div style="border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px; margin-bottom: 10px;">
-      <a href="Operateur/operateur.html">
-        <i class="bi bi-headset"></i> Operateur
+      <a href="../index.html">
+        <i class="bi bi-headset"></i> Utilisateur
       </a>
-      <a href="Superviseur/superviseur.html">
+      <a href="../Superviseur/superviseur.html">
         <i class="bi bi-person-badge"></i> Superviseur
       </a>
     </div>
+
+    <a href="#" class="sidebar-archive">
+      <i class="bi bi-archive"></i> Derniers Archives
+    </a>
 
     <a href="#">
       <i class="bi bi-box-arrow-left"></i> Déconnexion
@@ -306,60 +300,42 @@
 <div class="content">
 
   <!-- HEADER -->
-  <div class="header-box"></div>
+  <div class="header-box mb-4"></div>
 
-  <!-- HEADER WITH BUTTON AND TITLE -->
-  <div class="page-header">
-    <!-- Bouton à gauche -->
-    <a href="index.html" class="btn-retour">
-      <i class="bi bi-arrow-left"></i> Retour à l'accueil
-    </a>
-    
-    <!-- Titre au centre -->
-    <div class="title-container">
-      <h3 class="service-title">Services</h3>
-    </div>
-    
-    <!-- Espace vide à droite pour équilibrer -->
-    <div style="width: 140px;"></div>
-  </div>
+  <!-- BOUTON RETOUR (position absolute) -->
+  <a href="operateur.html" class="btn-retour">
+    <i class="bi bi-arrow-left"></i> Retour aux services
+  </a>
 
-  <!-- SERVICES CARDS -->
+  <!-- TITRE SERVICES -->
+  <h3 class="service-title">Documents Civils</h3>
+
+  <!-- SERVICES CARDS - 2 par ligne -->
   <div class="services-grid mb-5">
-    <a href="Visa/VisaService.html" class="service-card">
-      <div class="card-icon"><i class="bi bi-passport"></i></div>
-      <div class="card-title">Visa Service</div>
-      <div class="card-desc">Demandes en cours de traitement</div>
+    <!-- Première ligne -->
+    <a href="cniOperateur.html" class="service-card">
+      <div class="card-icon"><i class="bi bi-person-badge"></i></div>
+      <div class="card-title">CNI (Carte Nationale d'Identité)</div>
+      <div class="card-desc">Demandes CNI en cours de traitement</div>
     </a>
-    
-    <a href="passeport-service.html" class="service-card">
-      <div class="card-icon"><i class="bi bi-passport-fill"></i></div>
-      <div class="card-title">Passeport Service</div>
-      <div class="card-desc">Nouveaux passeports à délivrer</div>
+
+    <a href="#" class="service-card">
+      <div class="card-icon"><i class="bi bi-file-earmark-plus"></i></div>
+      <div class="card-title">Birth Certificate</div>
+      <div class="card-desc">Certificats de naissance - Actes officiels de naissance</div>
     </a>
-    
-    <a href="consulate-card.html" class="service-card">
-      <div class="card-icon"><i class="bi bi-credit-card"></i></div>
-      <div class="card-title">Consulate Card</div>
-      <div class="card-desc">Cartes consulaires émises</div>
+
+    <!-- Deuxième ligne -->
+    <a href="#" class="service-card">
+      <div class="card-icon"><i class="bi bi-heart-fill"></i></div>
+      <div class="card-title">Marriage Transcript</div>
+      <div class="card-desc">Extraits d'acte de mariage - Actes officiels de mariage</div>
     </a>
-    
-    <a href="delivery-express.html" class="service-card">
-      <div class="card-icon"><i class="bi bi-truck"></i></div>
-      <div class="card-title">Delivery Express</div>
-      <div class="card-desc">Livraisons en cours</div>
-    </a>
-    
-    <a href="other-documents.html" class="service-card">
-      <div class="card-icon"><i class="bi bi-file-text"></i></div>
-      <div class="card-title">Other Documents</div>
-      <div class="card-desc">Documents divers à traiter</div>
-    </a>
-    
-    <a href="CNI/CivilService.html" class="service-card">
-      <div class="card-icon"><i class="bi bi-file-earmark-person"></i></div>
-      <div class="card-title">Civils Documents</div>
-      <div class="card-desc">Actes d'état civil en attente</div>
+
+    <a href="#" class="service-card">
+      <div class="card-icon"><i class="bi bi-file-earmark-excel"></i></div>
+      <div class="card-title">Death Transcript</div>
+      <div class="card-desc">Extraits d'acte de décès - Actes officiels de décès</div>
     </a>
   </div>
 
@@ -372,14 +348,13 @@
     const menu = button.nextElementSibling;
     menu.classList.toggle('show');
   }
-  
+
   // Ajout d'une alerte pour montrer que les cartes sont cliquables
   document.addEventListener('DOMContentLoaded', function() {
     const cards = document.querySelectorAll('.service-card');
     cards.forEach(card => {
       card.addEventListener('click', function(e) {
         console.log('Navigation vers:', this.getAttribute('href'));
-        // La navigation se fera automatiquement via le lien
       });
     });
   });

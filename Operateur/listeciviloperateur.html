@@ -364,7 +364,7 @@
   <div>
     <div class="p-4 text-center">
       <div class="logo-box">
-        <img src="Express by ONECI 2 (1).png" alt="Logo" class="img-fluid">
+        <img src="logo-express-by-oneci.png" alt="Logo" class="img-fluid">
       </div>
     </div>
 
@@ -403,12 +403,13 @@
   <!-- PAGE HEADER WITH BUTTONS -->
   <div class="page-header">
     <!-- Bouton retour à gauche -->
-    <a href="opérateur.html" class="btn-retour">
+    <a href="cniOperateur.html" class="btn-retour">
       <i class="bi bi-arrow-left"></i> Retour
     </a>
-    
-  
-    
+
+    <!-- Titre au centre -->
+    <h1 class="page-title" id="pageTitle">Applications CNI</h1>
+
     <!-- Bouton demandes archivées à droite -->
     <a href="#" class="btn-archives">
       <i class="bi bi-archive"></i> Demandes archivées
@@ -498,17 +499,44 @@
 
 </div>
 
+<!-- Modal - Application Details -->
+<div class="modal fade" id="applicationDetailsModal" tabindex="-1" aria-labelledby="applicationDetailsLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="applicationDetailsLabel">
+          <i class="bi bi-file-text me-2"></i> Détails de l'application
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="bi bi-info-circle text-primary" style="font-size: 4rem;"></i>
+        <p class="mt-3 mb-0">Fonctionnalité de visualisation des détails en cours de développement.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          <i class="bi bi-check-lg"></i> Fermer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+  // Initialize modal
+  const applicationDetailsModal = new bootstrap.Modal(document.getElementById('applicationDetailsModal'));
+
   // Données d'exemple pour les applications ACCÉLÉRER
   const accelerateApps = [
     {
       id: 1,
       name: "Kouamé Jean",
       service: "Identification",
-      subservice: "CNI",
+      subservice: "nouvelle-demande",
+      subserviceLabel: "Nouvelle demande",
       status: "En cours",
       supervisorStatus: "Validé",
       label: "CNI-2024-001",
@@ -518,37 +546,41 @@
       id: 2,
       name: "Achi Danielle",
       service: "Identification",
-      subservice: "Extrait",
+      subservice: "renouvellement",
+      subserviceLabel: "Renouvellement",
       status: "Soumis",
       supervisorStatus: "En attente",
-      label: "EXT-2024-002",
+      label: "CNI-2024-002",
       uidn: "UIDN002-5678-ABCD-EF12"
     },
     {
       id: 3,
       name: "Diallo Mamadou",
-      service: "Passeport",
-      subservice: "Nouveau",
+      service: "Identification",
+      subservice: "modifications",
+      subserviceLabel: "Modifications",
       status: "En cours",
       supervisorStatus: "Validé",
-      label: "PAS-2024-003",
+      label: "CNI-2024-003",
       uidn: "UIDN003-ABCD-1234-5678"
     },
     {
       id: 4,
       name: "Traoré Fatou",
-      service: "Carte Consulaire",
-      subservice: "Renouvellement",
+      service: "Identification",
+      subservice: "duplicata",
+      subserviceLabel: "Duplicata",
       status: "Soumis",
       supervisorStatus: "En attente",
-      label: "CAR-2024-004",
+      label: "CNI-2024-004",
       uidn: "UIDN004-EF12-3456-789A"
     },
     {
       id: 5,
       name: "Konan Paul",
       service: "Identification",
-      subservice: "CNI",
+      subservice: "demande-nni",
+      subserviceLabel: "Demande NNI",
       status: "En cours",
       supervisorStatus: "Validé",
       label: "CNI-2024-005",
@@ -557,12 +589,35 @@
     {
       id: 6,
       name: "Yao Martine",
-      service: "Passeport",
-      subservice: "Renouvellement",
+      service: "Identification",
+      subservice: "nouvelle-demande",
+      subserviceLabel: "Nouvelle demande",
       status: "Soumis",
       supervisorStatus: "En attente",
-      label: "PAS-2024-006",
+      label: "CNI-2024-006",
       uidn: "UIDN006-5678-ABCD-EF12"
+    },
+    {
+      id: 7,
+      name: "Bamba Adjoua",
+      service: "Identification",
+      subservice: "renouvellement",
+      subserviceLabel: "Renouvellement",
+      status: "En cours",
+      supervisorStatus: "Validé",
+      label: "CNI-2024-007",
+      uidn: "UIDN007-9ABC-DEF1-2345"
+    },
+    {
+      id: 8,
+      name: "Sanogo Ibrahim",
+      service: "Identification",
+      subservice: "duplicata",
+      subserviceLabel: "Duplicata",
+      status: "Soumis",
+      supervisorStatus: "En attente",
+      label: "CNI-2024-008",
+      uidn: "UIDN008-6789-0123-ABCD"
     }
   ];
 
@@ -573,6 +628,8 @@
       name: "Kouamé Jean",
       phone: "+225 07 00 00 00 01",
       prestation: "CNI - Renouvellement",
+      subservice: "renouvellement",
+      subserviceLabel: "Renouvellement",
       status: "En cours",
       supervisorStatus: "Validé",
       label: "CNI-2024-001",
@@ -582,37 +639,45 @@
       id: 2,
       name: "Achi Danielle",
       phone: "+225 07 00 00 00 02",
-      prestation: "Extrait - Naissance",
+      prestation: "CNI - Nouvelle demande",
+      subservice: "nouvelle-demande",
+      subserviceLabel: "Nouvelle demande",
       status: "Soumis",
       supervisorStatus: "En attente",
-      label: "EXT-2024-002",
+      label: "CNI-2024-002",
       uidn: "UIDN002-5678-ABCD-EF12"
     },
     {
       id: 3,
       name: "Diallo Mamadou",
       phone: "+225 07 00 00 00 03",
-      prestation: "Passeport - Première",
+      prestation: "CNI - Modifications",
+      subservice: "modifications",
+      subserviceLabel: "Modifications",
       status: "En cours",
       supervisorStatus: "Validé",
-      label: "PAS-2024-003",
+      label: "CNI-2024-003",
       uidn: "UIDN003-ABCD-1234-5678"
     },
     {
       id: 4,
       name: "Traoré Fatou",
       phone: "+225 07 00 00 00 04",
-      prestation: "Carte Consulaire - Renouvellement",
+      prestation: "CNI - Duplicata",
+      subservice: "duplicata",
+      subserviceLabel: "Duplicata",
       status: "Soumis",
       supervisorStatus: "En attente",
-      label: "CAR-2024-004",
+      label: "CNI-2024-004",
       uidn: "UIDN004-EF12-3456-789A"
     },
     {
       id: 5,
       name: "Konan Paul",
       phone: "+225 07 00 00 00 05",
-      prestation: "CNI - Première",
+      prestation: "CNI - Demande NNI",
+      subservice: "demande-nni",
+      subserviceLabel: "Demande NNI",
       status: "En cours",
       supervisorStatus: "Validé",
       label: "CNI-2024-005",
@@ -622,13 +687,56 @@
       id: 6,
       name: "Yao Martine",
       phone: "+225 07 00 00 00 06",
-      prestation: "Passeport - Renouvellement",
+      prestation: "CNI - Nouvelle demande",
+      subservice: "nouvelle-demande",
+      subserviceLabel: "Nouvelle demande",
       status: "Soumis",
       supervisorStatus: "En attente",
-      label: "PAS-2024-006",
+      label: "CNI-2024-006",
       uidn: "UIDN006-5678-ABCD-EF12"
+    },
+    {
+      id: 7,
+      name: "Bamba Adjoua",
+      phone: "+225 07 00 00 00 07",
+      prestation: "CNI - Renouvellement",
+      subservice: "renouvellement",
+      subserviceLabel: "Renouvellement",
+      status: "En cours",
+      supervisorStatus: "Validé",
+      label: "CNI-2024-007",
+      uidn: "UIDN007-9ABC-DEF1-2345"
+    },
+    {
+      id: 8,
+      name: "Sanogo Ibrahim",
+      phone: "+225 07 00 00 00 08",
+      prestation: "CNI - Duplicata",
+      subservice: "duplicata",
+      subserviceLabel: "Duplicata",
+      status: "Soumis",
+      supervisorStatus: "En attente",
+      label: "CNI-2024-008",
+      uidn: "UIDN008-6789-0123-ABCD"
     }
   ];
+
+  // Read URL parameters for filtering
+  const urlParams = new URLSearchParams(window.location.search);
+  const selectedSubservice = urlParams.get('subservice'); // e.g., 'nouvelle-demande'
+
+  const subserviceTitles = {
+    'nouvelle-demande': 'Nouvelle Demande CNI',
+    'renouvellement': 'Renouvellement CNI',
+    'modifications': 'Modifications CNI',
+    'duplicata': 'Duplicata CNI',
+    'demande-nni': 'Demande de NNI'
+  };
+
+  // Update page title based on sub-service
+  if (selectedSubservice && subserviceTitles[selectedSubservice]) {
+    document.getElementById('pageTitle').textContent = subserviceTitles[selectedSubservice];
+  }
 
   // Configuration de la pagination
   const itemsPerPage = 4;
@@ -651,17 +759,36 @@
 
   // Fonction pour mettre à jour le tableau "Accélérer la demande"
   function updateAccelerateTable(filteredApps = accelerateApps) {
+    // Filter by sub-service if URL parameter exists
+    if (selectedSubservice) {
+      filteredApps = filteredApps.filter(app => app.subservice === selectedSubservice);
+    }
+
     const tableBody = document.getElementById('tableBodyAccelerate');
     const totalPages = Math.ceil(filteredApps.length / itemsPerPage);
-    
+
     // Calculer les indices de début et fin
     const startIndex = (currentPageAccelerate - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const pageApps = filteredApps.slice(startIndex, endIndex);
-    
+
     // Vider le tableau
     tableBody.innerHTML = '';
-    
+
+    // Afficher un message si aucune donnée
+    if (pageApps.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="10" class="text-center text-muted py-4">
+            <i class="bi bi-inbox" style="font-size: 2rem;"></i>
+            <p class="mt-2">Aucune demande trouvée pour ce sous-service.</p>
+          </td>
+        </tr>
+      `;
+      updatePagination(1, 1, 1);
+      return;
+    }
+
     // Remplir avec les données de la page actuelle
     pageApps.forEach((app, index) => {
       const actualIndex = startIndex + index + 1;
@@ -670,14 +797,13 @@
         <td>${actualIndex}</td>
         <td><strong>${app.name}</strong></td>
         <td>${app.service}</td>
-        <td>${app.subservice}</td>
+        <td>${app.subserviceLabel}</td>
         <td class="col-action">
-          <button class="action-btn" title="Voir les détails">
-
-            <a href="actionDeOperateur.html">
+          <a href="actionDeOperateur.html?type=${app.subservice}&id=${app.id}" title="Voir les détails">
+            <button class="action-btn">
               <i class="bi bi-eye"></i>
-              </a>
-          </button>
+            </button>
+          </a>
         </td>
         <td>
           <span class="status-badge status-${app.status.toLowerCase().replace(' ', '-')}">
@@ -699,24 +825,43 @@
       `;
       tableBody.appendChild(row);
     });
-    
+
     // Mettre à jour la pagination
     updatePagination(1, currentPageAccelerate, totalPages);
   }
 
   // Fonction pour mettre à jour le tableau "Application normale"
   function updateNormalTable(filteredApps = normalApps) {
+    // Filter by sub-service if URL parameter exists
+    if (selectedSubservice) {
+      filteredApps = filteredApps.filter(app => app.subservice === selectedSubservice);
+    }
+
     const tableBody = document.getElementById('tableBodyNormal');
     const totalPages = Math.ceil(filteredApps.length / itemsPerPage);
-    
+
     // Calculer les indices de début et fin
     const startIndex = (currentPageNormal - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const pageApps = filteredApps.slice(startIndex, endIndex);
-    
+
     // Vider le tableau
     tableBody.innerHTML = '';
-    
+
+    // Afficher un message si aucune donnée
+    if (pageApps.length === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="10" class="text-center text-muted py-4">
+            <i class="bi bi-inbox" style="font-size: 2rem;"></i>
+            <p class="mt-2">Aucune demande trouvée pour ce sous-service.</p>
+          </td>
+        </tr>
+      `;
+      updatePagination(2, 1, 1);
+      return;
+    }
+
     // Remplir avec les données de la page actuelle
     pageApps.forEach((app, index) => {
       const actualIndex = startIndex + index + 1;
@@ -726,11 +871,11 @@
         <td>${app.phone}</td>
         <td>${app.prestation}</td>
         <td class="col-action">
-          <button class="action-btn" title="Voir les détails">
-           <a href="actionDeOperateur.html">
+          <a href="actionDeOperateur.html?type=${app.subservice}&id=${app.id}" title="Voir les détails">
+            <button class="action-btn">
               <i class="bi bi-eye"></i>
-              </a>
-          </button>
+            </button>
+          </a>
         </td>
         <td>
           <span class="status-badge status-${app.status.toLowerCase().replace(' ', '-')}">
@@ -757,7 +902,7 @@
       `;
       tableBody.appendChild(row);
     });
-    
+
     // Mettre à jour la pagination
     updatePagination(2, currentPageNormal, totalPages);
   }
@@ -774,7 +919,7 @@
       });
       
       btn.addEventListener('click', function() {
-        alert('Voir les détails de cette application');
+        applicationDetailsModal.show();
       });
     });
   }

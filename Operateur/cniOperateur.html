@@ -104,19 +104,22 @@
       background: transparent;
       color: #f89b00;
       border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
+      padding: 0;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
       gap: 8px;
       transition: all 0.3s ease;
       font-weight: 500;
+      position: absolute;
+      left: 290px;
+      top: 280px;
+      z-index: 10;
     }
-    
+
     .btn-retour:hover {
       color: #e68c00;
-      transform: translateX(-3px);
+      transform: translateX(-5px);
       text-decoration: none;
     }
 
@@ -129,7 +132,6 @@
       border-radius: 25px;
       height: 220px;
       padding: 30px;
-      margin-bottom: 30px;
     }
 
     /* LOGO */
@@ -207,22 +209,37 @@
       line-height: 1.4;
     }
 
-    /* MAIN SERVICE GRID */
+    /* MAIN SERVICE GRID - 3 COLONNES POUR 5 CARTES */
     .services-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 25px;
+      margin-top: 30px;
+    }
+
+    /* Carte du milieu (5ème) */
+    .center-card {
+      grid-column: 2;
+      grid-row: 2;
     }
 
     @media (max-width: 1200px) {
       .services-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+      .center-card {
+        grid-column: 1 / span 2;
+        grid-row: 3;
+      }
     }
 
     @media (max-width: 768px) {
       .services-grid {
         grid-template-columns: 1fr;
+      }
+      .center-card {
+        grid-column: 1;
+        grid-row: auto;
       }
     }
 
@@ -232,7 +249,7 @@
       font-size: 2rem;
       font-weight: 700;
       color: #333;
-      margin: 0 0 25px 0;
+      margin: 30px 0 25px 0;
     }
 
     /* ARCHIVES LINK IN SIDEBAR */
@@ -251,19 +268,6 @@
     .sidebar-archive:hover {
       background: white;
       color: #f89b00;
-    }
-
-    /* HEADER WITH BUTTON */
-    .page-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 25px;
-    }
-
-    .title-container {
-      flex-grow: 1;
-      text-align: center;
     }
 
   </style>
@@ -288,13 +292,17 @@
 
   <div class="p-3">
     <div style="border-top: 1px solid rgba(255,255,255,0.3); padding-top: 10px; margin-bottom: 10px;">
-      <a href="Operateur/operateur.html">
-        <i class="bi bi-headset"></i> Operateur
+      <a href="../index.html">
+        <i class="bi bi-headset"></i> Utilisateur
       </a>
-      <a href="Superviseur/superviseur.html">
+      <a href="../Superviseur/superviseur.html">
         <i class="bi bi-person-badge"></i> Superviseur
       </a>
     </div>
+
+    <a href="#" class="sidebar-archive">
+      <i class="bi bi-archive"></i> Derniers Archives
+    </a>
 
     <a href="#">
       <i class="bi bi-box-arrow-left"></i> Déconnexion
@@ -306,60 +314,49 @@
 <div class="content">
 
   <!-- HEADER -->
-  <div class="header-box"></div>
+  <div class="header-box mb-4"></div>
 
-  <!-- HEADER WITH BUTTON AND TITLE -->
-  <div class="page-header">
-    <!-- Bouton à gauche -->
-    <a href="index.html" class="btn-retour">
-      <i class="bi bi-arrow-left"></i> Retour à l'accueil
-    </a>
-    
-    <!-- Titre au centre -->
-    <div class="title-container">
-      <h3 class="service-title">Services</h3>
-    </div>
-    
-    <!-- Espace vide à droite pour équilibrer -->
-    <div style="width: 140px;"></div>
-  </div>
+  <!-- BOUTON RETOUR (position absolute) -->
+  <a href="civilServiceOperateur.html" class="btn-retour">
+    <i class="bi bi-arrow-left"></i> Retour aux services
+  </a>
 
-  <!-- SERVICES CARDS -->
+  <!-- TITRE SERVICES -->
+  <h3 class="service-title">CNI - Carte Nationale d'Identité</h3>
+
+  <!-- SERVICES CARDS - 5 cartes avec la 5ème au milieu -->
   <div class="services-grid mb-5">
-    <a href="Visa/VisaService.html" class="service-card">
-      <div class="card-icon"><i class="bi bi-passport"></i></div>
-      <div class="card-title">Visa Service</div>
-      <div class="card-desc">Demandes en cours de traitement</div>
+    <!-- Première ligne (2 cartes) -->
+    <a href="listeciviloperateur.html?subservice=nouvelle-demande" class="service-card">
+      <div class="card-icon"><i class="bi bi-file-earmark-plus"></i></div>
+      <div class="card-title">Nouvelle demande</div>
+      <div class="card-desc">Demandes de nouvelle CNI en cours de traitement</div>
     </a>
-    
-    <a href="passeport-service.html" class="service-card">
-      <div class="card-icon"><i class="bi bi-passport-fill"></i></div>
-      <div class="card-title">Passeport Service</div>
-      <div class="card-desc">Nouveaux passeports à délivrer</div>
+
+    <a href="listeciviloperateur.html?subservice=modifications" class="service-card">
+      <div class="card-icon"><i class="bi bi-pencil-square"></i></div>
+      <div class="card-title">Modifications</div>
+      <div class="card-desc">Demandes de modification de CNI existante</div>
     </a>
-    
-    <a href="consulate-card.html" class="service-card">
-      <div class="card-icon"><i class="bi bi-credit-card"></i></div>
-      <div class="card-title">Consulate Card</div>
-      <div class="card-desc">Cartes consulaires émises</div>
+
+    <!-- Deuxième ligne (2 cartes) -->
+    <a href="listeciviloperateur.html?subservice=renouvellement" class="service-card">
+      <div class="card-icon"><i class="bi bi-arrow-clockwise"></i></div>
+      <div class="card-title">Renouvellement</div>
+      <div class="card-desc">Demandes de renouvellement de CNI expirée</div>
     </a>
-    
-    <a href="delivery-express.html" class="service-card">
-      <div class="card-icon"><i class="bi bi-truck"></i></div>
-      <div class="card-title">Delivery Express</div>
-      <div class="card-desc">Livraisons en cours</div>
+
+    <a href="listeciviloperateur.html?subservice=duplicata" class="service-card">
+      <div class="card-icon"><i class="bi bi-files"></i></div>
+      <div class="card-title">Duplicata</div>
+      <div class="card-desc">Demandes de duplicata pour CNI perdue ou détruite</div>
     </a>
-    
-    <a href="other-documents.html" class="service-card">
-      <div class="card-icon"><i class="bi bi-file-text"></i></div>
-      <div class="card-title">Other Documents</div>
-      <div class="card-desc">Documents divers à traiter</div>
-    </a>
-    
-    <a href="CNI/CivilService.html" class="service-card">
-      <div class="card-icon"><i class="bi bi-file-earmark-person"></i></div>
-      <div class="card-title">Civils Documents</div>
-      <div class="card-desc">Actes d'état civil en attente</div>
+
+    <!-- Carte du milieu (5ème) -->
+    <a href="listeciviloperateur.html?subservice=demande-nni" class="service-card center-card">
+      <div class="card-icon"><i class="bi bi-person-vcard"></i></div>
+      <div class="card-title">Demande NNI</div>
+      <div class="card-desc">Demandes de Numéro National d'Identification</div>
     </a>
   </div>
 
@@ -372,14 +369,13 @@
     const menu = button.nextElementSibling;
     menu.classList.toggle('show');
   }
-  
+
   // Ajout d'une alerte pour montrer que les cartes sont cliquables
   document.addEventListener('DOMContentLoaded', function() {
     const cards = document.querySelectorAll('.service-card');
     cards.forEach(card => {
       card.addEventListener('click', function(e) {
         console.log('Navigation vers:', this.getAttribute('href'));
-        // La navigation se fera automatiquement via le lien
       });
     });
   });

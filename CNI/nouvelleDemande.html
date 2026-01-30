@@ -445,6 +445,109 @@
       padding: 0 40px 40px 40px;
     }
 
+    /* Speed Selection Cards */
+    .speed-option {
+      position: relative;
+    }
+
+    .speed-radio {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .speed-card {
+      display: block;
+      background: white;
+      border: 3px solid #e0e0e0;
+      border-radius: 15px;
+      padding: 30px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+
+    .speed-radio:checked + .speed-card {
+      border-color: #f89b00;
+      background: #fff8e1;
+      box-shadow: 0 8px 20px rgba(248, 155, 0, 0.2);
+    }
+
+    .speed-card:hover {
+      border-color: #f89b00;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .speed-header {
+      margin-bottom: 20px;
+    }
+
+    .speed-header i {
+      font-size: 3rem;
+      color: #f89b00;
+      margin-bottom: 10px;
+    }
+
+    .speed-header h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #333;
+      margin: 0;
+    }
+
+    .speed-duration {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .speed-description {
+      font-size: 0.95rem;
+      color: #888;
+      margin: 0;
+    }
+
+    /* Fee Breakdown */
+    .fee-breakdown {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      border-left: 4px solid #f89b00;
+    }
+
+    .fee-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .fee-item:last-child {
+      border-bottom: none;
+    }
+
+    .fee-item.fee-total {
+      background: #fff8e1;
+      margin: 10px -20px -20px -20px;
+      padding: 15px 20px;
+      border-radius: 0 0 10px 10px;
+      border-top: 2px solid #f89b00;
+    }
+
+    .fee-label {
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .fee-value {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #f89b00;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .step-navigation {
@@ -452,34 +555,42 @@
         justify-content: center;
         gap: 20px;
       }
-      
+
       .step-navigation::before {
         display: none;
       }
-      
+
       .form-container {
         padding: 20px;
         margin: 15px;
       }
-      
+
       .btn-nav {
         padding: 10px 20px;
         font-size: 0.9rem;
       }
-      
+
       .document-item {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
       }
-      
+
       .document-status {
         align-self: flex-start;
         margin-left: 0;
       }
-      
+
       .confirmation-modal .modal-body {
         padding: 20px;
+      }
+
+      .speed-card {
+        padding: 20px;
+      }
+
+      .speed-header i {
+        font-size: 2.5rem;
       }
     }
   </style>
@@ -509,35 +620,35 @@
         <div class="step-circle">
           <i class="bi bi-person-fill step-icon"></i>
         </div>
-        <span class="step-label">Informations personnelles</span>
+        <span class="step-label">Informations</span>
       </div>
-      
+
       <div class="step-item" data-step="2">
         <div class="step-circle">
           <i class="bi bi-file-earmark-text step-icon"></i>
         </div>
-        <span class="step-label">Documents d'identité</span>
+        <span class="step-label">Documents</span>
       </div>
-      
+
       <div class="step-item" data-step="3">
         <div class="step-circle">
-          <i class="bi bi-geo-alt step-icon"></i>
+          <i class="bi bi-speedometer2 step-icon"></i>
         </div>
-        <span class="step-label">Adresse et contact</span>
+        <span class="step-label">Rapidité</span>
       </div>
-      
+
       <div class="step-item" data-step="4">
         <div class="step-circle">
-          <i class="bi bi-camera step-icon"></i>
+          <i class="bi bi-truck step-icon"></i>
         </div>
-        <span class="step-label">Photo et empreintes</span>
+        <span class="step-label">Livraison</span>
       </div>
-      
+
       <div class="step-item" data-step="5">
         <div class="step-circle">
           <i class="bi bi-credit-card step-icon"></i>
         </div>
-        <span class="step-label">Paiement et confirmation</span>
+        <span class="step-label">Récapitulatif & Paiement</span>
       </div>
     </div>
 
@@ -662,8 +773,8 @@
           <div class="col-md-6">
             <div class="form-group">
               <label class="form-label">N° NNI (si connu)</label>
-              <input type="text" class="form-control">
-              <small class="help-text">Numéro National d'Identification</small>
+              <input type="text" class="form-control" pattern="[0-9]{11}" maxlength="11" placeholder="12345678901">
+              <small class="help-text">Numéro National d'Identification (11 chiffres)</small>
             </div>
           </div>
         </div>
@@ -895,51 +1006,99 @@
       </div>
     </div>
 
-    <!-- ÉTAPE 3: Adresse et contact -->
+    <!-- ÉTAPE 3: Rapidité -->
     <div class="step-content" id="step-3">
-      <h3 class="step-title"><i class="bi bi-geo-alt"></i> Adresse et coordonnées</h3>
-      
+      <h3 class="step-title"><i class="bi bi-speedometer2"></i> Rapidité du traitement</h3>
+
       <div class="form-section">
-        <h4 class="form-section-title">Adresse de résidence</h4>
-        
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label class="form-label required">Adresse complète</label>
-              <textarea class="form-control" rows="2" required></textarea>
-              <small class="help-text">N°, rue, avenue, etc.</small>
+        <h4 class="form-section-title">Choisissez la vitesse de traitement</h4>
+        <p class="help-text mb-4">Sélectionnez la rapidité de traitement de votre demande de CNI</p>
+
+        <div class="row g-4">
+          <!-- Option Normal -->
+          <div class="col-md-6">
+            <div class="speed-option" data-speed="normal">
+              <input type="radio" name="speed" id="speed-normal" value="normal" class="speed-radio" checked>
+              <label for="speed-normal" class="speed-card">
+                <div class="speed-header">
+                  <i class="bi bi-clock-history"></i>
+                  <h3>Normal</h3>
+                </div>
+                <div class="speed-details">
+                  <p class="speed-duration">Minimum 7 jours</p>
+                  <p class="speed-description">Traitement standard de votre demande</p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Option Express -->
+          <div class="col-md-6">
+            <div class="speed-option" data-speed="express">
+              <input type="radio" name="speed" id="speed-express" value="express" class="speed-radio">
+              <label for="speed-express" class="speed-card">
+                <div class="speed-header">
+                  <i class="bi bi-lightning-charge-fill"></i>
+                  <h3>Express</h3>
+                </div>
+                <div class="speed-details">
+                  <p class="speed-duration">Maximum 24 heures</p>
+                  <p class="speed-description">Traitement accéléré de votre demande</p>
+                </div>
+              </label>
             </div>
           </div>
         </div>
-        
+      </div>
+    </div>
+
+    <!-- ÉTAPE 4: Livraison -->
+    <div class="step-content" id="step-4">
+      <h3 class="step-title"><i class="bi bi-truck"></i> Mode de livraison</h3>
+
+      <div class="form-section">
+        <h4 class="form-section-title">Sélectionnez une méthode de livraison</h4>
+
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-12">
             <div class="form-group">
-              <label class="form-label required">Commune</label>
-              <select class="form-select" required>
+              <label class="form-label required">Méthode de livraison :</label>
+              <select class="form-select" id="delivery-method" required>
                 <option value="">Sélectionnez...</option>
-                <option value="abidjan">Abidjan</option>
-                <option value="yamoussoukro">Yamoussoukro</option>
-                <option value="bouake">Bouaké</option>
-                <option value="sanpedro">San Pedro</option>
-                <option value="korhogo">Korhogo</option>
-                <option value="daloa">Daloa</option>
-                <option value="man">Man</option>
+                <option value="pickup">Retrait sur place (Pickup)</option>
+                <option value="delivery">Livraison à domicile (Additional charges may apply)</option>
               </select>
             </div>
           </div>
-          
-          <div class="col-md-4">
+        </div>
+      </div>
+
+      <!-- Section d'adresse (affichée uniquement si livraison est sélectionnée) -->
+      <div class="form-section" id="address-section" style="display: none;">
+        <h4 class="form-section-title">Adresse de livraison</h4>
+
+        <div class="row">
+          <div class="col-md-6">
             <div class="form-group">
-              <label class="form-label required">Ville</label>
-              <input type="text" class="form-control" required>
+              <label class="form-label required">Pays :</label>
+              <select class="form-select" id="delivery-country" required>
+                <option value="">Sélectionnez...</option>
+                <option value="CI" selected>Côte d'Ivoire</option>
+                <option value="BF">Burkina Faso</option>
+                <option value="ML">Mali</option>
+                <option value="SN">Sénégal</option>
+                <option value="GH">Ghana</option>
+                <option value="NG">Nigeria</option>
+                <option value="BJ">Bénin</option>
+                <option value="TG">Togo</option>
+              </select>
             </div>
           </div>
-          
-          <div class="col-md-4">
+
+          <div class="col-md-6">
             <div class="form-group">
-              <label class="form-label required">Région</label>
-              <select class="form-select" required>
+              <label class="form-label required">Région :</label>
+              <select class="form-select" id="delivery-region" required>
                 <option value="">Sélectionnez...</option>
                 <option value="lagunes">Lagunes</option>
                 <option value="haut-sassandra">Haut-Sassandra</option>
@@ -948,156 +1107,71 @@
                 <option value="montagnes">Montagnes</option>
                 <option value="zanzan">Zanzan</option>
                 <option value="bas-sassandra">Bas-Sassandra</option>
+                <option value="denguele">Denguélé</option>
+                <option value="goh-djiboua">Gôh-Djiboua</option>
+                <option value="lacs">Lacs</option>
+                <option value="comoe">Comoé</option>
+                <option value="worodougou">Worodougou</option>
+                <option value="nzi-comoe">N'zi-Comoé</option>
               </select>
             </div>
           </div>
         </div>
-        
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label class="form-label required">Numéro de téléphone</label>
-              <input type="tel" class="form-control" required>
-            </div>
-          </div>
-          
-          <div class="col-md-6">
-            <div class="form-group">
-              <label class="form-label required">Adresse email</label>
-              <input type="email" class="form-control" required>
-            </div>
-          </div>
-        </div>
-        
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label class="form-label">Téléphone secondaire</label>
-              <input type="tel" class="form-control">
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="form-section">
-        <h4 class="form-section-title">Prise d'empreintes</h4>
-        
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label class="form-label required">Centre de prise d'empreintes</label>
-              <select class="form-select" required>
-                <option value="">Sélectionnez un centre...</option>
-                <option value="plateau">Abidjan - Plateau (Siège ONECI)</option>
-                <option value="cocody">Abidjan - Cocody</option>
-                <option value="yopougon">Abidjan - Yopougon</option>
-                <option value="adjame">Abidjan - Adjamé</option>
-                <option value="bouake">Bouaké</option>
-                <option value="sanpedro">San Pedro</option>
-                <option value="korhogo">Korhogo</option>
-                <option value="man">Man</option>
-              </select>
-              <small class="help-text">Vous devrez vous présenter en personne pour la prise d'empreintes digitales</small>
-            </div>
-          </div>
-        </div>
-        
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label class="form-label required">Date de rendez-vous souhaitée</label>
-              <input type="date" class="form-control" required>
-            </div>
-          </div>
-          
-          <div class="col-md-6">
-            <div class="form-group">
-              <label class="form-label required">Heure de rendez-vous</label>
-              <select class="form-select" required>
-                <option value="">Sélectionnez...</option>
-                <option value="08h00">08h00 - 09h00</option>
-                <option value="09h00">09h00 - 10h00</option>
-                <option value="10h00">10h00 - 11h00</option>
-                <option value="11h00">11h00 - 12h00</option>
-                <option value="14h00">14h00 - 15h00</option>
-                <option value="15h00">15h00 - 16h00</option>
-                <option value="16h00">16h00 - 17h00</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- ÉTAPE 4: Photo et empreintes -->
-    <div class="step-content" id="step-4">
-      <h3 class="step-title"><i class="bi bi-camera"></i> Photo d'identité</h3>
-      
-      <div class="form-section">
-        <h4 class="form-section-title">Photo d'identité conforme</h4>
-        <p class="help-text mb-4">La photo doit respecter les normes biométriques suivantes :</p>
-        
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label class="form-label required">Photo d'identité récente</label>
-              <input type="file" class="form-control" accept=".jpg,.jpeg,.png" required>
-              <small class="help-text">Format 35x45 mm, fond blanc uni, visage bien visible</small>
-            </div>
-            <div class="alert alert-info">
-              <h6><i class="bi bi-info-circle"></i> Normes de la photo :</h6>
-              <ul class="mb-0">
-                <li>Format : 35 x 45 mm</li>
-                <li>Fond blanc uni</li>
-                <li>Visage bien centré, yeux ouverts</li>
-                <li>Expression neutre, bouche fermée</li>
-                <li>Pas de lunettes de soleil</li>
-                <li>Pas de couvre-chef (sauf raison religieuse)</li>
-              </ul>
+              <label class="form-label required">Ville ou Commune :</label>
+              <input type="text" class="form-control" id="delivery-city" placeholder="Abidjan" required>
             </div>
           </div>
-          
+
           <div class="col-md-6">
             <div class="form-group">
-              <label class="form-label">Photo supplémentaire (optionnel)</label>
-              <input type="file" class="form-control" accept=".jpg,.jpeg,.png">
-              <small class="help-text">Une deuxième photo au cas où</small>
+              <label class="form-label">Adresse Boîte Postale :</label>
+              <input type="text" class="form-control" id="delivery-po-box" placeholder="BP 1234">
+              <small class="help-text">Optionnel</small>
             </div>
-            <div class="text-center mt-4">
-              <div class="border rounded p-3" style="background: #f8f9fa;">
-                <i class="bi bi-person-circle" style="font-size: 5rem; color: #ccc;"></i>
-                <p class="mt-2 mb-0"><small>Aperçu de la photo d'identité</small></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="alert alert-warning mt-3" id="shipping-calculator" style="display: none;">
+              <div class="d-flex align-items-center">
+                <div class="spinner-border spinner-border-sm text-warning me-2" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <span class="text-warning fw-bold">Calcul des frais de livraison en cours...</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-      
-      <div class="form-section">
-        <h4 class="form-section-title">Type de demande</h4>
-        
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label class="form-label required">Nature de la demande</label>
-              <select class="form-select" required>
-                <option value="">Sélectionnez...</option>
-                <option value="premiere">Première demande</option>
-                <option value="renouvellement">Renouvellement</option>
-                <option value="duplicata">Duplicata (perte/vol)</option>
-                <option value="rectification">Rectification d'erreur</option>
-              </select>
-            </div>
+
+      <!-- Section récapitulatif des frais -->
+      <div class="form-section" id="fee-summary">
+        <h4 class="form-section-title">Récapitulatif des frais</h4>
+
+        <div class="fee-breakdown">
+          <div class="fee-item">
+            <span class="fee-label">Frais de service :</span>
+            <span class="fee-value" id="service-fee">1 000 FCFA</span>
           </div>
-        </div>
-        
-        <div class="row">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label class="form-label">Motif de la demande (si renouvellement ou duplicata)</label>
-              <textarea class="form-control" rows="2"></textarea>
-              <small class="help-text">Précisez la raison (perte, vol, expiration, etc.)</small>
-            </div>
+          <div class="fee-item">
+            <span class="fee-label">Frais de plateforme :</span>
+            <span class="fee-value" id="platform-fee">9 990 FCFA</span>
+          </div>
+          <div class="fee-item">
+            <span class="fee-label">Frais de livraison :</span>
+            <span class="fee-value" id="shipping-charges">0 FCFA</span>
+          </div>
+          <div class="fee-item fee-total">
+            <span class="fee-label"><strong>Montant total à payer :</strong></span>
+            <span class="fee-value"><strong id="total-amount">10 990 FCFA</strong></span>
+          </div>
+          <div class="text-danger mt-2" id="payment-note">
+            <small><i class="bi bi-exclamation-circle"></i> Paiement non remboursable</small>
           </div>
         </div>
       </div>
@@ -1136,7 +1210,7 @@
                   </tr>
                   <tr class="table-active">
                     <td><strong>Total à payer:</strong></td>
-                    <td class="text-end"><strong>10 000 FCFA</strong></td>
+                    <td class="text-end"><strong id="total-payment">10 990 FCFA</strong></td>
                   </tr>
                 </table>
                 <div class="alert alert-warning mt-3">
@@ -1185,7 +1259,7 @@
                 <!-- Bouton de paiement -->
                 <div class="d-grid mt-4">
                   <button type="button" class="btn btn-success btn-lg" id="btn-payer">
-                    <i class="bi bi-lock-fill"></i> Payer 10 000 FCFA
+                    <i class="bi bi-lock-fill"></i> Payer <span id="btn-payment-amount">10 990 FCFA</span>
                   </button>
                 </div>
               </div>
@@ -1285,6 +1359,100 @@
   </div>
 </div>
 
+<!-- Modal d'erreur - Paiement requis -->
+<div class="modal fade" id="paymentRequiredModal" tabindex="-1" aria-labelledby="paymentRequiredLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title" id="paymentRequiredLabel">
+          <i class="bi bi-exclamation-triangle me-2"></i> Paiement requis
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="bi bi-credit-card-2-front text-warning" style="font-size: 4rem;"></i>
+        <p class="mt-3 mb-0">Veuillez d'abord effectuer le paiement avant de continuer.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">
+          <i class="bi bi-check-lg"></i> Compris
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal d'erreur - Validation des cases à cocher -->
+<div class="modal fade" id="checkboxValidationModal" tabindex="-1" aria-labelledby="checkboxValidationLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title" id="checkboxValidationLabel">
+          <i class="bi bi-exclamation-triangle me-2"></i> Confirmation requise
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="bi bi-check2-square text-warning" style="font-size: 4rem;"></i>
+        <p class="mt-3 mb-0">Veuillez accepter les conditions en cochant les deux cases de confirmation.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">
+          <i class="bi bi-check-lg"></i> Compris
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de succès - Soumission réussie -->
+<div class="modal fade" id="submissionSuccessModal" tabindex="-1" aria-labelledby="submissionSuccessLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header" style="background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%); color: white;">
+        <h5 class="modal-title" id="submissionSuccessLabel">
+          <i class="bi bi-check-circle me-2"></i> Demande soumise avec succès !
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+        <h4 class="mt-3 mb-3">Demande de Carte Nationale d'Identité soumise avec succès !</h4>
+        <p class="mb-2">Votre numéro de suivi a été envoyé par email.</p>
+        <p class="mb-0"><strong>Rendez-vous au centre choisi pour la prise d'empreintes digitales.</strong></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+          <i class="bi bi-check-lg"></i> Continuer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal d'erreur - Champs requis -->
+<div class="modal fade" id="requiredFieldsModal" tabindex="-1" aria-labelledby="requiredFieldsLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="requiredFieldsLabel">
+          <i class="bi bi-exclamation-circle me-2"></i> Champs obligatoires manquants
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="bi bi-exclamation-circle text-danger" style="font-size: 4rem;"></i>
+        <p class="mt-3 mb-0">Veuillez remplir tous les champs obligatoires avant de continuer.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+          <i class="bi bi-check-lg"></i> Compris
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
@@ -1297,8 +1465,12 @@
     const btnPayer = document.getElementById('btn-payer');
     const confirmationSection = document.getElementById('confirmation-section');
     const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+    const paymentRequiredModal = new bootstrap.Modal(document.getElementById('paymentRequiredModal'));
+    const checkboxValidationModal = new bootstrap.Modal(document.getElementById('checkboxValidationModal'));
+    const submissionSuccessModal = new bootstrap.Modal(document.getElementById('submissionSuccessModal'));
+    const requiredFieldsModal = new bootstrap.Modal(document.getElementById('requiredFieldsModal'));
     const btnContinuer = document.getElementById('btn-continuer');
-    
+
     let currentStep = 1;
     const totalSteps = 5;
     let paiementEffectue = false;
@@ -1331,21 +1503,21 @@
         // Si on est à la dernière étape (paiement)
         if (currentStep === 5) {
           if (!paiementEffectue) {
-            alert('Veuillez d\'abord effectuer le paiement avant de continuer.');
+            paymentRequiredModal.show();
             return;
           }
           
           // Valider les cases à cocher
           const confirmationCheck = document.getElementById('confirmation');
           const consentementCheck = document.getElementById('consentement');
-          
+
           if (!confirmationCheck.checked || !consentementCheck.checked) {
-            alert('Veuillez accepter les conditions en cochant les deux cases de confirmation.');
+            checkboxValidationModal.show();
             return;
           }
-          
+
           // Soumettre le formulaire final
-          alert('Demande de Carte Nationale d\'Identité soumise avec succès !\n\nVotre numéro de suivi a été envoyé par email.\n\nRendez-vous au centre choisi pour la prise d\'empreintes digitales.');
+          submissionSuccessModal.show();
           // Ici, vous ajouteriez la logique de soumission réelle
         }
       }
@@ -1460,7 +1632,7 @@
       });
 
       if (!isValid) {
-        alert('Veuillez remplir tous les champs obligatoires avant de continuer.');
+        requiredFieldsModal.show();
       }
 
       return isValid;
@@ -1482,7 +1654,8 @@
         confirmationModal.show();
         
         // Réinitialiser le bouton
-        btnPayer.innerHTML = '<i class="bi bi-lock-fill"></i> Payer 10 000 FCFA';
+        const totalAmount = document.getElementById('total-amount').textContent;
+        btnPayer.innerHTML = '<i class="bi bi-lock-fill"></i> Payer <span id="btn-payment-amount">' + totalAmount + '</span>';
         btnPayer.disabled = false;
       }, 2000);
     }
@@ -1870,6 +2043,65 @@
     
     // Initialiser le statut de femme mariée
     updateFemmeMarieeStatus();
+
+    // ===== GESTION DE LA LIVRAISON (STEP 4) =====
+
+    const deliveryMethodSelect = document.getElementById('delivery-method');
+    const addressSection = document.getElementById('address-section');
+    const shippingCalculator = document.getElementById('shipping-calculator');
+    const shippingChargesEl = document.getElementById('shipping-charges');
+    const totalAmountEl = document.getElementById('total-amount');
+
+    if (deliveryMethodSelect) {
+      deliveryMethodSelect.addEventListener('change', function() {
+        const selectedMethod = this.value;
+
+        if (selectedMethod === 'delivery') {
+          // Afficher la section d'adresse
+          addressSection.style.display = 'block';
+
+          // Simuler le calcul des frais de livraison
+          shippingCalculator.style.display = 'block';
+
+          setTimeout(function() {
+            shippingCalculator.style.display = 'none';
+            shippingChargesEl.textContent = '5 000 FCFA';
+            totalAmountEl.textContent = '15 990 FCFA';
+          }, 2000);
+
+        } else if (selectedMethod === 'pickup') {
+          // Masquer la section d'adresse
+          addressSection.style.display = 'none';
+          shippingCalculator.style.display = 'none';
+          shippingChargesEl.textContent = '0 FCFA';
+          totalAmountEl.textContent = '10 990 FCFA';
+        }
+      });
+    }
+
+    // Trigger address validation when typing in address fields
+    const deliveryAddressInputs = ['delivery-country', 'delivery-region', 'delivery-city', 'delivery-po-box'];
+    deliveryAddressInputs.forEach(function(inputId) {
+      const input = document.getElementById(inputId);
+      if (input) {
+        input.addEventListener('input', function() {
+          // Check if all required delivery fields are filled (excluding optional po-box)
+          const requiredFields = ['delivery-country', 'delivery-region', 'delivery-city'];
+          const allFilled = requiredFields.every(function(id) {
+            const el = document.getElementById(id);
+            return el && el.value.trim() !== '';
+          });
+
+          if (allFilled && deliveryMethodSelect.value === 'delivery') {
+            // Simulate recalculating shipping
+            shippingCalculator.style.display = 'block';
+            setTimeout(function() {
+              shippingCalculator.style.display = 'none';
+            }, 1500);
+          }
+        });
+      }
+    });
   });
 </script>
 

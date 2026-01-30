@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Service en construction - ONECI</title>
+  <title>Modifications de CNI - ONECI</title>
 
   <!-- Bootstrap CSS -->
   <link
@@ -18,535 +18,2163 @@
 
   <style>
     body {
-      background: rgb(235, 234, 234);
-      min-height: 100vh;
+      background-color: #f8f9fa;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
     }
 
-    .construction-container {
-      max-width: 800px;
-      width: 100%;
+    /* Bouton Retour */
+    .btn-retour {
+      background: transparent;
+      color: #f89b00;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-retour:hover {
+      color: #e68c00;
+      transform: translateX(-3px);
+      text-decoration: none;
+    }
+
+    /* Container principal */
+    .form-container {
+      max-width: 1200px;
+      margin: 30px auto;
       background: white;
       border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      overflow: hidden;
-      animation: float 3s ease-in-out infinite;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 30px;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
-    .construction-header {
-      background: linear-gradient(135deg, #f89b00 0%, #e68c00 100%);
-      color: white;
-      padding: 40px;
+    /* En-tête avec titre */
+    .form-header {
       text-align: center;
-      position: relative;
-      overflow: hidden;
+      margin-bottom: 40px;
+      border-bottom: 2px solid #f89b00;
+      padding-bottom: 20px;
     }
 
-    .construction-header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-      background-size: 50px 50px;
-      animation: moveBackground 20s linear infinite;
-    }
-
-    @keyframes moveBackground {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(50px, 50px); }
-    }
-
-    .construction-icon {
-      font-size: 5rem;
-      margin-bottom: 20px;
-      animation: bounce 2s infinite;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
-    }
-
-    .construction-title {
-      font-size: 2.5rem;
+    .form-title {
+      color: #333;
       font-weight: 700;
       margin-bottom: 10px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     }
 
-    .construction-subtitle {
-      font-size: 1.2rem;
-      opacity: 0.9;
+    .form-subtitle {
+      color: #666;
+      font-size: 1.1rem;
     }
 
-    .construction-content {
-      padding: 40px;
-    }
-
-    .progress-container {
-      margin: 30px 0;
-    }
-
-    .progress-label {
+    /* Navigation par cercles */
+    .step-navigation {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 10px;
-      color: #333;
-      font-weight: 500;
-    }
-
-    .progress {
-      height: 12px;
-      border-radius: 6px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      background: linear-gradient(90deg, #f89b00, #ffd166);
-      animation: progressAnimation 2s ease-in-out infinite alternate;
-    }
-
-    @keyframes progressAnimation {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
-    }
-
-    .construction-info {
-      background: #f8f9fa;
-      border-radius: 15px;
-      padding: 25px;
-      margin: 30px 0;
-      border-left: 4px solid #f89b00;
-    }
-
-    .construction-info h4 {
-      color: #333;
-      margin-bottom: 15px;
-      display: flex;
       align-items: center;
-      gap: 10px;
+      margin-bottom: 40px;
+      position: relative;
     }
 
-    .construction-info ul {
-      padding-left: 20px;
-      margin-bottom: 0;
+    .step-navigation::before {
+      content: '';
+      position: absolute;
+      top: 25px;
+      left: 50px;
+      right: 50px;
+      height: 3px;
+      background: #e0e0e0;
+      z-index: 1;
     }
 
-    .construction-info li {
-      margin-bottom: 8px;
-      color: #666;
-    }
-
-    .countdown-container {
-      text-align: center;
-      margin: 30px 0;
-    }
-
-    .countdown-title {
-      color: #333;
-      font-size: 1.2rem;
-      margin-bottom: 20px;
-    }
-
-    .countdown {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-    }
-
-    .countdown-item {
+    .step-item {
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
+      z-index: 2;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
 
-    .countdown-value {
-      width: 70px;
-      height: 70px;
-      background: linear-gradient(135deg, #f89b00 0%, #e68c00 100%);
-      color: white;
-      border-radius: 10px;
+    .step-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #e0e0e0;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.8rem;
+      color: white;
       font-weight: bold;
-      box-shadow: 0 5px 15px rgba(248, 155, 0, 0.3);
+      margin-bottom: 10px;
+      transition: all 0.3s ease;
+      border: 3px solid white;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     }
 
-    .countdown-label {
-      margin-top: 8px;
-      color: #666;
+    .step-icon {
+      font-size: 1.5rem;
+    }
+
+    .step-label {
       font-size: 0.9rem;
+      color: #666;
+      text-align: center;
+      font-weight: 500;
+      max-width: 100px;
     }
 
-    .btn-retour {
-      display: inline-flex;
+    .step-item.active .step-circle {
+      background: #f89b00;
+      transform: scale(1.1);
+    }
+
+    .step-item.completed .step-circle {
+      background: #28a745;
+    }
+
+    .step-item:hover .step-circle {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Contenu des étapes */
+    .step-content {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .step-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-title {
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #f89b00;
+      display: flex;
       align-items: center;
       gap: 10px;
+    }
+
+    .step-title i {
+      color: #f89b00;
+      font-size: 1.5rem;
+    }
+
+    /* Formulaire */
+    .form-section {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      border-left: 4px solid #f89b00;
+    }
+
+    .form-section-title {
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .required::after {
+      content: " *";
+      color: #dc3545;
+    }
+
+    .form-control, .form-select {
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      padding: 12px 15px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #f89b00;
+      box-shadow: 0 0 0 0.2rem rgba(248, 155, 0, 0.25);
+    }
+
+    /* Documents requis */
+    .document-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+    
+    .document-item {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    
+    .document-info h6 {
+      margin-bottom: 5px;
+      color: #333;
+      font-size: 0.95rem;
+    }
+    
+    .document-info small {
+      color: #666;
+      font-size: 0.85rem;
+      display: block;
+    }
+    
+    .document-status {
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+      margin-left: 10px;
+      flex-shrink: 0;
+    }
+    
+    .status-required {
+      background: #ffebee;
+      color: #c62828;
+      border: 1px solid #ffcdd2;
+    }
+    
+    .status-optional {
+      background: #fff8e1;
+      color: #ff8f00;
+      border: 1px solid #ffe082;
+    }
+    
+    .status-dependent {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #a5d6a7;
+    }
+
+    /* Boutons de navigation */
+    .form-navigation {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .btn-nav {
       padding: 12px 30px;
-      background: linear-gradient(135deg, #f89b00 0%, #e68c00 100%);
-      color: white;
-      text-decoration: none;
       border-radius: 10px;
       font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       transition: all 0.3s ease;
+    }
+
+    .btn-prev {
+      background: #6c757d;
+      color: white;
       border: none;
     }
 
-    .btn-retour:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 20px rgba(248, 155, 0, 0.3);
-      color: white;
+    .btn-prev:hover {
+      background: #5a6268;
+      transform: translateX(-3px);
     }
 
-    .contact-info {
+    .btn-next {
+      background: #f89b00;
+      color: white;
+      border: none;
+    }
+
+    .btn-next:hover {
+      background: #e68c00;
+      transform: translateX(3px);
+    }
+
+    .btn-submit {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 12px 40px;
+    }
+
+    .btn-submit:hover {
+      background: #218838;
+      transform: translateY(-2px);
+    }
+
+    /* Section d'aide */
+    .help-text {
+      color: #666;
+      font-size: 0.9rem;
+      margin-top: 5px;
+      font-style: italic;
+    }
+
+    /* Indicateur de progression */
+    .progress-indicator {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    /* Case à cocher personnalisée */
+    .case-group {
+      margin-bottom: 15px;
+      padding: 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+    
+    .case-group:hover {
+      border-color: #f89b00;
+      background: #fff8e1;
+    }
+    
+    .case-group.active {
+      border-color: #f89b00;
+      background: #fff3cd;
+    }
+    
+    /* Champ de téléchargement adaptatif */
+    .document-upload-group {
+      margin-bottom: 15px;
+    }
+    
+    .document-upload-group label {
+      display: block;
+      margin-bottom: 8px;
+    }
+    
+    /* Section téléchargement */
+    .download-section {
+      margin-top: 20px;
+      padding: 15px;
       background: #e8f5e9;
-      border-radius: 15px;
-      padding: 20px;
-      margin-top: 30px;
+      border-radius: 8px;
       border-left: 4px solid #4caf50;
     }
-
-    .contact-info h5 {
-      color: #2e7d32;
-      margin-bottom: 15px;
-      display: flex;
+    
+    .download-link {
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      color: #2e7d32;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 15px;
+      border-radius: 5px;
+      background: white;
+      border: 1px solid #a5d6a7;
+      transition: all 0.3s ease;
+    }
+    
+    .download-link:hover {
+      background: #f1f8e9;
+      color: #1b5e20;
+      transform: translateY(-2px);
     }
 
-    .contact-info p {
+    /* Modal de confirmation */
+    .confirmation-modal .modal-content {
+      border-radius: 20px;
+      border: none;
+    }
+    
+    .confirmation-modal .modal-header {
+      border-bottom: none;
+      background: #28a745;
+      color: white;
+      border-radius: 20px 20px 0 0;
+      padding: 30px;
+    }
+    
+    .confirmation-modal .modal-body {
+      padding: 40px;
+      text-align: center;
+    }
+    
+    .confirmation-icon {
+      font-size: 5rem;
+      color: #28a745;
+      margin-bottom: 20px;
+    }
+    
+    .confirmation-number {
+      background: #e8f5e9;
+      border: 2px dashed #4caf50;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 20px 0;
+      font-family: monospace;
+      font-size: 1.2rem;
+    }
+    
+    .confirmation-modal .modal-footer {
+      border-top: none;
+      justify-content: center;
+      padding: 0 40px 40px 40px;
+    }
+
+    /* Speed Selection Cards */
+    .speed-option {
+      position: relative;
+    }
+
+    .speed-radio {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .speed-card {
+      display: block;
+      background: white;
+      border: 3px solid #e0e0e0;
+      border-radius: 15px;
+      padding: 30px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+
+    .speed-radio:checked + .speed-card {
+      border-color: #f89b00;
+      background: #fff8e1;
+      box-shadow: 0 8px 20px rgba(248, 155, 0, 0.2);
+    }
+
+    .speed-card:hover {
+      border-color: #f89b00;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .speed-header {
+      margin-bottom: 20px;
+    }
+
+    .speed-header i {
+      font-size: 3rem;
+      color: #f89b00;
+      margin-bottom: 10px;
+    }
+
+    .speed-header h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #333;
+      margin: 0;
+    }
+
+    .speed-duration {
+      font-size: 1.1rem;
+      font-weight: 600;
       color: #666;
       margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
     }
 
-    .construction-footer {
-      background: #333;
-      color: white;
+    .speed-description {
+      font-size: 0.95rem;
+      color: #888;
+      margin: 0;
+    }
+
+    /* Fee Breakdown */
+    .fee-breakdown {
+      background: #f8f9fa;
+      border-radius: 10px;
       padding: 20px;
-      text-align: center;
-      border-radius: 0 0 20px 20px;
+      border-left: 4px solid #f89b00;
     }
 
-    .logo {
-      font-weight: bold;
-      font-size: 1.2rem;
-      color: #f89b00;
-    }
-
-    /* Animation des outils */
-    .tools-animation {
+    .fee-item {
       display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin: 20px 0;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
     }
 
-    .tool {
-      font-size: 2rem;
+    .fee-item:last-child {
+      border-bottom: none;
+    }
+
+    .fee-item.fee-total {
+      background: #fff8e1;
+      margin: 10px -20px -20px -20px;
+      padding: 15px 20px;
+      border-radius: 0 0 10px 10px;
+      border-top: 2px solid #f89b00;
+    }
+
+    .fee-label {
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .fee-value {
+      font-size: 1.1rem;
+      font-weight: 600;
       color: #f89b00;
-      animation: spin 3s linear infinite;
-    }
-
-    .tool:nth-child(1) { animation-delay: 0s; }
-    .tool:nth-child(2) { animation-delay: 0.5s; }
-    .tool:nth-child(3) { animation-delay: 1s; }
-    .tool:nth-child(4) { animation-delay: 1.5s; }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
     }
 
     /* Responsive */
     @media (max-width: 768px) {
-      .construction-title {
-        font-size: 2rem;
+      .step-navigation {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
       }
-      
-      .construction-content {
+
+      .step-navigation::before {
+        display: none;
+      }
+
+      .form-container {
+        padding: 20px;
+        margin: 15px;
+      }
+
+      .btn-nav {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+      }
+
+      .document-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .document-status {
+        align-self: flex-start;
+        margin-left: 0;
+      }
+
+      .confirmation-modal .modal-body {
         padding: 20px;
       }
-      
-      .countdown {
-        flex-wrap: wrap;
+
+      .speed-card {
+        padding: 20px;
       }
-      
-      .countdown-value {
-        width: 60px;
-        height: 60px;
-        font-size: 1.5rem;
-      }
-      
-      .construction-header {
-        padding: 30px 20px;
+
+      .speed-header i {
+        font-size: 2.5rem;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="construction-container">
-    <!-- En-tête -->
-    <div class="construction-header">
-      <div class="construction-icon">
-        <i class="bi bi-tools"></i>
-      </div>
-      <h1 class="construction-title">Service en Construction</h1>
-      <p class="construction-subtitle">Nous travaillons dur pour vous offrir le meilleur service</p>
-    </div>
 
-    <!-- Contenu -->
-    <div class="construction-content">
-      <!-- Animation des outils -->
-      <div class="tools-animation">
-        <div class="tool"><i class="bi bi-hammer"></i></div>
-        <div class="tool"><i class="bi bi-wrench"></i></div>
-        <div class="tool"><i class="bi bi-screwdriver"></i></div>
-        <div class="tool"><i class="bi bi-gear"></i></div>
-      </div>
-
-      <!-- Message principal -->
-      <div class="text-center mb-4">
-        <h3 class="mb-3">Nous sommes désolés pour ce désagrément</h3>
-        <p class="lead" style="color: #666;">
-          Ce service est actuellement en cours de développement et sera bientôt disponible.
-          Notre équipe travaille activement pour vous offrir une expérience optimale.
-        </p>
-      </div>
-
-      <!-- Barre de progression -->
-      <div class="progress-container">
-        <div class="progress-label">
-          <span>Progression du développement</span>
-          <span id="progress-percentage">75%</span>
-        </div>
-        <div class="progress">
-          <div class="progress-bar" role="progressbar" style="width: 75%;"></div>
-        </div>
-      </div>
-
-      <!-- Informations -->
-      <div class="construction-info">
-        <h4><i class="bi bi-info-circle"></i> À propos de ce service</h4>
-        <ul>
-          <li><strong>Service :</strong> <span id="service-name">Nom du Service</span></li>
-          <li><strong>Statut :</strong> <span class="badge bg-warning">En développement</span></li>
-          <li><strong>Date de lancement prévue :</strong> <span id="launch-date">Décembre 2024</span></li>
-          <li><strong>Équipe en charge :</strong> Développeurs ONECI</li>
-        </ul>
-      </div>
-
-      <!-- Compte à rebours -->
-      <div class="countdown-container">
-        <h5 class="countdown-title">Lancement dans</h5>
-        <div class="countdown">
-          <div class="countdown-item">
-            <div class="countdown-value" id="days">30</div>
-            <div class="countdown-label">Jours</div>
-          </div>
-          <div class="countdown-item">
-            <div class="countdown-value" id="hours">12</div>
-            <div class="countdown-label">Heures</div>
-          </div>
-          <div class="countdown-item">
-            <div class="countdown-value" id="minutes">45</div>
-            <div class="countdown-label">Minutes</div>
-          </div>
-          <div class="countdown-item">
-            <div class="countdown-value" id="seconds">30</div>
-            <div class="countdown-label">Secondes</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Informations de contact -->
-      <div class="contact-info">
-        <h5><i class="bi bi-telephone"></i> Besoin d'aide immédiate ?</h5>
-        <p><i class="bi bi-envelope"></i> Contactez-nous : <strong>support@oneci.ci</strong></p>
-        <p><i class="bi bi-phone"></i> Téléphone : <strong>+225 27 20 30 40 50</strong></p>
-        <p><i class="bi bi-clock"></i> Horaires : Lundi - Vendredi, 8h00 - 17h00</p>
-      </div>
-
-      <!-- Bouton retour -->
-      <div class="text-center mt-4">
-        <a href="javascript:history.back()" class="btn-retour">
-          <i class="bi bi-arrow-left"></i> Retour à la page précédente
-        </a>
-      </div>
-    </div>
-
-    <!-- Pied de page -->
-    <div class="construction-footer">
-      <div class="logo">ONECI</div>
-      <p class="mb-0 mt-2">Office National de l'État Civil - Côte d'Ivoire</p>
-      <small>© 2024 Tous droits réservés</small>
-    </div>
+<div class="container-fluid">
+  <!-- Bouton Retour -->
+  <div class="container mt-3">
+    <a href="cni.html" class="btn-retour">
+      <i class="bi bi-arrow-left"></i> Retour aux sous-services
+    </a>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <div class="form-container">
+    
+    <!-- En-tête du formulaire -->
+    <div class="form-header">
+      <h1 class="form-title">Modifications de Carte Nationale d'Identité (CNI)</h1>
+      <p class="form-subtitle">Corrigez ou modifiez les informations sur votre CNI</p>
+    </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Récupérer le nom du service depuis l'URL
-      function getServiceNameFromURL() {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('service') || 'Service ONECI';
-      }
+    <!-- Navigation par étapes (passée de 6 à 5 étapes) -->
+    <div class="step-navigation">
+      <div class="step-item active" data-step="1">
+        <div class="step-circle">
+          <i class="bi bi-person-fill step-icon"></i>
+        </div>
+        <span class="step-label">Informations</span>
+      </div>
 
-      // Mettre à jour le nom du service
-      const serviceName = getServiceNameFromURL();
-      document.getElementById('service-name').textContent = serviceName;
+      <div class="step-item" data-step="2">
+        <div class="step-circle">
+          <i class="bi bi-file-earmark-text step-icon"></i>
+        </div>
+        <span class="step-label">Documents</span>
+      </div>
+
+      <div class="step-item" data-step="3">
+        <div class="step-circle">
+          <i class="bi bi-speedometer2 step-icon"></i>
+        </div>
+        <span class="step-label">Rapidité</span>
+      </div>
+
+      <div class="step-item" data-step="4">
+        <div class="step-circle">
+          <i class="bi bi-truck step-icon"></i>
+        </div>
+        <span class="step-label">Livraison</span>
+      </div>
+
+      <div class="step-item" data-step="5">
+        <div class="step-circle">
+          <i class="bi bi-credit-card step-icon"></i>
+        </div>
+        <span class="step-label">Récapitulatif & Paiement</span>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 1: Informations personnelles -->
+    <div class="step-content active" id="step-1">
+      <h3 class="step-title"><i class="bi bi-person-fill"></i> Informations personnelles</h3>
       
-      // Mettre à jour le titre de la page
-      document.title = `${serviceName} - En construction | ONECI`;
-
-      // Date de lancement (30 jours à partir d'aujourd'hui)
-      const launchDate = new Date();
-      launchDate.setDate(launchDate.getDate() + 30);
-      
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      document.getElementById('launch-date').textContent = 
-        launchDate.toLocaleDateString('fr-FR', options);
-
-      // Compte à rebours dynamique
-      function updateCountdown() {
-        const now = new Date().getTime();
-        const launchTime = launchDate.getTime();
-        const timeRemaining = launchTime - now;
-
-        if (timeRemaining > 0) {
-          const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-          document.getElementById('days').textContent = days.toString().padStart(2, '0');
-          document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-          document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-          document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-        } else {
-          // Si la date est passée, réinitialiser
-          document.getElementById('days').textContent = '00';
-          document.getElementById('hours').textContent = '00';
-          document.getElementById('minutes').textContent = '00';
-          document.getElementById('seconds').textContent = '00';
-          clearInterval(countdownInterval);
-        }
-      }
-
-      // Démarrer le compte à rebours
-      updateCountdown();
-      const countdownInterval = setInterval(updateCountdown, 1000);
-
-      // Animation de la barre de progression
-      let progress = 75;
-      const progressBar = document.querySelector('.progress-bar');
-      const progressPercentage = document.getElementById('progress-percentage');
-      
-      function animateProgress() {
-        if (progress < 100) {
-          progress += Math.random() * 0.5;
-          if (progress > 100) progress = 100;
-          progressBar.style.width = `${progress}%`;
-          progressPercentage.textContent = `${Math.round(progress)}%`;
-        }
-      }
-
-      // Animer la barre de progression toutes les 2 secondes
-      setInterval(animateProgress, 2000);
-
-      // Gestion du bouton retour
-      const backButton = document.querySelector('.btn-retour');
-      backButton.addEventListener('click', function(e) {
-        e.preventDefault();
+      <!-- Informations de base -->
+      <div class="form-section">
+        <h4 class="form-section-title">Données personnelles</h4>
         
-        // Animation de sortie
-        document.querySelector('.construction-container').style.animation = 'float 0.5s ease-in-out forwards';
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label required">Prénoms</label>
+              <input type="text" class="form-control" required>
+              <small class="help-text">Tous vos prénoms tels qu'indiqués sur votre acte de naissance</small>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label required">Nom de famille</label>
+              <input type="text" class="form-control" required>
+            </div>
+          </div>
+        </div>
         
-        setTimeout(() => {
-          if (document.referrer && document.referrer.includes(window.location.hostname)) {
-            window.history.back();
-          } else {
-            window.location.href = 'index.html'; // Page d'accueil par défaut
-          }
-        }, 500);
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label required">Sexe</label>
+              <select class="form-select" required id="sexe-select">
+                <option value="">Sélectionnez...</option>
+                <option value="M">Masculin</option>
+                <option value="F">Féminin</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label required">Date de naissance</label>
+              <input type="date" class="form-control" required>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="form-group">
+              <label class="form-label required">Lieu de naissance</label>
+              <input type="text" class="form-control" required>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label required">Nationalité</label>
+              <select class="form-select" required id="nationalite-select">
+                <option value="">Sélectionnez...</option>
+                <option value="ivoirienne">Ivoirienne</option>
+                <option value="autre">Autre</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label required">Situation matrimoniale</label>
+              <select class="form-select" required id="situation-matrimoniale">
+                <option value="">Sélectionnez...</option>
+                <option value="celibataire">Célibataire</option>
+                <option value="marie">Marié(e)</option>
+                <option value="divorce">Divorcé(e)</option>
+                <option value="veuf">Veuf(ve)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label required">Profession</label>
+              <input type="text" class="form-control" required id="profession-input">
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label required">Nom du père</label>
+              <input type="text" class="form-control" required>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label required">Prénoms du père</label>
+              <input type="text" class="form-control" required>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label required">Nom de jeune fille de la mère</label>
+              <input type="text" class="form-control" required>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label required">Prénoms de la mère</label>
+              <input type="text" class="form-control" required>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label required">N° NNI</label>
+              <input type="text" class="form-control" pattern="[0-9]{11}" maxlength="11" placeholder="12345678901" required>
+              <small class="help-text">Numéro National d'Identification (11 chiffres obligatoires)</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 2: Documents d'identité -->
+    <div class="step-content" id="step-2">
+      <h3 class="step-title"><i class="bi bi-file-earmark-text"></i> Documents requis pour les modifications</h3>
+
+      <div class="form-section">
+        <h4 class="form-section-title">Documents requis selon le type de modification</h4>
+        <p class="help-text mb-4">Les documents nécessaires varient selon le type de modification demandée</p>
+
+        <div class="alert alert-info">
+          <h6><i class="bi bi-images me-2"></i>Documents de référence</h6>
+          <p class="mb-2">Pour connaître les documents exacts requis pour votre type de modification, veuillez consulter les images de référence dans le dossier suivant :</p>
+          <p class="mb-0"><code>../assets/cni-modification/</code></p>
+        </div>
+
+        <div class="form-section mt-4">
+          <h5 class="mb-3">Types de modifications courantes :</h5>
+          <ul class="document-list">
+            <li class="document-item">
+              <div class="document-info">
+                <h6 class="mb-1">Correction d'orthographe</h6>
+                <small>Correction d'une erreur d'orthographe sur le nom ou prénom</small>
+              </div>
+            </li>
+
+            <li class="document-item">
+              <div class="document-info">
+                <h6 class="mb-1">Changement d'adresse</h6>
+                <small>Mise à jour de l'adresse de résidence</small>
+              </div>
+            </li>
+
+            <li class="document-item">
+              <div class="document-info">
+                <h6 class="mb-1">Changement de statut matrimonial</h6>
+                <small>Modification suite à un mariage ou divorce</small>
+              </div>
+            </li>
+
+            <li class="document-item">
+              <div class="document-info">
+                <h6 class="mb-1">Autre modification</h6>
+                <small>Toute autre modification nécessitant une mise à jour de la CNI</small>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="alert alert-warning mt-4">
+          <h6><i class="bi bi-exclamation-triangle"></i> Informations importantes :</h6>
+          <ul class="mb-0">
+            <li>Les documents requis varient selon le type de modification</li>
+            <li>Veuillez consulter les images de référence pour connaître les documents exacts</li>
+            <li>Conservez toujours l'originale de votre CNI actuelle</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Section téléchargement des documents -->
+      <div class="form-section">
+        <h4 class="form-section-title">Téléchargement des documents</h4>
+        <p class="help-text mb-3">Veuillez télécharger les documents suivants en format PDF, JPG ou PNG</p>
+
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <div class="form-group">
+              <label class="form-label required">Type de modification demandée :</label>
+              <select class="form-select" required>
+                <option value="">Sélectionnez...</option>
+                <option value="orthographe">Correction d'orthographe</option>
+                <option value="adresse">Changement d'adresse</option>
+                <option value="mariage">Changement de statut matrimonial</option>
+                <option value="autre">Autre modification</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="document-upload-group">
+              <label class="form-label required">CNI actuelle</label>
+              <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+              <small class="help-text">Recto et verso de votre CNI actuelle</small>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="document-upload-group">
+              <label class="form-label required">Document justificatif de la modification</label>
+              <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+              <small class="help-text">Selon le type de modification (acte de mariage, jugement, etc.)</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="document-upload-group">
+              <label class="form-label">Autres documents justificatifs</label>
+              <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" multiple>
+              <small class="help-text">Tout document supplémentaire nécessaire</small>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="document-upload-group">
+              <label class="form-label">Reçu d'enrôlement (si nécessaire)</label>
+              <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
+              <small class="help-text">Selon le type de modification</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Remove old case selection logic below -->
+    <!-- SKIP TO STEP 3
+            <div class="mt-2">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="statut-nationalite" id="nationalite-ivoirienne" value="ivoirienne">
+                <label class="form-check-label" for="nationalite-ivoirienne">
+                  Je suis de nationalité ivoirienne de naissance
+                </label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="statut-nationalite" id="nationalite-naturalisee" value="naturalisee">
+                <label class="form-check-label" for="nationalite-naturalisee">
+                  Je suis naturalisé(e) ou j'ai acquis la nationalité ivoirienne
+                </label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="statut-nationalite" id="nationalite-mariage" value="mariage">
+                <label class="form-check-label" for="nationalite-mariage">
+                  J'ai acquis la nationalité par mariage
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Question 3: Profession réglementée -->
+        <div class="case-group" id="case-question-3">
+          <div class="form-group">
+            <label class="form-label">Exercez-vous une profession réglementée ?</label>
+            <small class="help-text">(Avocat, médecin, architecte, comptable, notaire, etc.)</small>
+            <div class="mt-2">
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="profession-reglementee" id="profession-oui" value="oui">
+                <label class="form-check-label" for="profession-oui">
+                  Oui
+                </label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="profession-reglementee" id="profession-non" value="non" checked>
+                <label class="form-check-label" for="profession-non">
+                  Non
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Section des documents requis (dynamique) -->
+      <div class="form-section" id="documents-requis-section" style="display: none;">
+        <h4 class="form-section-title" id="titre-cas-documents">Documents à fournir selon votre situation</h4>
+        
+        <!-- Documents communs à tous les cas -->
+        <div class="mb-4">
+          <h5>Documents communs à tous les cas</h5>
+          <ul class="document-list">
+            <li class="document-item">
+              <div class="document-info">
+                <h6 class="mb-1">Reçu d'enrôlement</h6>
+                <small>Document officiel d'enrôlement fourni par l'administration</small>
+              </div>
+              <span class="document-status status-required">Requis</span>
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Documents spécifiques selon le cas -->
+        <div id="documents-cas-specific">
+          <h5 id="titre-documents-cas">Documents spécifiques à votre situation</h5>
+          <ul class="document-list" id="liste-documents-cas">
+            <!-- Les documents spécifiques seront ajoutés ici dynamiquement -->
+          </ul>
+        </div>
+        
+        <!-- Documents pour femme mariée -->
+        <div id="documents-femme-mariee" style="display: none;">
+          <h5>Documents supplémentaires pour femme mariée</h5>
+          <ul class="document-list" id="liste-documents-mariage">
+            <!-- Les documents pour femme mariée seront ajoutés ici dynamiquement -->
+          </ul>
+        </div>
+        
+        <!-- Documents pour profession réglementée -->
+        <div id="documents-profession" style="display: none;">
+          <h5>Documents pour profession réglementée</h5>
+          <ul class="document-list">
+            <li class="document-item">
+              <div class="document-info">
+                <h6 class="mb-1">Attestation ou carte professionnelle</h6>
+                <small>Document attestant de l'exercice d'une profession réglementée - Pas de date limite d'établissement exigée</small>
+              </div>
+              <span class="document-status status-required">Obligatoire</span>
+            </li>
+          </ul>
+          <div class="download-section">
+            <p class="mb-2"><strong>Liste des professions réglementées :</strong></p>
+            <a href="#" class="download-link">
+              <i class="bi bi-download"></i> Télécharger la liste complète
+            </a>
+          </div>
+        </div>
+        
+        <!-- Section téléchargement -->
+        <div class="mt-4">
+          <h5>Téléchargement des documents</h5>
+          <p class="help-text mb-3">Veuillez télécharger les documents suivants en format PDF, JPG ou PNG</p>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="document-upload-group">
+                <label class="form-label required" id="label-acte-naissance">Acte de naissance</label>
+                <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" id="file-acte-naissance" required>
+                <small class="help-text" id="help-acte-naissance">Document original</small>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="document-upload-group">
+                <label class="form-label" id="label-certificat-nationalite">Certificat de nationalité</label>
+                <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" id="file-certificat-nationalite">
+                <small class="help-text" id="help-certificat-nationalite">Si disponible</small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row" id="row-document-special-1" style="display: none;">
+            <div class="col-md-6">
+              <div class="document-upload-group">
+                <label class="form-label" id="label-document-special-1">Document spécial 1</label>
+                <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" id="file-special-1">
+                <small class="help-text" id="help-document-special-1"></small>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="document-upload-group">
+                <label class="form-label" id="label-document-special-2">Document spécial 2</label>
+                <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" id="file-special-2">
+                <small class="help-text" id="help-document-special-2"></small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="document-upload-group">
+                <label class="form-label" id="label-cni-parent">CNI d'un parent (optionnel)</label>
+                <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" id="file-cni-parent">
+                <small class="help-text" id="help-cni-parent">Si possible joindre la CNI de l'un des parents</small>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="document-upload-group">
+                <label class="form-label">Justificatif de domicile</label>
+                <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" id="file-justificatif-domicile">
+                <small class="help-text">Facture récente (eau, électricité, téléphone)</small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-12">
+              <div class="document-upload-group">
+                <label class="form-label">Ancienne CNI (si renouvellement)</label>
+                <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" id="file-ancienne-cni">
+                <small class="help-text">Recto et verso de l'ancienne carte d'identité</small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row" id="row-document-mariage" style="display: none;">
+            <div class="col-md-12">
+              <div class="document-upload-group">
+                <label class="form-label" id="label-document-mariage">Document de mariage</label>
+                <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" id="file-document-mariage">
+                <small class="help-text" id="help-document-mariage"></small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row" id="row-dacp-documents" style="display: none;">
+            <div class="col-md-12">
+              <div class="document-upload-group">
+                <label class="form-label">Document DACP</label>
+                <input type="file" class="form-control" accept=".pdf,.jpg,.jpeg,.png" id="file-dacp">
+                <small class="help-text">Lettre de non-opposition, non-déclination ou acquisition de nationalité authentifiée à la DACP</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 3: Rapidité -->
+    <div class="step-content" id="step-3">
+      <h3 class="step-title"><i class="bi bi-speedometer2"></i> Rapidité du traitement</h3>
+
+      <div class="form-section">
+        <h4 class="form-section-title">Choisissez la vitesse de traitement</h4>
+        <p class="help-text mb-4">Sélectionnez la rapidité de traitement de votre demande de CNI</p>
+
+        <div class="row g-4">
+          <!-- Option Normal -->
+          <div class="col-md-6">
+            <div class="speed-option" data-speed="normal">
+              <input type="radio" name="speed" id="speed-normal" value="normal" class="speed-radio" checked>
+              <label for="speed-normal" class="speed-card">
+                <div class="speed-header">
+                  <i class="bi bi-clock-history"></i>
+                  <h3>Normal</h3>
+                </div>
+                <div class="speed-details">
+                  <p class="speed-duration">Minimum 7 jours</p>
+                  <p class="speed-description">Traitement standard de votre demande</p>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Option Express -->
+          <div class="col-md-6">
+            <div class="speed-option" data-speed="express">
+              <input type="radio" name="speed" id="speed-express" value="express" class="speed-radio">
+              <label for="speed-express" class="speed-card">
+                <div class="speed-header">
+                  <i class="bi bi-lightning-charge-fill"></i>
+                  <h3>Express</h3>
+                </div>
+                <div class="speed-details">
+                  <p class="speed-duration">Maximum 24 heures</p>
+                  <p class="speed-description">Traitement accéléré de votre demande</p>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 4: Livraison -->
+    <div class="step-content" id="step-4">
+      <h3 class="step-title"><i class="bi bi-truck"></i> Mode de livraison</h3>
+
+      <div class="form-section">
+        <h4 class="form-section-title">Sélectionnez une méthode de livraison</h4>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="form-label required">Méthode de livraison :</label>
+              <select class="form-select" id="delivery-method" required>
+                <option value="">Sélectionnez...</option>
+                <option value="pickup">Retrait sur place (Pickup)</option>
+                <option value="delivery">Livraison à domicile (Additional charges may apply)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section d'adresse (affichée uniquement si livraison est sélectionnée) -->
+      <div class="form-section" id="address-section" style="display: none;">
+        <h4 class="form-section-title">Adresse de livraison</h4>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label required">Pays :</label>
+              <select class="form-select" id="delivery-country" required>
+                <option value="CI" selected>Côte d'Ivoire</option>
+                <option value="US">États-Unis</option>
+                <option value="FR">France</option>
+                <option value="CA">Canada</option>
+                <option value="GB">Royaume-Uni</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label required">Région :</label>
+              <select class="form-select" id="delivery-region" required>
+                <option value="">Sélectionnez...</option>
+                <option value="Abidjan">Abidjan</option>
+                <option value="Yamoussoukro">Yamoussoukro</option>
+                <option value="Bouake">Bouaké</option>
+                <option value="San-Pedro">San-Pedro</option>
+                <option value="Korhogo">Korhogo</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label required">Ville ou Commune :</label>
+              <input type="text" class="form-control" id="delivery-city" required>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Adresse Boîte Postale :</label>
+              <input type="text" class="form-control" id="delivery-po-box">
+              <small class="help-text">Optionnel</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="alert alert-warning mt-3" id="shipping-calculator" style="display: none;">
+              <div class="d-flex align-items-center">
+                <div class="spinner-border spinner-border-sm text-warning me-2" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <span class="text-warning fw-bold">Calcul des frais de livraison en cours...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section récapitulatif des frais -->
+      <div class="form-section" id="fee-summary">
+        <h4 class="form-section-title">Récapitulatif des frais</h4>
+
+        <div class="fee-breakdown">
+          <div class="fee-item">
+            <span class="fee-label">Frais de service :</span>
+            <span class="fee-value" id="service-fee">1 000 FCFA</span>
+          </div>
+          <div class="fee-item">
+            <span class="fee-label">Frais de plateforme :</span>
+            <span class="fee-value" id="platform-fee">9 990 FCFA</span>
+          </div>
+          <div class="fee-item">
+            <span class="fee-label">Frais de livraison :</span>
+            <span class="fee-value" id="shipping-charges">0 FCFA</span>
+          </div>
+          <div class="fee-item fee-total">
+            <span class="fee-label"><strong>Montant total à payer :</strong></span>
+            <span class="fee-value"><strong id="total-amount">10 990 FCFA</strong></span>
+          </div>
+          <div class="text-danger mt-2" id="payment-note">
+            <small><i class="bi bi-exclamation-circle"></i> Paiement non remboursable</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 5: Paiement et Confirmation -->
+    <div class="step-content" id="step-5">
+      <h3 class="step-title"><i class="bi bi-credit-card"></i> Paiement et confirmation</h3>
+      
+      <div class="form-section">
+        <h4 class="form-section-title">Récapitulatif et paiement</h4>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-4">
+              <div class="card-header bg-light">
+                <h5 class="mb-0">Récapitulatif de votre demande</h5>
+              </div>
+              <div class="card-body">
+                <table class="table">
+                  <tr>
+                    <td>Type de demande:</td>
+                    <td class="text-end">Carte Nationale d'Identité</td>
+                  </tr>
+                  <tr>
+                    <td>Nature:</td>
+                    <td class="text-end">Première demande</td>
+                  </tr>
+                  <tr>
+                    <td>Centre de prise d'empreintes:</td>
+                    <td class="text-end">Abidjan - Plateau</td>
+                  </tr>
+                  <tr>
+                    <td>Délai de traitement:</td>
+                    <td class="text-end">15-20 jours ouvrables</td>
+                  </tr>
+                  <tr class="table-active">
+                    <td><strong>Total à payer:</strong></td>
+                    <td class="text-end"><strong id="total-payment">10 990 FCFA</strong></td>
+                  </tr>
+                </table>
+                <div class="alert alert-warning mt-3">
+                  <small><i class="bi bi-exclamation-triangle"></i> Les frais de prise d'empreintes (5 000 FCFA) sont à régler sur place au centre.</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header bg-light">
+                <h5 class="mb-0">Moyen de paiement</h5>
+              </div>
+              <div class="card-body">
+                <div class="form-group">
+                  <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" name="paiement" id="paiement-carte" value="carte" checked>
+                    <label class="form-check-label" for="paiement-carte">
+                      <i class="bi bi-credit-card-2-front"></i> Carte bancaire
+                    </label>
+                  </div>
+                  
+                  <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" name="paiement" id="paiement-mobile" value="mobile">
+                    <label class="form-check-label" for="paiement-mobile">
+                      <i class="bi bi-phone"></i> Paiement mobile (Orange Money, MTN Mobile Money)
+                    </label>
+                  </div>
+                  
+                  <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" name="paiement" id="paiement-virement" value="virement">
+                    <label class="form-check-label" for="paiement-virement">
+                      <i class="bi bi-bank"></i> Virement bancaire
+                    </label>
+                  </div>
+                  
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="paiement" id="paiement-agence" value="agence">
+                    <label class="form-check-label" for="paiement-agence">
+                      <i class="bi bi-shop"></i> Paiement en agence ONECI
+                    </label>
+                  </div>
+                </div>
+                
+                <!-- Bouton de paiement -->
+                <div class="d-grid mt-4">
+                  <button type="button" class="btn btn-success btn-lg" id="btn-payer">
+                    <i class="bi bi-lock-fill"></i> Payer <span id="btn-payment-amount">10 990 FCFA</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Section de confirmation (affichée seulement après validation) -->
+        <div class="form-section" id="confirmation-section" style="display: none;">
+          <h4 class="form-section-title">Confirmation et informations importantes</h4>
+          
+          <div class="alert alert-info">
+            <h5><i class="bi bi-info-circle"></i> Informations importantes après paiement</h5>
+            <ul>
+              <li>Vous avez reçu un numéro de suivi par email</li>
+              <li>Vous devrez vous présenter au centre choisi pour la prise d'empreintes digitales</li>
+              <li>Présentez-vous avec les originaux de tous les documents téléchargés</li>
+              <li>Temps de traitement estimé: <strong>15 à 20 jours ouvrables</strong></li>
+              <li>Votre CNI sera disponible pour retrait dans l'agence ONECI choisie</li>
+            </ul>
+            <p class="mb-0"><strong>Site officiel ONECI :</strong> <a href="https://www.oneci.ci" target="_blank">www.oneci.ci</a></p>
+          </div>
+          
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="confirmation" required>
+            <label class="form-check-label" for="confirmation">
+              Je certifie que les informations fournies pour ma demande de Carte Nationale d'Identité sont exactes et complètes
+            </label>
+          </div>
+          
+          <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox" id="consentement" required>
+            <label class="form-check-label" for="consentement">
+              J'autorise l'Office National de l'État Civil (ONECI) à traiter mes données personnelles dans le cadre de cette demande
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="form-navigation">
+      <button type="button" class="btn btn-prev btn-nav" id="prev-btn" disabled>
+        <i class="bi bi-arrow-left"></i> Précédent
+      </button>
+      
+      <div class="progress-indicator">
+        Étape <span id="current-step">1</span> sur 5
+      </div>
+      
+      <button type="button" class="btn btn-next btn-nav" id="next-btn">
+        Suivant <i class="bi bi-arrow-right"></i>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal de confirmation de paiement -->
+<div class="modal fade confirmation-modal" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmationModalLabel">
+          <i class="bi bi-check-circle me-2"></i> Paiement confirmé
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="confirmation-icon">
+          <i class="bi bi-check-circle-fill"></i>
+        </div>
+
+        <h4 class="mb-3">Votre paiement a été traité avec succès !</h4>
+
+        <p class="mb-4">Votre demande de Carte Nationale d'Identité a été enregistrée et votre paiement de <strong>10 000 FCFA</strong> a été confirmé.</p>
+
+        <div class="confirmation-number">
+          <strong>N° de suivi :</strong> CNI-2024-<span id="tracking-number">XXXXX</span>
+        </div>
+
+        <div class="alert alert-warning mt-4">
+          <h6><i class="bi bi-exclamation-triangle"></i> Important :</h6>
+          <ul class="mb-0">
+            <li>Le numéro de suivi a été envoyé à votre adresse email</li>
+            <li>N'oubliez pas de vous présenter au centre pour la prise d'empreintes</li>
+            <li>Apportez tous les documents originaux</li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="btn-continuer">
+          <i class="bi bi-check-lg"></i> Continuer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal d'erreur - Paiement requis -->
+<div class="modal fade" id="paymentRequiredModal" tabindex="-1" aria-labelledby="paymentRequiredLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title" id="paymentRequiredLabel">
+          <i class="bi bi-exclamation-triangle me-2"></i> Paiement requis
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="bi bi-credit-card-2-front text-warning" style="font-size: 4rem;"></i>
+        <p class="mt-3 mb-0">Veuillez d'abord effectuer le paiement avant de continuer.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">
+          <i class="bi bi-check-lg"></i> Compris
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal d'erreur - Validation des cases à cocher -->
+<div class="modal fade" id="checkboxValidationModal" tabindex="-1" aria-labelledby="checkboxValidationLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title" id="checkboxValidationLabel">
+          <i class="bi bi-exclamation-triangle me-2"></i> Confirmation requise
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="bi bi-check2-square text-warning" style="font-size: 4rem;"></i>
+        <p class="mt-3 mb-0">Veuillez accepter les conditions en cochant les deux cases de confirmation.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">
+          <i class="bi bi-check-lg"></i> Compris
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de succès - Soumission réussie -->
+<div class="modal fade" id="submissionSuccessModal" tabindex="-1" aria-labelledby="submissionSuccessLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header" style="background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%); color: white;">
+        <h5 class="modal-title" id="submissionSuccessLabel">
+          <i class="bi bi-check-circle me-2"></i> Demande soumise avec succès !
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+        <h4 class="mt-3 mb-3">Demande de Carte Nationale d'Identité soumise avec succès !</h4>
+        <p class="mb-2">Votre numéro de suivi a été envoyé par email.</p>
+        <p class="mb-0"><strong>Rendez-vous au centre choisi pour la prise d'empreintes digitales.</strong></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+          <i class="bi bi-check-lg"></i> Continuer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal d'erreur - Champs requis -->
+<div class="modal fade" id="requiredFieldsModal" tabindex="-1" aria-labelledby="requiredFieldsLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="requiredFieldsLabel">
+          <i class="bi bi-exclamation-circle me-2"></i> Champs obligatoires manquants
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <i class="bi bi-exclamation-circle text-danger" style="font-size: 4rem;"></i>
+        <p class="mt-3 mb-0">Veuillez remplir tous les champs obligatoires avant de continuer.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+          <i class="bi bi-check-lg"></i> Compris
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const stepItems = document.querySelectorAll('.step-item');
+    const stepContents = document.querySelectorAll('.step-content');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const currentStepSpan = document.getElementById('current-step');
+    const btnPayer = document.getElementById('btn-payer');
+    const confirmationSection = document.getElementById('confirmation-section');
+    const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+    const paymentRequiredModal = new bootstrap.Modal(document.getElementById('paymentRequiredModal'));
+    const checkboxValidationModal = new bootstrap.Modal(document.getElementById('checkboxValidationModal'));
+    const submissionSuccessModal = new bootstrap.Modal(document.getElementById('submissionSuccessModal'));
+    const requiredFieldsModal = new bootstrap.Modal(document.getElementById('requiredFieldsModal'));
+    const btnContinuer = document.getElementById('btn-continuer');
+    
+    let currentStep = 1;
+    const totalSteps = 5;
+    let paiementEffectue = false;
+
+    // Initialisation
+    updateNavigation();
+
+    // Navigation par clic sur les cercles
+    stepItems.forEach(item => {
+      item.addEventListener('click', function() {
+        const step = parseInt(this.getAttribute('data-step'));
+        if (step <= currentStep) {
+          goToStep(step);
+        }
       });
-
-      // Ajouter un effet de particules
-      createParticles();
     });
 
-    // Effet de particules pour le fond
-    function createParticles() {
-      const header = document.querySelector('.construction-header');
-      const particleCount = 15;
+    // Bouton précédent
+    prevBtn.addEventListener('click', function() {
+      if (currentStep > 1) {
+        goToStep(currentStep - 1);
+      }
+    });
 
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.style.position = 'absolute';
-        particle.style.width = Math.random() * 5 + 2 + 'px';
-        particle.style.height = particle.style.width;
-        particle.style.background = 'rgba(255, 255, 255, 0.5)';
-        particle.style.borderRadius = '50%';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animation = `float ${Math.random() * 5 + 3}s ease-in-out infinite`;
-        particle.style.animationDelay = Math.random() * 2 + 's';
-        header.appendChild(particle);
+    // Bouton suivant
+    nextBtn.addEventListener('click', function() {
+      if (currentStep < totalSteps) {
+        goToStep(currentStep + 1);
+      } else {
+        // Si on est à la dernière étape (paiement)
+        if (currentStep === 5) {
+          if (!paiementEffectue) {
+            paymentRequiredModal.show();
+            return;
+          }
+
+          // Valider les cases à cocher
+          const confirmationCheck = document.getElementById('confirmation');
+          const consentementCheck = document.getElementById('consentement');
+
+          if (!confirmationCheck.checked || !consentementCheck.checked) {
+            checkboxValidationModal.show();
+            return;
+          }
+
+          // Soumettre le formulaire final
+          submissionSuccessModal.show();
+          // Ici, vous ajouteriez la logique de soumission réelle
+        }
+      }
+    });
+
+    // Bouton de paiement
+    btnPayer.addEventListener('click', function() {
+      // Simuler le processus de paiement
+      simulatePayment();
+    });
+
+    // Bouton continuer dans le modal
+    btnContinuer.addEventListener('click', function() {
+      // Afficher la section de confirmation
+      confirmationSection.style.display = 'block';
+      paiementEffectue = true;
+      
+      // Mettre à jour le texte du bouton suivant
+      nextBtn.innerHTML = 'Terminer la demande <i class="bi bi-check-circle"></i>';
+      nextBtn.classList.remove('btn-next');
+      nextBtn.classList.add('btn-submit');
+    });
+
+    function goToStep(step) {
+      // Validation de l'étape actuelle
+      if (!validateStep(currentStep) && step > currentStep) {
+        return;
+      }
+
+      // Mettre à jour l'étape actuelle
+      currentStep = step;
+      
+      // Mettre à jour l'interface
+      updateStepItems();
+      updateStepContents();
+      updateNavigation();
+      
+      // Si on arrive à l'étape 5 et que le paiement a déjà été fait
+      if (currentStep === 5 && paiementEffectue) {
+        confirmationSection.style.display = 'block';
+        nextBtn.innerHTML = 'Terminer la demande <i class="bi bi-check-circle"></i>';
+        nextBtn.classList.remove('btn-next');
+        nextBtn.classList.add('btn-submit');
+      } else if (currentStep === 5 && !paiementEffectue) {
+        confirmationSection.style.display = 'none';
+        nextBtn.innerHTML = 'Suivant <i class="bi bi-arrow-right"></i>';
+        nextBtn.classList.remove('btn-submit');
+        nextBtn.classList.add('btn-next');
       }
     }
 
-    // Gestion des paramètres d'URL
-    function getURLParameter(name) {
-      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-      const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-      const results = regex.exec(location.search);
-      return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    function updateStepItems() {
+      stepItems.forEach(item => {
+        const step = parseInt(item.getAttribute('data-step'));
+        
+        item.classList.remove('active', 'completed');
+        
+        if (step === currentStep) {
+          item.classList.add('active');
+        } else if (step < currentStep) {
+          item.classList.add('completed');
+        }
+      });
     }
 
-    // Personnalisation basée sur les paramètres d'URL
-    function customizePage() {
-      const service = getURLParameter('service');
-      const progress = getURLParameter('progress');
-      const launch = getURLParameter('launch');
+    function updateStepContents() {
+      stepContents.forEach(content => {
+        content.classList.remove('active');
+        if (content.id === `step-${currentStep}`) {
+          content.classList.add('active');
+        }
+      });
+    }
+
+    function updateNavigation() {
+      // Activer/désactiver les boutons
+      prevBtn.disabled = currentStep === 1;
       
-      if (service) {
-        document.getElementById('service-name').textContent = service;
-        document.title = `${service} - En construction | ONECI`;
+      // Mettre à jour l'indicateur
+      currentStepSpan.textContent = currentStep;
+    }
+
+    function validateStep(step) {
+      // Cette fonction valide les champs requis de l'étape actuelle
+      const currentContent = document.getElementById(`step-${step}`);
+      const requiredFields = currentContent.querySelectorAll('[required]');
+      let isValid = true;
+
+      requiredFields.forEach(field => {
+        if (!field.value.trim() && field.type !== 'file' && field.type !== 'radio' && field.type !== 'checkbox') {
+          field.classList.add('is-invalid');
+          isValid = false;
+        } else {
+          field.classList.remove('is-invalid');
+        }
+
+        // Validation pour les boutons radio
+        if (field.type === 'radio') {
+          const radioName = field.name;
+          const radioGroup = currentContent.querySelectorAll(`input[name="${radioName}"]:checked`);
+          if (radioGroup.length === 0) {
+            isValid = false;
+            // Vous pourriez ajouter une indication visuelle ici
+          }
+        }
+
+        // Validation pour les cases à cocher
+        if (field.type === 'checkbox' && !field.checked) {
+          field.classList.add('is-invalid');
+          isValid = false;
+        }
+      });
+
+      if (!isValid) {
+        requiredFieldsModal.show();
+      }
+
+      return isValid;
+    }
+
+    // Simulation du processus de paiement
+    function simulatePayment() {
+      // Afficher un indicateur de chargement
+      btnPayer.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Traitement en cours...';
+      btnPayer.disabled = true;
+      
+      // Simuler un délai de traitement (2 secondes)
+      setTimeout(function() {
+        // Générer un numéro de suivi aléatoire
+        const trackingNumber = Math.random().toString(36).substring(2, 8).toUpperCase();
+        document.getElementById('tracking-number').textContent = trackingNumber;
+        
+        // Afficher le modal de confirmation
+        confirmationModal.show();
+        
+        // Réinitialiser le bouton
+        const totalAmount = document.getElementById('total-amount').textContent;
+        btnPayer.innerHTML = '<i class="bi bi-lock-fill"></i> Payer <span id="btn-payment-amount">' + totalAmount + '</span>';
+        btnPayer.disabled = false;
+      }, 2000);
+    }
+
+    // Validation en temps réel
+    const requiredInputs = document.querySelectorAll('[required]');
+    requiredInputs.forEach(input => {
+      input.addEventListener('change', function() {
+        if (this.value.trim()) {
+          this.classList.remove('is-invalid');
+        }
+      });
+    });
+
+    // Configuration de la date de rendez-vous (minimum demain)
+    const dateRdvInput = document.querySelector('input[type="date"]');
+    if (dateRdvInput) {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const minDate = tomorrow.toISOString().split('T')[0];
+      dateRdvInput.min = minDate;
+      
+      // Maximum 60 jours
+      const maxDate = new Date();
+      maxDate.setDate(maxDate.getDate() + 60);
+      dateRdvInput.max = maxDate.toISOString().split('T')[0];
+    }
+
+    // LOGIQUE POUR LA SECTION DOCUMENTS DYNAMIQUE
+    
+    // Éléments DOM pour les questions
+    const question1 = document.getElementById('case-question-1');
+    const question2 = document.getElementById('case-question-2');
+    const question3 = document.getElementById('case-question-3');
+    const documentsSection = document.getElementById('documents-requis-section');
+    const titreCasDocuments = document.getElementById('titre-cas-documents');
+    const titreDocumentsCas = document.getElementById('titre-documents-cas');
+    const documentsCasSpecific = document.getElementById('documents-cas-specific');
+    const documentsFemmeMariee = document.getElementById('documents-femme-mariee');
+    const documentsProfession = document.getElementById('documents-profession');
+    const listeDocumentsCas = document.getElementById('liste-documents-cas');
+    const listeDocumentsMariage = document.getElementById('liste-documents-mariage');
+    
+    // Éléments pour l'affichage conditionnel des champs de téléchargement
+    const rowDocumentSpecial1 = document.getElementById('row-document-special-1');
+    const rowDocumentMariage = document.getElementById('row-document-mariage');
+    const rowDacpDocuments = document.getElementById('row-dacp-documents');
+    
+    // Éléments du formulaire pour déterminer si c'est une femme mariée
+    const sexeSelect = document.getElementById('sexe-select');
+    const nationaliteSelect = document.getElementById('nationalite-select');
+    const situationMatrimoniale = document.getElementById('situation-matrimoniale');
+    const professionInput = document.getElementById('profession-input');
+    
+    // Écouteurs pour les questions
+    const lieuNaissanceRadios = document.querySelectorAll('input[name="lieu-naissance"]');
+    const statutNationaliteRadios = document.querySelectorAll('input[name="statut-nationalite"]');
+    const professionRadios = document.querySelectorAll('input[name="profession-reglementee"]');
+    
+    // Variables pour stocker les réponses
+    let reponses = {
+      lieuNaissance: null,
+      statutNationalite: null,
+      professionReglementee: 'non',
+      estFemmeMariee: false,
+      nationalite: null,
+      situationMatrimoniale: null,
+      sexe: null
+    };
+    
+    // Mettre à jour le statut de femme mariée
+    function updateFemmeMarieeStatus() {
+      const sexe = sexeSelect ? sexeSelect.value : null;
+      const nationalite = nationaliteSelect ? nationaliteSelect.value : null;
+      const situation = situationMatrimoniale ? situationMatrimoniale.value : null;
+      
+      // Déterminer si c'est une femme mariée
+      reponses.estFemmeMariee = (sexe === 'F' && situation === 'marie');
+      reponses.nationalite = nationalite;
+      reponses.situationMatrimoniale = situation;
+      reponses.sexe = sexe;
+      
+      // Mettre à jour les documents si nécessaire
+      if (reponses.lieuNaissance || reponses.statutNationalite) {
+        updateDocuments();
+      }
+    }
+    
+    // Écouteurs pour les champs du formulaire
+    if (sexeSelect) {
+      sexeSelect.addEventListener('change', updateFemmeMarieeStatus);
+    }
+    
+    if (nationaliteSelect) {
+      nationaliteSelect.addEventListener('change', updateFemmeMarieeStatus);
+    }
+    
+    if (situationMatrimoniale) {
+      situationMatrimoniale.addEventListener('change', updateFemmeMarieeStatus);
+    }
+    
+    // Gestion de la question 1: Lieu de naissance
+    lieuNaissanceRadios.forEach(radio => {
+      radio.addEventListener('change', function() {
+        reponses.lieuNaissance = this.value;
+        
+        // Afficher ou masquer la question 2
+        if (this.value === 'hors-cote-ivoire') {
+          question2.style.display = 'block';
+          // Réinitialiser les réponses de la question 2
+          document.querySelectorAll('input[name="statut-nationalite"]').forEach(r => r.checked = false);
+          reponses.statutNationalite = null;
+        } else {
+          question2.style.display = 'none';
+          reponses.statutNationalite = null;
+        }
+        
+        // Mettre à jour les documents
+        updateDocuments();
+      });
+    });
+    
+    // Gestion de la question 2: Statut de nationalité
+    statutNationaliteRadios.forEach(radio => {
+      radio.addEventListener('change', function() {
+        reponses.statutNationalite = this.value;
+        updateDocuments();
+      });
+    });
+    
+    // Gestion de la question 3: Profession réglementée
+    professionRadios.forEach(radio => {
+      radio.addEventListener('change', function() {
+        reponses.professionReglementee = this.value;
+        updateDocuments();
+      });
+    });
+    
+    // Fonction pour mettre à jour les documents requis selon les cas
+    function updateDocuments() {
+      // Vérifier si toutes les questions nécessaires sont répondues
+      let toutesQuestionsRepondues = false;
+      
+      if (reponses.lieuNaissance === 'cote-ivoire') {
+        toutesQuestionsRepondues = true;
+      } else if (reponses.lieuNaissance === 'hors-cote-ivoire' && reponses.statutNationalite) {
+        toutesQuestionsRepondues = true;
       }
       
-      if (progress) {
-        const progressValue = parseInt(progress);
-        if (!isNaN(progressValue) && progressValue >= 0 && progressValue <= 100) {
-          document.querySelector('.progress-bar').style.width = `${progressValue}%`;
-          document.getElementById('progress-percentage').textContent = `${progressValue}%`;
+      if (!toutesQuestionsRepondues) {
+        documentsSection.style.display = 'none';
+        return;
+      }
+      
+      // Afficher la section des documents
+      documentsSection.style.display = 'block';
+      
+      // Déterminer le cas et afficher les documents correspondants
+      let cas = '';
+      let titreCas = '';
+      let documentsCas = [];
+      let documentsMariage = [];
+      let isCasD = false;
+      
+      // CAS A: Personne née en Côte d'Ivoire
+      if (reponses.lieuNaissance === 'cote-ivoire') {
+        cas = 'a';
+        titreCas = 'Personne née en Côte d\'Ivoire';
+        documentsCas = [
+          {
+            nom: "Copie intégrale/Extrait d'acte de naissance ou Acte de notoriété",
+            details: "Portant la mention « en vue de l'établissement de la CNI » datant de moins de deux (02) ans"
+          },
+          {
+            nom: "Certificat de nationalité",
+            details: "Datant de moins de deux (02) ans. Si possible joindre la CNI de l'un des parents de préférence celle ayant servi à l'établissement du certificat de nationalité"
+          }
+        ];
+      }
+      
+      // CAS B: Personne née hors Côte d'Ivoire (nationalité ivoirienne de naissance)
+      else if (reponses.statutNationalite === 'ivoirienne') {
+        cas = 'b';
+        titreCas = 'Personne née hors Côte d\'Ivoire (nationalité ivoirienne de naissance)';
+        documentsCas = [
+          {
+            nom: "Copie intégrale/Extrait d'acte de naissance",
+            details: "Délivré par l'ambassade de Côte d'Ivoire dans le pays de naissance ou par le Ministère en charge des Affaires Etrangères en Côte d'Ivoire"
+          },
+          {
+            nom: "Certificat de nationalité",
+            details: "Si possible joindre la CNI de l'un des parents de préférence celle ayant servi à l'établissement du certificat de nationalité"
+          }
+        ];
+      }
+      
+      // CAS C: Personne naturalisée ou ayant acquis la nationalité ivoirienne
+      else if (reponses.statutNationalite === 'naturalisee') {
+        cas = 'c';
+        titreCas = 'Personne naturalisée ou ayant acquis la nationalité ivoirienne';
+        documentsCas = [
+          {
+            nom: "Copie intégrale/Extrait d'acte de naissance",
+            details: "Délivré en Côte d'Ivoire si elle y est née. Ou de son pays de naissance en français ou accompagné de sa traduction certifiée par le Ministère en charge des Affaires Etrangères"
+          },
+          {
+            nom: "Copie du décret de naturalisation",
+            details: "Document officiel de naturalisation"
+          },
+          {
+            nom: "Certificat de nationalité",
+            details: "Si possible joindre la CNI de l'un des parents de préférence celle ayant servi à l'établissement du certificat de nationalité"
+          }
+        ];
+      }
+      
+      // CAS D: Personne ayant acquis la nationalité par mariage
+      else if (reponses.statutNationalite === 'mariage') {
+        cas = 'd';
+        titreCas = 'Personne ayant acquis la nationalité par mariage';
+        isCasD = true;
+        documentsCas = [
+          {
+            nom: "Copie intégrale/Extrait d'acte de naissance",
+            details: "Délivré en Côte d'Ivoire si elle y est née. Ou de son pays de naissance en français ou accompagné de sa traduction certifiée par le Ministère en charge des Affaires Etrangères"
+          },
+          {
+            nom: "Copie de la CNI RNPP du conjoint(e) ivoirien(ne)",
+            details: "Carte nationale d'identité du conjoint ivoirien"
+          },
+          {
+            nom: "Certificat de nationalité",
+            details: "Si possible joindre la CNI de l'un des parents de préférence celle ayant servi à l'établissement du certificat de nationalité"
+          }
+        ];
+      }
+      
+      // Déterminer les documents pour femme mariée selon le cas
+      if (reponses.estFemmeMariee) {
+        if (isCasD) {
+          documentsMariage = [
+            {
+              nom: "Copie intégrale/Extrait d'acte de mariage",
+              details: "Enregistré à l'état civil Ivoirien"
+            },
+            {
+              nom: "Lettre de non-opposition authentifiée à la DACP",
+              details: "Ou lettre de non-déclination authentifiée à la DACP, ou acquisition de la nationalité ivoirienne par mariage authentifiée à la DACP"
+            }
+          ];
+        } else {
+          documentsMariage = [
+            {
+              nom: "Copie intégrale/Extrait d'acte de naissance portant la mention du mariage",
+              details: "Ou copie intégrale/Extrait d'acte de mariage (pas de date limite d'établissement exigée)"
+            },
+            {
+              nom: "Copie du livret de mariage",
+              details: "Document officiel du mariage"
+            }
+          ];
         }
       }
       
-      if (launch) {
-        document.getElementById('launch-date').textContent = launch;
+      // Mettre à jour les titres
+      titreCasDocuments.textContent = `Documents à fournir - ${titreCas}`;
+      titreDocumentsCas.textContent = `Documents spécifiques (${titreCas})`;
+      
+      // Mettre à jour l'affichage des sections
+      if (documentsCas.length > 0) {
+        documentsCasSpecific.style.display = 'block';
+        // Mettre à jour la liste des documents du cas
+        listeDocumentsCas.innerHTML = '';
+        documentsCas.forEach(doc => {
+          const li = document.createElement('li');
+          li.className = 'document-item';
+          li.innerHTML = `
+            <div class="document-info">
+              <h6 class="mb-1">${doc.nom}</h6>
+              <small>${doc.details}</small>
+            </div>
+            <span class="document-status status-required">Requis</span>
+          `;
+          listeDocumentsCas.appendChild(li);
+        });
+      } else {
+        documentsCasSpecific.style.display = 'none';
+      }
+      
+      if (documentsMariage.length > 0) {
+        documentsFemmeMariee.style.display = 'block';
+        // Mettre à jour la liste des documents de mariage
+        listeDocumentsMariage.innerHTML = '';
+        documentsMariage.forEach(doc => {
+          const li = document.createElement('li');
+          li.className = 'document-item';
+          li.innerHTML = `
+            <div class="document-info">
+              <h6 class="mb-1">${doc.nom}</h6>
+              <small>${doc.details}</small>
+            </div>
+            <span class="document-status status-dependent">Conditionnel</span>
+          `;
+          listeDocumentsMariage.appendChild(li);
+        });
+      } else {
+        documentsFemmeMariee.style.display = 'none';
+      }
+      
+      // Gérer l'affichage des documents pour profession réglementée
+      if (reponses.professionReglementee === 'oui') {
+        documentsProfession.style.display = 'block';
+      } else {
+        documentsProfession.style.display = 'none';
+      }
+      
+      // Mettre à jour les champs de téléchargement selon le cas
+      updateUploadFields(cas, isCasD);
+    }
+    
+    // Fonction pour mettre à jour les champs de téléchargement
+    function updateUploadFields(cas, isCasD) {
+      // Réinitialiser tous les champs
+      rowDocumentSpecial1.style.display = 'none';
+      rowDocumentMariage.style.display = 'none';
+      rowDacpDocuments.style.display = 'none';
+      
+      // Acte de naissance - configuration selon le cas
+      let acteLabel = "Acte de naissance";
+      let acteHelp = "Document original";
+      
+      if (cas === 'a') {
+        acteLabel = "Acte de naissance ou Acte de notoriété";
+        acteHelp = "Datant de moins de 2 ans, mention « en vue de l'établissement de la CNI »";
+      } else if (cas === 'b') {
+        acteLabel = "Acte de naissance (ambassade ou MAE)";
+        acteHelp = "Délivré par l'ambassade ou le Ministère des Affaires Étrangères";
+      } else if (cas === 'c' || cas === 'd') {
+        acteLabel = "Acte de naissance (avec traduction si nécessaire)";
+        acteHelp = "Original avec traduction certifiée par le MAE si en langue étrangère";
+      }
+      
+      document.getElementById('label-acte-naissance').textContent = acteLabel;
+      document.getElementById('help-acte-naissance').textContent = acteHelp;
+      
+      // Certificat de nationalité - configuration selon le cas
+      let certLabel = "Certificat de nationalité";
+      let certHelp = "Si disponible";
+      
+      if (cas === 'a') {
+        certHelp = "Datant de moins de 2 ans (CNI d'un parent optionnel)";
+      } else if (cas === 'b' || cas === 'c' || cas === 'd') {
+        certHelp = "CNI d'un parent optionnel";
+      }
+      
+      document.getElementById('label-certificat-nationalite').textContent = certLabel;
+      document.getElementById('help-certificat-nationalite').textContent = certHelp;
+      
+      // Champs spéciaux selon le cas
+      if (cas === 'c') {
+        rowDocumentSpecial1.style.display = 'flex';
+        document.getElementById('label-document-special-1').textContent = "Décret de naturalisation";
+        document.getElementById('help-document-special-1').textContent = "Copie du décret officiel";
+        document.getElementById('label-document-special-2').textContent = "Traduction certifiée (si nécessaire)";
+        document.getElementById('help-document-special-2').textContent = "Traduction par le Ministère des Affaires Étrangères";
+      } else if (cas === 'd') {
+        rowDocumentSpecial1.style.display = 'flex';
+        document.getElementById('label-document-special-1').textContent = "CNI RNPP du conjoint(e)";
+        document.getElementById('help-document-special-1').textContent = "Carte d'identité du conjoint ivoirien";
+        document.getElementById('label-document-special-2').textContent = "Acte de mariage";
+        document.getElementById('help-document-special-2').textContent = "Pour acquisition par mariage";
+      }
+      
+      // Documents pour femme mariée
+      if (reponses.estFemmeMariee) {
+        if (isCasD) {
+          rowDacpDocuments.style.display = 'block';
+        } else {
+          rowDocumentMariage.style.display = 'block';
+          document.getElementById('label-document-mariage').textContent = "Document de mariage";
+          document.getElementById('help-document-mariage').textContent = "Acte de naissance avec mention mariage, acte de mariage ou livret de mariage";
+        }
       }
     }
+    
+    // Initialiser le statut de femme mariée
+    updateFemmeMarieeStatus();
 
-    // Appeler la personnalisation
-    customizePage();
-  </script>
+    // ===== GESTION DE LA LIVRAISON (STEP 4) =====
+
+    const deliveryMethodSelect = document.getElementById('delivery-method');
+    const addressSection = document.getElementById('address-section');
+    const shippingCalculator = document.getElementById('shipping-calculator');
+    const shippingChargesEl = document.getElementById('shipping-charges');
+    const totalAmountEl = document.getElementById('total-amount');
+
+    if (deliveryMethodSelect) {
+      deliveryMethodSelect.addEventListener('change', function() {
+        const selectedMethod = this.value;
+
+        if (selectedMethod === 'delivery') {
+          // Afficher la section d'adresse
+          addressSection.style.display = 'block';
+
+          // Simuler le calcul des frais de livraison
+          shippingCalculator.style.display = 'block';
+
+          setTimeout(function() {
+            shippingCalculator.style.display = 'none';
+            shippingChargesEl.textContent = '5 000 FCFA';
+            totalAmountEl.textContent = '15 990 FCFA';
+          }, 2000);
+
+        } else if (selectedMethod === 'pickup') {
+          // Masquer la section d'adresse
+          addressSection.style.display = 'none';
+          shippingCalculator.style.display = 'none';
+          shippingChargesEl.textContent = '0 FCFA';
+          totalAmountEl.textContent = '10 990 FCFA';
+        }
+      });
+    }
+
+    // Trigger address validation when typing in address fields
+    const deliveryAddressInputs = ['delivery-country', 'delivery-region', 'delivery-city'];
+    deliveryAddressInputs.forEach(function(inputId) {
+      const input = document.getElementById(inputId);
+      if (input) {
+        input.addEventListener('input', function() {
+          // Check if all required delivery fields are filled
+          const allFilled = deliveryAddressInputs.every(function(id) {
+            const el = document.getElementById(id);
+            return el && el.value.trim() !== '';
+          });
+
+          if (allFilled && deliveryMethodSelect.value === 'delivery') {
+            // Simulate recalculating shipping
+            shippingCalculator.style.display = 'block';
+            setTimeout(function() {
+              shippingCalculator.style.display = 'none';
+            }, 1500);
+          }
+        });
+      }
+    });
+  });
+</script>
+
 </body>
 </html>
